@@ -7,7 +7,9 @@
 
 
 int main(int argc, char *argv[]){
-	int N = atoi(argv[0]);
+	int N = atoi(argv[1]);
+	//all’interno di ls, argv[0] sarebbe "pippo" — ma il programma funzionerebbe ugualmente, solo che nei messaggi di errore o di help ls si identificherebbe come pippo.
+	
 	int pid = getpid();
 
 	printf("Sono altroprog e sono in esecuzione con PID: %d\nPPID: %d\n",pid,getppid());

@@ -7,7 +7,7 @@ int main(){
 	int pid;
 	pid = fork();
 	if(pid ==0)
-		execl("./altroprog_ex","10","arg1","arg2", NULL);
+		execl("./altroprog_ex","./altroprog_ex","10","arg2", NULL);
 	printf("Sono il padre e sto continuando ad eseguire il codice contenuto in 'main_exec.c' PID: %d\n", getpid());
 	
 	
