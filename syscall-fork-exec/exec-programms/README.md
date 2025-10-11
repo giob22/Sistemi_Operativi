@@ -1,4 +1,4 @@
-<img width="592" height="429" alt="image" src="https://github.com/user-attachments/assets/3ceef406-9823-4ea8-8066-c1d214bedf96" /># System Call `exec`
+# System Call `exec`
 
 ## Introduzione
 
@@ -114,7 +114,19 @@ int main(void) {
 - `buf` serve per leggere il comando digitato dall'utente;
 - `commandname` conterrà il nome del comando estratto;
 - `pid` conterrà il valore ritornato da `fork()`.
-Successivamente è presente una _sys-call_ del linguaggio C, `write()`, che permette di scrivere dati su un **file descriptor**.
+
+Successivamente è presente una _sys-call_ del linguaggio C, `write()`, che permette di scrivere dati su un **file descriptor**. Un file descriptor è un numero intero che il sistema operativo assegna a ogni file o risorsa aperta da un processo.<br>
+Ogni volta che un processo viene eseguito per la prima volta gli vengono assegnati automaticamente **3 file descriptor**:
+
+| File descriptor | Risorsa standard |
+|----------|----------|
+| 0 | `STDIN_FILENO` |
+| 1 | `STDOUT_FILENO` |
+| 2 | `STDERR_FILENO` |
+
+Una volta scritto legge da tastiera mediante una `read()` il comando scritto dall'utente e sostituisce l'ultimo elemento per terminare la stringa con un `\n` o `\0`.
+
+`sscanf(buf, "%s", commandname)` copia dal buffer il nome del comando nella variabile `commandname`. Funziona come `fscanf()` ma invece che lavorare su file, lavora su una stringa salvata in memoria; ovvimente nel momento in cui incontra uno spazio ferma le lettura dalla stringa.
 
 
 
@@ -181,6 +193,27 @@ Sono il processo padre, con PID 930
 Il processo padre termina
 ```
 
+**Signal.h:**
+
+Un **segnale** è un meccanismo asincrono o sincrono usato dal sistema operativo per comunicare con un processo o tra processi. Tutti i segnali standard sono definiti nella libreria:
+``` 
+#include <signal.h>
+```
+
+Questa libreria associa ogni segnale ad una **costante** come `SIGKILL`,`SIGSTOP`, ecc.<br>
+Come usarli:
+```
+kill(pid,SIGTERM); // invia SIGTERM al processo specificato da pid
+raise(SIGINT);     // invia SIGINT al processo corrente
+
+signal(SIGINT, handler) // definisce una funzione che gestisce SIGINT
+// gli unici segnali che non possono essere intercettati da signal() sono:
+//SIGKILL;
+//SIGSTOP.
+```
+
+Ogni segnale è associato ad un **numero** che può variare tra diversi sistemi, ma i nomi sono _standard POSIX_.
+
 ---
 
 ## Considerazioni su `fork` + `exec`
@@ -199,6 +232,9 @@ Il processo padre termina
 - **Copy-on-Write (COW)**  
   - Il figlio condivide inizialmente la memoria del padre in modalità **read-only**.  
   - Solo al primo tentativo di modifica, il kernel copia le pagine di memoria.
+ <br>
+  <img width="910" height="540" alt="image" src="https://github.com/user-attachments/assets/366964fc-05d7-4c5b-8e83-6c3ecd4a425a" />
+
 
 ---
 
