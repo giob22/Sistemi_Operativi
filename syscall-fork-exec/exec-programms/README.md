@@ -1,4 +1,4 @@
-# System Call `exec`
+<img width="592" height="429" alt="image" src="https://github.com/user-attachments/assets/3ceef406-9823-4ea8-8066-c1d214bedf96" /># System Call `exec`
 
 ## Introduzione
 
@@ -68,8 +68,8 @@ La `exec` è anche nota come **“sostituzione di codice”**.
 
 ### Possibili implementazioni
 
-1. **Sovrascrittura** del segmento di memoria corrente con i nuovi valori.  
-2. **Allocazione** di nuovi segmenti di memoria (codice, dati, stack) e **deallocazione** dei vecchi segmenti.
+1. **Sovrascrittura** del segmento di memoria corrente con i nuovi valori (`fork()`).  
+2. **Allocazione** di nuovi segmenti di memoria (codice, dati, stack) e **deallocazione** dei vecchi segmenti (`fork()` + `exec()`).
 
 Durante la `exec`, vengono aggiornate le strutture di processo (`PCB` – Process Control Block), ma l’identità del processo (PID, file aperti, risorse kernel) resta invariata.
 
@@ -110,6 +110,13 @@ int main(void) {
     exit(0);
 }
 ```
+
+- `buf` serve per leggere il comando digitato dall'utente;
+- `commandname` conterrà il nome del comando estratto;
+- `pid` conterrà il valore ritornato da `fork()`.
+Successivamente è presente una _sys-call_ del linguaggio C, `write()`, che permette di scrivere dati su un **file descriptor**.
+
+
 
 ---
 
