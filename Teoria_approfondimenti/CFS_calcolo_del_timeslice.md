@@ -48,9 +48,9 @@ ogni task ha un proprio **clock virtuale**, detto `vruntime`, che aumenta propor
 
 I task pronti vengono memorizzati in una struttura dati chiamata **Red-Black Tree** ordinato per `vruntime`. I task con il più basso `vruntime` vengono schedulati per primi dallo scheduler e la ricerca del minimo su questa struttura è molto fantaggiosa perché nel caso peggiore la complessità è `O(log(n))`.
 
-<center>
-<img src='images/image.png' style = 'width: 350px;' alt='Red-Black Tree'/>
-</center>
+<div style="text-align: center;">
+<img src='images/image.png' style = 'width: 350px; border-radius:10px;border: 2px solid #3d444d;' alt='Red-Black Tree'/>
+</div>
 
 Utilizzando tale struttura dati siamo sicuri che il nodo *foglia* più a sinistra è quello che ha accumulato più debito, ovvero con un `vruntime` minore rispetto gli altri.
 
