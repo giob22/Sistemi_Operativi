@@ -48,11 +48,13 @@ ogni task ha un proprio **clock virtuale**, detto `vruntime`, che aumenta propor
 
 I task pronti vengono memorizzati in una struttura dati chiamata **Red-Black Tree** ordinato per `vruntime`. I task con il più basso `vruntime` vengono schedulati per primi dallo scheduler e la ricerca del minimo su questa struttura è molto fantaggiosa perché nel caso peggiore la complessità è `O(log(n))`.
 
-![alt text](images/image.png)
+<center>
+<img src='images/image.png' style = 'width: 350px;' alt='Red-Black Tree'/>
+</center>
 
 Utilizzando tale struttura dati siamo sicuri che il nodo *foglia* più a sinistra è quello che ha accumulato più debito, ovvero con un `vruntime` minore rispetto gli altri.
 
-3) <u>Fairness</u>:
+1) <u>Fairness</u>:
 
 In combinazione con il calcolo del **time slice**, il `vruntime` garantisce che ogni task **ottenga** una quota di CPU proporzionale alla suo **priorità**; quindi fa in modo che ogni task riceva il proprio quanto (dipendente dalla priorità) nella finestra temporale definita dal `targeted latency`, definendo l'ordine di esecuzione.
 
