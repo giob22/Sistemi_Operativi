@@ -87,19 +87,44 @@ int main(){
 					fprintf(stderr, "generazione del processo in backgound fallita.\n");
 					_exit(1);
                 }else if (pid_other > 0){
-                    // I terminated it in order to do a backgound execution
+                    // I terminate it in order to do a backgound execution
                     _exit(0);
                 }else if (pid_other == 0){
                     int fd = open("/dev/null", O_RDONLY);
 
-                    dup2(fd,0) // redirect stdin to /dev/null
+                    dup2(fd,0) // redirect stdin to /dev/null so the process can't interrupt the shell
                     close(fd);
                 }
             }
-            //devi fare solo la parte del pipe
+            //
+
+            //pipe matrix coteining file directors;
+            int pipes[p_n - 1][2];
+            // saving the current stdin
+            int stdin_backup = dup(STDIN_FILENO);
+            for(int i = 0; i < p_n - 1; i++){
+                if (pipe(pipes[i]) == -1){
+                    fprintf(stderr,"error during the pipe connection\n");
+                    return -1;
+                }
+            }
+            pipes[0][0] = stdin_backup; // in case the process is a background process
+            int i = 0;
+            while(i > p_n){
+                dup2()
+                
+                
+                
+                
+                
+                i++;
+            }
+
+            
+            
         
                         
-                        
+            return 0;            
     
         
     }
