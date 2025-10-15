@@ -17,6 +17,7 @@ Se il targeted latency è di 20ms e ci sono 4 task, ognuno riceverà un quanto d
 ## Calcolo del timeslice dinamico
 
 Il **timeslice** di ciascun task viene calcolato come:
+
 $$\text{timeslice} = \frac{\text{targeted latency} \cdot \text{peso del task} }{\text{somma dei pesi di tutti i task}}$$
 
  - **Peso del task**: deriva dalla priorità del task.
