@@ -80,6 +80,14 @@ int main(){
             }
             int p_n = n;
             int pos = is_background(p_argv[p_n - 1]);
+
+
+
+            
+
+
+
+
             if(pos >= 0){
                 p_argv[p_n - 1][pos] = ' ';
                 pid_t pid_other = fork();
@@ -92,7 +100,7 @@ int main(){
                 }else if (pid_other == 0){
                     int fd = open("/dev/null", O_RDONLY);
 
-                    dup2(fd,0) // redirect stdin to /dev/null so the process can't interrupt the shell
+                    dup2(fd,0); // redirect stdin to /dev/null so the process can't interrupt the shell
                     close(fd);
                 }
             }
@@ -108,27 +116,73 @@ int main(){
                     return -1;
                 }
             }
-            pipes[0][0] = stdin_backup; // in case the process is a background process
+            int pipes_cnt = p_n - 1; // numero di pipe
+            
+            //inverto l'ordine dei file descriptor
+            //for (int i = 0; i < (p_n -1); ++i){
+            //    int temp = pipes[i][0];
+            //    pipes[i][0] = pipes[i][1];
+            //    pipes[i][1] = temp;
+            //}
+            
+            
+            
+            
             int i = 0;
-            while(i > p_n){
-                dup2()
-                
-                
-                
-                
-                
+            while(i < p_n){
+                int pid = fork();
+                if (pid == 0){
+
+                    if (i > 0) {                    // non è il primo: legge dalla pipe precedente
+                        if (dup2(pipes[i-1][0], STDIN_FILENO) == -1) { perror("dup2 in"); _exit(1); }
+                    }
+                    if (i < p_n - 1) {              // non è l'ultimo: scrive sulla pipe corrente
+                        if (dup2(pipes[i][1], STDOUT_FILENO) == -1) { perror("dup2 out"); _exit(1); }
+                    }
+                    // chiudi TUTTE le estremità di tutte le pipe
+                    for (int k = 0; k < pipes_cnt; ++k) {
+                        close(pipes[k][0]);
+                        close(pipes[k][1]);
+                    }
+                    
+                    n = 0;
+                    token = strtok(p_argv[i]," ");
+                    while(token != NULL){
+                        argv[n] = token;
+                        n++;
+                        token = strtok(NULL, " ");
+                    }
+                    argv[n] = (char *)0;
+                    
+                    
+                    
+                    execvp(argv[0], argv);
+                    printf("\nERROR\n");
+                    _exit(1);
+                }   
                 i++;
             }
 
-            
+            // parent: chiudi tutte le pipe
+            // perché in questo processo rimangono aperte. essendo che i processi che creo non sono altro che copie di questo.
+            for (int i = 0; i < pipes_cnt; ++i) {
+                close(pipes[i][0]);
+                close(pipes[i][1]);
+            }
+            // se foreground:
+            for (int i = 0; i < p_n; ++i) wait(NULL);
             
         
                         
-            return 0;            
+            _exit(0);            
     
         
     }
 
+    wait(&st);
 
-    return 0;
+	if(WIFEXITED(st) && WEXITSTATUS(st) != 0)
+		printf("processo terminato con stato negativo (%d)\n",st);
+}
+return 0;
 }
