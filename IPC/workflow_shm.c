@@ -1,0 +1,50 @@
+#include <sys/shm.h>
+#include <sys/ipc.h>
+//#include <sys/wait.h>
+#include <stdlib.h>
+#include <stdio.h>
+//#include <unistd.h>
+
+int main(){
+    //obiettivi
+    // creare una chiave 
+    // ottenere il descrittore
+    // utilizzare la shm
+
+    // creiamo/otteniamo il descrittore della risorsa
+    int *p = NULL;
+    key_t shm_key = IPC_PRIVATE;
+    int ds_shm = shmget(shm_key, sizeof(int), IPC_CREAT | 0664);
+    if (ds_shm < 0){
+        printf("errore nella creazione della shm");
+        exit(-1);
+    }
+
+    // colleghiamoci alla risorsa
+
+    p = (int *) shmat(ds_shm,NULL,0); 
+    // avenfo inserto NULL al secondo parametro do il compito di trovare un buffer di memoria disponibile da utilizzare per la shared memory
+    // al posto di 0 avrei potuto inserire dei flag.
+    if(p == NULL){
+        printf("errore nella shmat()\n");
+        exit(-1);
+    }
+
+    printf("dettagli della shm\n");
+    printf("chiave IPC: %d\n", shm_key);
+    printf("descrittore IPC: %d\n",ds_shm);
+    printf("indirizzo della shm dopo l'attach: %p\n",p);
+
+    
+
+
+
+    // utilizziamo la risorsa
+    *p = 10;
+
+    // macro la shm come da eliminare per il kernel
+    shmctl(ds_shm, IPC_RMID,NULL); // non sará eliminata fin tanto che esiste un processo attached
+
+
+    return 0;
+}
