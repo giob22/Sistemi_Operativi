@@ -25,62 +25,14 @@ La primitiva **ctl** (control) permette, dato un descrittore, di:
 La rimozione peró non nel senso stretto, in realtá la risorsa vine **solamente etichettata** come eliminabile al kernel: infatti questa viene eliminata se non sono presenti processi che la stanno utilizzando; ovvero processi `attached` alla risorsa.
 
 
-```mermaid
-flowchart TB
-  %% TB = top-bottom layout
+![Diagramma chiave IPC](shared_memory_flow.svg)
 
-  subgraph K["Kernel space"]
-    R["🧠 Risorsa UNIX IPC<br/>(es. Shared Memory)<br/>Tabella risorse / permessi"]
-  end
-
-  subgraph U1["User space"]
-    direction LR
-    P1["⚙️ Processo P1<br/>id = shmget(key, ...)<br/>ptr = shmat(id, ...)<br/>usa *ptr"]
-    P2["⚙️ Processo P2<br/>id = shmget(key, ...)<br/>ptr = shmat(id, ...)<br/>usa *ptr"]
-  end
-
-  %% Separazione visiva
-  P1 --- P2
-
-  %% Connessioni P1 <-> Kernel
-  P1 -->|"get(key)<br/>(shmget)"| R
-  P1 -.->|"attach<br/>(shmat)"| R
-  P1 -->|"usa *ptr"| R
-  P1 -->|"ctl(id,<br/>IPC_RMID/SET/STAT)"| R
-
-  %% Connessioni P2 <-> Kernel
-  P2 -->|"get(key)<br/>(shmget)"| R
-  P2 -.->|"attach<br/>(shmat)"| R
-  P2 -->|"usa *ptr"| R
-  P2 -->|"ctl(id,<br/>IPC_RMID/SET/STAT)"| R
-
-```
 
 ---
 Le risorse IPC sono **permanenti**: se un processo termina o si stacca dalla risorsa questa non si elimina automaticamente. É necessario una chiamata eplicita alla primitiva `clt`.
-```mermaid
-  flowchart TB
-  %% Imposta il layout top-down
-  classDef proc fill:#d0d8ff,stroke:#000,color:#000,stroke-width:1px;
-  classDef kernel fill:#b6f5b0,stroke:#007f00,color:#000,font-weight:bold,stroke-width:1px;
-  classDef dead fill:#ff0000,color:#ff0000,font-weight:bold;
-  classDef label color:#ff0000,font-weight:bold;
 
-  %% User space
-  subgraph U["User space"]
-    direction LR
-    P1["Processo P1<br/><span class='dead'>✖ TERMINATO</span>"]
-    P2["Processo P2<br/><span class='dead'>✖ TERMINATO</span>"]
-  end
-  class P1,P2 proc;
+![Diagramma chiave IPC](persistenza_ipc.svg)
 
-  %% Kernel space
-  subgraph K["Kernel space"]
-    IPC["Risorsa Unix IPC<br/><span class='label'>PERSISTE</span><br/><span class='label'>(se non cancellata tramite ctl)</span>"]
-  end
-  class IPC kernel;
-
-```
 ## Primitiva `get`
 
 La primitiva `get` ha la seguente firma:
@@ -116,5 +68,79 @@ La primitiva `ctl` ha la seguente firma:
 
 Il parametro di ritorno di `ctl()` é pari ad `-1` nel caso di un errore, `0` nel caso di operazione riuscita.
 
-### IPC keys
+## IPC keys
+Ogni risorsa `IPC` é identificata da un **valore univoco nel sistema**, denominato **chiave**(IPC key). Abbiamo diversi modi per assegnare una chiave ad una risorsa IPC:
 
+
+### Chiave cablata nel codice
+
+Il modo piú semplice di **scegliere una chiave** é **usare un valore a piacere** del programmatore, "cablato" nel programma.
+
+ESEMPIO:
+```c
+key_t mykey = 123;
+int id = ...get(mykey,...);
+```
+
+Tale approccio é molto svantaggioso perché é **statico**, la chiave viene assegnata in modo statico, questo vuol dire che erroneamente un processo potrebbe utilizzare una chiave giá utilizzata per un'altra risorsa IPC destinata ad uno scopo completamente diverso.
+
+In questo caso potrebbero crearsi delle **interferenzze** e quindi problemi di comunicazione tra processi.
+
+### Chiave generata da `ftok()`
+
+La chiamata di sistema `ftok()` genera una chiave univoca per una risorsa partendo da una stringa e un carattere passatogli per parametri.
+```c
+key_t ftok(char * path, char id);
+```
+
+ESEMPIO:
+```c
+key_t mykey = ftok("./percorso", 'a');
+```
+Per convesione si utilizza come prima stringa il percorso file dell'eseguibile che intende creare la risorsa. In generale piú esser inserita una qualsiasi stringa di caratteri. Il secondo parametro `id` invece é un carattere scelto a piacere.
+
+La primitiva restituisce una chiave IPC ottenuta da una funzione aritmetica che combina l'*inode number*, il *minor device number*, del file indicato dal path, e il carattere indicato come secondo argomento. 
+
+- *inode number* é l'identificatore univoco del file nel filesystem;
+- *minor device number* é l'identificatore della partizione/dispositivo dove risiede il file.
+
+Il metodo che utilizza `ftok()` per la creazione di una chiave associabile ad una risorsa IPC é quello piú versatile; é l'unico modo che abbiamo per permettere la comunicazione tra due processi associati ad eseguibili differenti.
+
+## Chiave `IPC_PRIVATE`
+`IPC_PRIVATE` (equivale a `0`), é un valore costante, che puó essere usato per creare una risorsa **senza chiave**. In questo caso la risorsa é accessibile unicamente dal processo creatore e degli eventuali figli aventi la stessa immagine (utilizzare `exec()` significherebbe perdere l'accesso alla risorsa).
+
+ESEMPIO:
+```c
+key_t mykey = IPC_PRIVATE;
+int id = ...get(mykey, ...);
+
+pid_t pid = fork();
+if(pid == 0){
+  /*figlio, utilizza il descrittore "id" */
+}
+else if(pid > 0){
+  /*padre, utilizza il descrittore "id" */
+}
+```
+
+## I comandi `ipcs` e `ipcrm`
+
+Il comando `ipcs` visualizza tutte le strutture IPC (code di messaggi, shared memory, semafori) allocate, mostrandone la chiave IPC, l'identificativo del descrittore della risorsa, l'utente proprietario, i permessi per la risorsa e informazioni legate al tipo di risorsa IPC.
+
+```bash
+------ Message Queues --------
+key        msqid      owner      perms      used-bytes   messages    
+
+------ Shared Memory Segments --------
+key        shmid      owner      perms      bytes      nattch     status      
+0x00000000 6          giovanni   600        524288     2          dest         
+0x00000000 65564      giovanni   600        33554432   2          dest         
+0x00000000 65573      giovanni   606        4718592    2          dest         
+0x00000000 65574      giovanni   606        4718592    2          dest         
+0x00000000 32810      giovanni   606        12072960   2          dest         
+0x00000000 32811      giovanni   606        12072960   2          dest         
+0x00000000 32821      giovanni   600        524288     2          dest         
+
+------ Semaphore Arrays --------
+key        semid      owner      perms      nsems   
+```
