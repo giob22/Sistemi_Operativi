@@ -1,6 +1,6 @@
 # IPC: Interprocess Communication
 
-Per implementare la comunicazione e quindi anche la sincronizzazione tra processi, abbiamo bisogno che questi comunichino mediante un mezzo; tale mezzo é definito come **risorse IPC**.
+Per implementare la comunicazione e quindi anche la sincronizzazione tra processi, abbiamo bisogno che questi comunichino mediante un mezzo; tale mezzo è definito come **risorse IPC**.
 
 Utilizzeremo **meccanismi di comunicazione** introdotti originariamente nel sistema operativo **UNIX System V**. In particolare **System V IPC** fornisce tre principali tipi di risorse gestite dal kernel:
 - **Shared memory (SHM)** → memoria condivisa tra piú processi;
@@ -9,11 +9,11 @@ Utilizzeremo **meccanismi di comunicazione** introdotti originariamente nel sist
 
 Quindi Linux/UNIX permette la **comunicazione tra processi** mediante primitive e strutture dati fornite dal kernel.
 
-Alla base dei meccanismi di comunicazione é presente una *shared memory*; per implementare semafori e code di messaggi, necessari a gestire rispettivamente mutua  escluzione (competizione) e sincronizzazione (cooperazione), sono necessarie delle porzioni di memoria condivise tra i processi.
+Alla base dei meccanismi di comunicazione è presente una *shared memory*; per implementare semafori e code di messaggi, necessari a gestire rispettivamente mutua  escluzione (competizione) e sincronizzazione (cooperazione), sono necessarie delle porzioni di memoria condivise tra i processi.
 
 ## Primitive GET e CTL
 
-Ogni risorsa **IPC** é gestita con l'utilizzo di due primitive **get** e **ctl**.
+Ogni risorsa **IPC** è gestita con l'utilizzo di due primitive **get** e **ctl**.
 
 La primitiva **get** utilizza una "chiave" (IPC key), ed opportuni parametri, per restituire al processo un **descrittore della risorsa**.
 
@@ -22,14 +22,14 @@ La primitiva **ctl** (control) permette, dato un descrittore, di:
 - cambiare lo stato di una risorsa;
 - rimuovere una risorsa
 
-La rimozione peró non nel senso stretto, in realtá la risorsa vine **solamente etichettata** come eliminabile al kernel: infatti questa viene eliminata se non sono presenti processi che la stanno utilizzando; ovvero processi `attached` alla risorsa.
+La rimozione però non nel senso stretto, in realtá la risorsa vine **solamente etichettata** come eliminabile al kernel: infatti questa viene eliminata se non sono presenti processi che la stanno utilizzando; ovvero processi `attached` alla risorsa.
 
 
 ![Diagramma chiave IPC](images/shared_memory_flow.svg)
 
 
 ---
-Le risorse IPC sono **permanenti**: se un processo termina o si stacca dalla risorsa questa non si elimina automaticamente. É necessario una chiamata eplicita alla primitiva `clt`.
+Le risorse IPC sono **permanenti**: se un processo termina o si stacca dalla risorsa questa non si elimina automaticamente. è necessario una chiamata eplicita alla primitiva `clt`.
 
 ![Diagramma chiave IPC](images/persistenza_ipc.svg)
 
@@ -39,17 +39,17 @@ La primitiva `get` ha la seguente firma:
 ```c
   int ...get(key_t key, ..., int flag);
 ```
-- **key** é la chiave dell'oggetto IPC. 
+- **key** è la chiave dell'oggetto IPC. 
   
-  Tale chiave é un valore intero arbitrario che puó essere:
+  Tale chiave è un valore intero arbitrario che può essere:
   - cablato nel codice;
   - generato da `ftok()`;
   - impostato con la macro `IPC_PRIVATE`.
 - **flag**: indica la modalitá di acquisizione della risorsa e i permessi di accesso.
   
   Corrisponde ad una o piú costanti, passate insieme in "or logico" (carattere di pipe `|` ). Tali costanti sono:
-  - macro `IPC_CREAT` definita in `sys/ipc.h`: impone di creare una nuova risorsa se non ne esiste giá una con la stessa chiave indicata. Se la risorsa é giá esistente allora il flag é ininfluente.
-  - macro `IPC_EXCL` definita in `sys/ipc.h`: utilizzabile con `IPC_CREAT` per imporre di ritornare un errore se la risorsa é giá esistente. Questa modalitá é utile per evitare di inizializzare la risorsa IPC piú volte. Peró nel caso la risorsa non esista questa viene creata.
+  - macro `IPC_CREAT` definita in `sys/ipc.h`: impone di creare una nuova risorsa se non ne esiste giá una con la stessa chiave indicata. Se la risorsa è giá esistente allora il flag è ininfluente.
+  - macro `IPC_EXCL` definita in `sys/ipc.h`: utilizzabile con `IPC_CREAT` per imporre di ritornare un errore se la risorsa è giá esistente. Questa modalitá è utile per evitare di inizializzare la risorsa IPC piú volte. Però nel caso la risorsa non esista questa viene creata.
   - **Permessi di accesso**: sono specificati con la notazione ottale. Per esempio, il valore `0664` indica i permessi di lettura e scrittura per `user` e `group`, e di sola lettura per `others`.
 
 La primitiva `get` infine restituisce come risultato il **descrittore della risorsa IPC**, ovvero un valore intero che identifica la risorsa.
@@ -61,20 +61,20 @@ La primitiva `ctl` ha la seguente firma:
   int ...ctl(int desc, ..., int cmd, ...);
 ```
 - `desc`: indica il descrittore della risorsa ( ottenuto dalla chiamata `get()`).
-- `cmd`: specifica il comando da eseguire, É possibile scegliere tra:
+- `cmd`: specifica il comando da eseguire, è possibile scegliere tra:
   - `IPC_RMID`: rimozione della risorsa indicata;
   - `IPC_STAT`: richiede informazioni statistiche sulla risorsa indicata;
   - `IPC_SET`: richiede al sistema la modifica di un sottoinsieme degli attributi della risorsa (es. i permessi di accesso).
 
-Il parametro di ritorno di `ctl()` é pari ad `-1` nel caso di un errore, `0` nel caso di operazione riuscita.
+Il parametro di ritorno di `ctl()` è pari ad `-1` nel caso di un errore, `0` nel caso di operazione riuscita.
 
 ## IPC keys
-Ogni risorsa `IPC` é identificata da un **valore univoco nel sistema**, denominato **chiave**(IPC key). Abbiamo diversi modi per assegnare una chiave ad una risorsa IPC:
+Ogni risorsa `IPC` è identificata da un **valore univoco nel sistema**, denominato **chiave**(IPC key). Abbiamo diversi modi per assegnare una chiave ad una risorsa IPC:
 
 
 ### Chiave cablata nel codice
 
-Il modo piú semplice di **scegliere una chiave** é **usare un valore a piacere** del programmatore, "cablato" nel programma.
+Il modo piú semplice di **scegliere una chiave** è **usare un valore a piacere** del programmatore, "cablato" nel programma.
 
 ESEMPIO:
 ```c
@@ -82,7 +82,7 @@ key_t mykey = 123;
 int id = ...get(mykey,...);
 ```
 
-Tale approccio é molto svantaggioso perché é **statico**, la chiave viene assegnata in modo statico, questo vuol dire che erroneamente un processo potrebbe utilizzare una chiave giá utilizzata per un'altra risorsa IPC destinata ad uno scopo completamente diverso.
+Tale approccio è molto svantaggioso perché è **statico**, la chiave viene assegnata in modo statico, questo vuol dire che erroneamente un processo potrebbe utilizzare una chiave giá utilizzata per un'altra risorsa IPC destinata ad uno scopo completamente diverso.
 
 In questo caso potrebbero crearsi delle **interferenzze** e quindi problemi di comunicazione tra processi.
 
@@ -97,17 +97,17 @@ ESEMPIO:
 ```c
 key_t mykey = ftok("./percorso", 'a');
 ```
-Per convesione si utilizza come prima stringa il percorso file dell'eseguibile che intende creare la risorsa. In generale piú esser inserita una qualsiasi stringa di caratteri. Il secondo parametro `id` invece é un carattere scelto a piacere.
+Per convesione si utilizza come prima stringa il percorso file dell'eseguibile che intende creare la risorsa. In generale piú esser inserita una qualsiasi stringa di caratteri. Il secondo parametro `id` invece è un carattere scelto a piacere.
 
 La primitiva restituisce una chiave IPC ottenuta da una funzione aritmetica che combina l'*inode number*, il *minor device number*, del file indicato dal path, e il carattere indicato come secondo argomento. 
 
-- *inode number* é l'identificatore univoco del file nel filesystem;
-- *minor device number* é l'identificatore della partizione/dispositivo dove risiede il file.
+- *inode number* è l'identificatore univoco del file nel filesystem;
+- *minor device number* è l'identificatore della partizione/dispositivo dove risiede il file.
 
-Il metodo che utilizza `ftok()` per la creazione di una chiave associabile ad una risorsa IPC é quello piú versatile; é l'unico modo che abbiamo per permettere la comunicazione tra due processi associati ad eseguibili differenti.
+Il metodo che utilizza `ftok()` per la creazione di una chiave associabile ad una risorsa IPC è quello piú versatile; è l'unico modo che abbiamo per permettere la comunicazione tra due processi associati ad eseguibili differenti.
 
 ## Chiave `IPC_PRIVATE`
-`IPC_PRIVATE` (equivale a `0`), é un valore costante, che puó essere usato per creare una risorsa **senza chiave**. In questo caso la risorsa é accessibile unicamente dal processo creatore e degli eventuali figli aventi la stessa immagine (utilizzare `exec()` significherebbe perdere l'accesso alla risorsa).
+`IPC_PRIVATE` (equivale a `0`), è un valore costante, che può essere usato per creare una risorsa **senza chiave**. In questo caso la risorsa è accessibile unicamente dal processo creatore e degli eventuali figli aventi la stessa immagine (utilizzare `exec()` significherebbe perdere l'accesso alla risorsa).
 
 ESEMPIO:
 ```c
@@ -145,7 +145,7 @@ key        shmid      owner      perms      bytes      nattch     status
 key        semid      owner      perms      nsems   
 ```
 
-É possibile utilizzare i seguenti flag per mostrare solo alcune risorse IPC:
+è possibile utilizzare i seguenti flag per mostrare solo alcune risorse IPC:
 ```bash
   Resource options:
  -m, --shmems      shared memory segments
@@ -154,7 +154,7 @@ key        semid      owner      perms      nsems
  -a, --all         all (default)
 ```
 
-Il comando `ipcrm` invece ci permette di marcare come eliminabile al kernel una struttura IPC dato il suo identificativo. Il comando é molto utile quando il programmatore non ha rimosso esplicitamente le strutture allocate.
+Il comando `ipcrm` invece ci permette di marcare come eliminabile al kernel una struttura IPC dato il suo identificativo. Il comando è molto utile quando il programmatore non ha rimosso esplicitamente le strutture allocate.
 
 ESEMPIO: eliminiamo la shared memory evente pid `133215`
 
@@ -167,7 +167,7 @@ ipcrm -m 133215
 
 I processi UNIX( a differenza dei thread) non possono condividere memoria, neanche i processi "parenti"; questi non sono altro che copie dell'immagine del processo padre e hanno uno *spazio di indirizzamento* diverso. Un processo **figlio** eredita una **copia** dei dati del processo **padre**: dopo la system call `fork()` la modifica dei dati da parte di un processo non si ripercuite sui dati dell'altro processo.
 
-Una memoria condivisa (SHM) é una porzione di memoria accessibile da piú processi.
+Una memoria condivisa (SHM) è una porzione di memoria accessibile da piú processi.
 
 ![alt text](images/shared_memory.png)
 
@@ -182,7 +182,7 @@ L'utilizzo di una memoria condivisa SHM prevede il seguente workflow:
 ```c
 int shmget(key_t key, int size, int flag);
 ```
-`size` é la dimensione in byte della memoria condivisa. Possiamo quindi specificare qualsiasi valore di dimensione; supponendo di scegliere `size = 4` stiamo chiedendo di avere una memoria condivisa di `4 byte` ma in realtá il kernel sta allocando uno spazio di memoria pari a `4KB` perché la memoria condivisa viene alocata in **unitá di pagina** del sistema, e la **dimensione di una pagina su linux** é pari a **`4 KB`**.
+`size` è la dimensione in byte della memoria condivisa. Possiamo quindi specificare qualsiasi valore di dimensione; supponendo di scegliere `size = 4` stiamo chiedendo di avere una memoria condivisa di `4 byte` ma in realtá il kernel sta allocando uno spazio di memoria pari a `4KB` perché la memoria condivisa viene alocata in **unitá di pagina** del sistema, e la **dimensione di una pagina su linux** è pari a **`4 KB`**.
 
 Restituisce `-1` in caso di fallimento. Invece se ha successo restituisce il **descrittore della risorsa**.
 
@@ -201,7 +201,7 @@ ESEMPIO: con chiave cablata e senza flags
   	}
   	... Utilizza la shared memory già esistente...
 ```
-Se la shared memory non é stata giá creata da un altro processo, la funzione `shmget()` restituisce `-1`.
+Se la shared memory non è stata giá creata da un altro processo, la funzione `shmget()` restituisce `-1`.
 
 ---
 ESEMPIO: con chiave cablata e flag `IPC_CREAT`
@@ -231,7 +231,7 @@ ESEMPIO: chiave cablata e flag `IPC_CREAT` e `IPC_EXCL`
    		// La risorsa già esiste, viene segnalato con ds_shm<0.
 		// Per ottenere un descrittore dalla SHM, occorre
    		// chiamare nuovamente shmget
-   		// (senza né IPC_CREAT né IPC_EXCL)
+   		// (senza nè IPC_CREAT nè IPC_EXCL)
    		
    		ds_shm = shmget(chiave, 1024, 0);
    		if(ds_shm<0) { 
@@ -247,7 +247,7 @@ ESEMPIO: chiave cablata e flag `IPC_CREAT` e `IPC_EXCL`
 
 La shared memory viene creata dal primo `get` solamente se non ne esiste giá una con la stessa chiave, altrimenti restituisce `-1`.
 
-In quest'ultimo caso otteniamo il descrittore con una chiamata `get` senza flag poiché sappiamo esistere la risorse IPC.
+In quest'ultimo caso otteniamo il descrittore con una chiamata `get` senza flag poichè sappiamo esistere la risorse IPC.
 
 ---
 
@@ -297,9 +297,9 @@ void *shmat(int shmid, const void *shmaddr, int shmflg);
 ```
 dove:
 - `shmid` e l'identificatore del segmento di memoria:
-- `shmaddr` é l'indirizzo dell'area di memoria del processo chiamante al quale collegare il segmento di memoria condivisa.
+- `shmaddr` è l'indirizzo dell'area di memoria del processo chiamante al quale collegare il segmento di memoria condivisa.
   
-  Se si utilizza il valore `0` o `NULL`, il kernel proverá a trovare una regione di memoria non mappata giá per allocarla per la shared memory. Questo approccio é quello raccomandato.
+  Se si utilizza il valore `0` o `NULL`, il kernel proverá a trovare una regione di memoria non mappata giá per allocarla per la shared memory. Questo approccio è quello raccomandato.
 - `flag` indica le opzioni di collegamento, ad esempio per collegare in sola lettura si inserisce `IPC_RDONLY`
 
 
@@ -313,7 +313,7 @@ La chiamata di sistema `shmctl()` permette di invocare un comando di controllo s
 int shmctl(int shmid, int cmd, struct shmid_ds *buf);
 ```
 dove:
-- `shmid` é il descrittore della memoria condivisa su cui si vuole operare;
+- `shmid` è il descrittore della memoria condivisa su cui si vuole operare;
 - `cmd` specifica il comando da eseguire. 
   
   Valori validi sono:
@@ -321,7 +321,7 @@ dove:
   - `IPC_SET`: permette di scrivere i valori di qualche membro della struttura `shmid_ds` puntata dalla variabile `buf` alla struttura interna al kernel;
   - `IPC_RMID`: marca da eliminare la shared memory, in modo che il kernel la rimuova solo quando non vi sono piú processi collegati;
   - `SHM_LOCK`: impedisce che il segmento di memoria condiviso venga *swappato* o paginato.
-- `buf` é il puntatore alla struttura di tipo `shmid_ds`; funge sia da parametro di ingresso che da parametro di uscita, a seconda del `cmd` inserito.
+- `buf` è il puntatore alla struttura di tipo `shmid_ds`; funge sia da parametro di ingresso che da parametro di uscita, a seconda del `cmd` inserito.
 
 La chiamata a sistema se fallisce restituisce `-1`.
 ## Codice visto in aula (contenente i concetti chiave)
@@ -448,7 +448,7 @@ int main(){
 }
  ```
 
- Il risultato dell'esecuzione é:
+ Il risultato dell'esecuzione è:
  ```bash
 chiave IPC: 0
 descrittore IPC: 98333
@@ -457,7 +457,7 @@ indirizzo della shm dopo l`attach: 0x7ed908c19000
 [PADRE 70149] contenuto della shm: 123
  ```
 
-` 0x7608e5496000` é l'indirizzo di memoria, nello spazio di indirizzamento del processo chiamante, al quale il segmento di memoria condivisa é stato collegato (*attached*).
+` 0x7608e5496000` è l'indirizzo di memoria, nello spazio di indirizzamento del processo chiamante, al quale il segmento di memoria condivisa è stato collegato (*attached*).
 
 Sia il processo padre che il processo figlio ottengono una copia del puntatore a memoria condivisa.
 
@@ -504,12 +504,12 @@ Notiamo che il primo indirizzo coincide con l'indirizzo del puntatore alla share
 
 Inoltre nonostante la `size` specificata per la shared memory fosse di soli `4 byte` (dimensione di un intero sulla mia architettura), ritroviamo un'area di memoria dedicata alla shared memory di dimensione `4KB`. `7ed908c1a000 - 7ed908c19000 = 4096`.
 
-Questo per il motivo specificato prima quando si é parlato della chiamata `get`.
+Questo per il motivo specificato prima quando si è parlato della chiamata `get`.
 
 
 ### Shared memory con `exec()`
 
-Il processo padre crea un figlio che esegue una `exec()`, quindi non possiede piú la stessa immagine del padre ma é un processo del tutto diverso, anche nel testo (codice). In questi casi l'unica soluzione per ottenere una risorsa condivida é l'utilizzo della chiamata `ftok()`.
+Il processo padre crea un figlio che esegue una `exec()`, quindi non possiede piú la stessa immagine del padre ma è un processo del tutto diverso, anche nel testo (codice). In questi casi l'unica soluzione per ottenere una risorsa condivida è l'utilizzo della chiamata `ftok()`.
 
 NON possiamo utilizzare `IPC_PRIVATE`.
 
@@ -588,4 +588,5 @@ indirizzo della shm dopo l`attach: 0x78f6872c7000
 [PADRE 73758] contenuto della shm: 123
 ```
 
-Da notare che l'indirizzo per la shared memory é cambiato. Appunto perché il processo figlio non é piú una copia **dell'immagine** del processo padre una volta utilizzato la chiamata `exec()`.
+Da notare che l'indirizzo per la shared memory è cambiato. Appunto perché il processo figlio non è piú una copia **dell'immagine** del processo padre una volta utilizzato la chiamata `exec()`.
+
