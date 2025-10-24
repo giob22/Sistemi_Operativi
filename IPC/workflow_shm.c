@@ -42,7 +42,7 @@ int main(){
     // utilizziamo la risorsa
     *p = 10;
 
-    // macro la shm come da eliminare per il kernel
+    // marco la shm come da eliminare per il kernel
     shmctl(ds_shm, IPC_RMID,NULL); // non sará eliminata fin tanto che esiste un processo attached
 
 

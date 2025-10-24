@@ -307,7 +307,23 @@ La funzione `shmat()` restituirà l'indirizzo di memoria, nello spazio di indiri
 
 In caso di fallimento, la funzione restituirà il valore `-1`.
 
-<!-- TODO: Operazioni di controllo -->
+## Controllo
+La chiamata di sistema `shmctl()` permette di invocare un comando di controllo su una *shared memory* esistente.
+```c
+int shmctl(int shmid, int cmd, struct shmid_ds *buf);
+```
+dove:
+- `shmid` é il descrittore della memoria condivisa su cui si vuole operare;
+- `cmd` specifica il comando da eseguire. 
+  
+  Valori validi sono:
+  - `IPC_STAT`: copia le informazioni di stato, della memoria condivisa, dalla struttura dati interna la kernel nella struttura `shmid_ds` puntata dalla variabile `buf`;
+  - `IPC_SET`: permette di scrivere i valori di qualche membro della struttura `shmid_ds` puntata dalla variabile `buf` alla struttura interna al kernel;
+  - `IPC_RMID`: marca da eliminare la shared memory, in modo che il kernel la rimuova solo quando non vi sono piú processi collegati;
+  - `SHM_LOCK`: impedisce che il segmento di memoria condiviso venga *swappato* o paginato.
+- `buf` é il puntatore alla struttura di tipo `shmid_ds`; funge sia da parametro di ingresso che da parametro di uscita, a seconda del `cmd` inserito.
+
+La chiamata a sistema se fallisce restituisce `-1`.
 ## Codice visto in aula (contenente i concetti chiave)
 
 ### wokrflow di una shared memory
@@ -351,7 +367,7 @@ int main(){
     // utilizziamo la risorsa
     *p = 10;
 
-    // macro la shm come da eliminare per il kernel
+    // marco la shm come da eliminare per il kernel
     shmctl(ds_shm, IPC_RMID,NULL); // non sará eliminata fin tanto che esiste un processo attached
 
 
@@ -572,4 +588,4 @@ indirizzo della shm dopo l`attach: 0x78f6872c7000
 [PADRE 73758] contenuto della shm: 123
 ```
 
-Da notare che l'indirizzo per la shared memory é cambiato. Appunto perché il processo figlio non é piú una copia del processo padre una volta utilizzato la chiamata `exec()`.
+Da notare che l'indirizzo per la shared memory é cambiato. Appunto perché il processo figlio non é piú una copia **dell'immagine** del processo padre una volta utilizzato la chiamata `exec()`.
