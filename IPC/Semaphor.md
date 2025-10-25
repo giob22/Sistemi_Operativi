@@ -169,9 +169,9 @@ Se si specifica `IPC_UNDO`, l'operazione sará annullata nel momento in cui il p
 
 L'insieme delle operazioni specificate da `sops`, array di `sembuf` passato per parametro alla chiamata di sistema `semop()`, sono eseguite in maniera **atomica**, ossia tutte le operazioni indicate devono poter essere effettuate simultaneamente, altrimenti la `semop()` si blocca o ritorna immediatamente.
 
-Si blocca nel caso default, ovvero l'operazione che non puó esser effettuata in maniera atomica con le altre non specifica alcun flag. Quando avviene ció il processo che vuole effettuare queste operazioni viene **sospeso** finché le condizioni per eseguire tutte le operazioni sui semafori non diventano soddisfatte.
+Si blocca nel caso default, ovvero un'operazione dell'array non puó esser effettuata in maniera atomica e nessuna operazione ha specificato il flag `IPC_NOWAIT`. Quando avviene ció il processo che vuole effettuare queste operazioni viene **sospeso** finché le condizioni per eseguire tutte le operazioni sui semafori non diventano soddisfatte.
 
-Invece ritorna immediatamente un errore nel caso in cui all'operazione che non é atomica, é inserito il flag `IPC_NOWAIT`.
+Invece ritorna immediatamente un errore nel caso in **c'é una operazione non atomica**, e almeno una operazione dell'array ha specificato il flag `IPC_NOWAIT`. Questo perché prevale la **proprietá di atomicitá della `semop()`**
 
 Ogni operazione é eseguita sul semaforo individuato da `sem_num` (in `sembuf`). In altre parole `sem_num` indica su quale semaforo, tra quelli presenti nel *semaphor set*, dovrá esser eseguita l'operazione.
 
