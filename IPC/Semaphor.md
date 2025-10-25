@@ -162,3 +162,25 @@ struct sembuf{
    	short          sem_flg;  /* operation flags */
 }
 ```
+
+Due sono i valori che puó assumere `sem_flg`: `IPC_NOWAIT` e `IPC_UNDO`.
+
+Se si specifica `IPC_UNDO`, l'operazione sará annullata nel momento in cui il processo termina inaspettatamente o volontariamente.
+
+L'insieme delle operazioni specificate da `sops`, array di `sembuf` passato per parametro alla chiamata di sistema `semop()`, sono eseguite in maniera **atomica**, ossia tutte le operazioni indicate devono poter essere effettuate simultaneamente, altrimenti la `semop()` si blocca o ritorna immediatamente.
+
+Si blocca nel caso default, ovvero l'operazione che non puó esser effettuata in maniera atomica con le altre non specifica alcun flag. Quando avviene ció il processo che vuole effettuare queste operazioni viene **sospeso** finché le condizioni per eseguire tutte le operazioni sui semafori non diventano soddisfatte.
+
+Invece ritorna immediatamente un errore nel caso in cui all'operazione che non é atomica, é inserito il flag `IPC_NOWAIT`.
+
+Ogni operazione é eseguita sul semaforo individuato da `sem_num` (in `sembuf`). In altre parole `sem_num` indica su quale semaforo, tra quelli presenti nel *semaphor set*, dovrá esser eseguita l'operazione.
+
+Ovviamente specificando un valore di `sem_num` con un indice non valido, la chiamata `semop()` fallisce e ritorna `-1`, impostando `errno` a `EINVAL`.
+
+`errno` é una **variabile globale** usata dalle funzioni di sistema in C per indicare il tipo di errore avvenuto. Quando una chiamata di sistema fallisce (ritorna `-1`), imposta `errno` a un **codice numerico** che rappresenta la causa dell'errore.
+
+Nel caso analizzato: `EINVAL` è una costante simbolica (definita in `<errno.h>`) che significa "invalid argument", cioè **argomento non valido**.
+
+
+
+
