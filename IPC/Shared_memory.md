@@ -20,7 +20,7 @@ Per implementare una shared memory mediante i meccanismi offerti dallo **standar
 #include <sys/ipc.h>
 #include <sys/shm.h>
 ```
-Il kernel per tener traccia di una shared memory utilizza una struttura dati interna speciale per ogni segmento di memoria condivisa. Il nome della struttura che utilizza è `shmid_ds`, ed è definita in `linux/shm.h`.
+Il kernel per tener traccia di una **shared memory SystemV** utilizza una struttura dati interna speciale per ogni segmento di memoria condivisa. Il nome della struttura che utilizza è `shmid_ds`, ed è definita in `linux/shm.h`.
 
 Tale struttura è utilizzabile tramite la libreria `sys/shm.h`.
 
@@ -43,6 +43,8 @@ struct shmid_ds {
 	struct vm_area_struct *attaches; /* descriptors for attaches */
 };
 ```
+
+![alt text](images/struct_shm.png)
 
 
 ### Creazione:
