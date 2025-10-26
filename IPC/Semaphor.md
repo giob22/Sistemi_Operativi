@@ -38,12 +38,12 @@ struct sem {
 ```
 
 dove: 
-- `sem_pid` è il PID del processo che ha eseguito l'ultima operazione su `s`;
-- `sem_val` è il valore corrente del semaforo;
-- `sem_semncnt` è il numero di processi che sono in attesa che una data risorsa diventi disponibile;
+- `sempid` è il PID del processo che ha eseguito l'ultima operazione su `s`;
+- `semval` è il valore corrente del semaforo;
+- `semncnt` è il numero di processi che sono in attesa che una data risorsa diventi disponibile;
 
     (numero di processi che attendono l'incremento del semaforo)
-- `sem_semzcnt` è il numero di processi che sono in attesa che il valore del semaforo sia pari a `0`
+- `semzcnt` è il numero di processi che sono in attesa che il valore del semaforo sia pari a `0`
 
 Invece la struttura che contiene l'array di semafori all'interno del sistema è `semid_ds`.
 
@@ -181,6 +181,26 @@ Ovviamente specificando un valore di `sem_num` con un indice non valido, la chia
 
 Nel caso analizzato: `EINVAL` è una costante simbolica (definita in `<errno.h>`) che significa "invalid argument", cioè **argomento non valido**.
 
+### Implementazione delle primitive `wait()` e `signal()` tramite la struttura semaforica
+
+Prendendo in considerazione la system call `semop()`:
+```c
+int semop(int semid, struct sembuf *sops, size_t nsops);
+```
+I valori che puó assumere il campo `sem_op` specificano tre possibili tipologie di operazioni che si possono compiere sul semaforo.
+
+Utilizzando queste tre tipi di operazioni, é possibile implementare le primitive *wait* (`sem_op < 0`), *wait for zero* (`sem_op == 0`) e *signal* (`sem_op > 0`).
+
+#### Implementazione di `signal()`: `sem_op > 0`
+
+Se `sem_op > 0`, l'operazione consisterá nell'addizionare il valore di `sem_op` al valore `semval` del semaforo.
+```c
+semval += sem_op;
+```
+
+Per implementare l'operazione di `signal()` é necessario che il processo chiamante dovrá avere i permessi per modificare i valori del semaforo.
+
+Questa operazione **non** causa in alcun caso il blocco del processo.
 
 
 
