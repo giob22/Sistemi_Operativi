@@ -202,5 +202,10 @@ Per implementare l'operazione di `signal()` é necessario che il processo chiama
 
 Questa operazione **non** causa in alcun caso il blocco del processo.
 
+Nel caso in cui sia specificato il flag `SEM_UNDO`, il kernel sottrae il valore `sem_op` dal valore del *semaphor adjustment* (`semadj`), il quale identifica un contatore delle operazioni *undo*.
 
+Tale contatore `semadj` è mantenuto all'interno di una struttura dati chiamata **semaphor undo list** che il kernel mantiene per **processo**.
 
+Il campo `semadj` indica **quanto bisogna correggere** il valore del semaforo se il processo muore prima di "bilanciare" le sue operazioni.
+
+Quindi per implementere l'operazione di `signal()` dobbiamo prima costruire e modificare i campo della struttura `sembuf` (definisce il tipo di operazione), impostando `sem_op` maggiore di zero:
