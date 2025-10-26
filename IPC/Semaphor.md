@@ -139,7 +139,7 @@ semctl(semid, 0, SETVAL, val1);
 semctl(semid, 1, SETVAL, val2);
 ```
 
-Per poter rimuovere un arrat semaforico (in questo caso la variabile `semnum` viene ignorata):
+Per poter rimuovere un array semaforico (in questo caso la variabile `semnum` viene ignorata):
 ```c
 semctl(semid, semnum, IPC_RMID);
 ```
@@ -208,4 +208,62 @@ Tale contatore `semadj` è mantenuto all'interno di una struttura dati chiamata 
 
 Il campo `semadj` indica **quanto bisogna correggere** il valore del semaforo se il processo muore prima di "bilanciare" le sue operazioni.
 
-Quindi per implementere l'operazione di `signal()` dobbiamo prima costruire e modificare i campo della struttura `sembuf` (definisce il tipo di operazione), impostando `sem_op` maggiore di zero:
+Quindi per implementere l'operazione di `signal()` dobbiamo prima costruire e modificare i campo della struttura `sembuf` (definisce il tipo di operazione), impostando `sem_op` maggiore di zero.
+
+```c
+void Signal_Sem (int id_sem,int numsem){
+	struct sembuf sem_buf;
+	sem_buf.sem_num = numsem;
+	sem_buf.sem_flg = 0;
+	sem_buf.sem_op = 1;
+	semop(id_sem, &sem_buf, 1);   //semaforo verde
+}
+```
+#### Implementazione di `wait()`
+
+Il comportamento della primitiva `semop()` nel momento in cui `sem_op < 0` dipende dal valore corrente di `semval`.
+
+- Se `semval >= |sem_op|` l'operazione procede immediatamente e il valore assoluto di `sem_op` é sottratto a `semval`.
+  
+  Se specificato il flag `SEM_UNDO` il kernel addiziona il valore `sem_op` al valore del *semaphor adjustmnt* (`semadj`) corrispondente, il quale identifica un contatore delle operazioni *undo*.
+- Se `semval < |sem_op|`, se specificato il flag `IPC_NOWAIT` la system call fallisce (`errno = EAGAIN`);
+  
+  altrimenti il valore del campo `semncnt` (il contatore dei processi sospesi nell'attesa che il **valore del semaforo venga incrementato**) viene incrementato di `1` e il processo chiamante si sospende finché una delle seguenti condizioni si avveri:
+  - `semval >= |sem_op|`, quando questa condizione sará verificata (significa che altri processi non sospesi avranno incrementato il valore di `semval`) il valore di `semncnt` sará decrementato e il valore corrente del semaforo sará:
+  	```c
+	semval -= |sem_op|
+  	```
+	Se specificato `SEM_UNDO` il sistema aggiornerá il contatore `semadj` del processo associato al semaforo in questione.
+  - Il semaforo viene rimosso. In questo caso la system call fallisce (`errno = EIDRM`).
+
+Quindi conoscendo tali comportamenti della primitiva `semop()` nel momento in cui `sem_op < 0`, é possibile implementare una primitiva di `wait()` su un semaforo:
+
+```c
+void Wait_Sem (int id_sem, int numsem){
+	struct sembuf sem_buf;
+	sem_buf.sem_num = numsem;
+	sem_buf.sem_flg = 0;
+	sem_buf.sem_op = -1;
+	semop(id_sem, &sem_buf, 1);   //semaforo rosso
+}
+```
+
+#### Implementazione della `wait-for-zero()`
+Infine abbiamo il caso in cui `sem_op = 0`, il comportamento della primitiva `semop()` é il seguente:
+- se l valore `semval` é zero, l'operazione procede immediatamente (il processo non si sospende);
+- altrimenti se `semval ≠ 0` ci sono due casi:
+  - se é specificato il flag `IPC_NOWAIT` in `sem_flg`, la system call fallisce restituendo un codice di errore `EAGAIN` a mezzo della variabile globale `errno`;
+  - altrimenti la variabile `semzcnt` (indica il numero di processi sospesi nell'attesa che il **valore del semaforo** **diventi nullo**)  é incrementato di `1`, forzando il processo a sospendersi finché una delle seguenti condizioni si verificherá:
+	- `semval` diventa `0` (di conseguenza viene decrementato il valore di `semzcnt`);
+	- il semaforo é rimosso: la system call fallisce (`errno = EIDRM`)
+
+Conoscendo questo comportamento possiamo implementare la funzione `wait-for-zero()`:
+```c
+void Wait_for_Zero_Sem (int id_sem, int numsem){
+	struct sembuf sem_buf;
+	sem_buf.sem_num = numsem;
+	sem_buf.sem_flg = 0;
+	sem_buf.sem_op = 0;
+	semop(id_sem, &sem_buf, 1);   //semaforo rosso
+}
+```
