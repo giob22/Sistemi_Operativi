@@ -14,6 +14,10 @@ $ shmtool  r
 $ shmtool  d
 ```
 
+il file è:
+
+- [es_shm.c](es_shm.c)
+
 ## Esercizio [sem1]
 
 Si realizzi in linguaggio C/C++ un'applicazione **multiprocesso** che svolga, in parallelo su più processi, la **ricerca del valore minimo** all'interno di un vettore di grandi dimensioni. Il processo padre dovrà allocare un vettore di 10.000 valori interi, da memorizzare in una **memoria condivisa UNIX**, e da inizializzare con valori non negativi scelti casualmente. Dopodiché, il processo padre dovrà creare un gruppo di 10 processi figli, e scambiare con loro il vettore di interi.
