@@ -13,23 +13,23 @@ int main(){
 	key_t  k_shmem = IPC_PRIVATE;
 	int ds_shmem = shmget(k_shmem, sizeof(int), IPC_CREAT | 0644);
 
-	int *ptr = shmat(ds_shmem, NULL, 0);
+	int *ptr = (int *)shmat(ds_shmem, NULL, 0);
 
 	*ptr = 0;
 	// creo due processi figli che incrementano in modo concorrente 100
 	// volte la variabile puntata da ptr
 	for (int i = 0; i < 2; i++){
 		pid_t pid = fork();
-		printf("[FIGLIO %d] sto per incrementare 100 volte \n", getpid());
 		if(pid == 0){
+			printf("[FIGLIO %d] sto per incrementare 10000 volte \n", getpid());
 			
-			for (int j = 0; j < 100; j++){
-				// sezione critica
+			for (int j = 0; j < 10000; j++){
+				// sezione critica che non viene eseguita in mutua esclusione
 				(*ptr)++;
 			}
+			exit(0);
 		
 		}
-		exit(0);
 	
 	}
 	for (int i = 0; i < 2; i++){
