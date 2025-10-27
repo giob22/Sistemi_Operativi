@@ -163,21 +163,21 @@ struct sembuf{
 }
 ```
 
-Due sono i valori che puó assumere `sem_flg`: `IPC_NOWAIT` e `IPC_UNDO`.
+Due sono i valori che può assumere `sem_flg`: `IPC_NOWAIT` e `IPC_UNDO`.
 
 Se si specifica `IPC_UNDO`, l'operazione sará annullata nel momento in cui il processo termina inaspettatamente o volontariamente.
 
 L'insieme delle operazioni specificate da `sops`, array di `sembuf` passato per parametro alla chiamata di sistema `semop()`, sono eseguite in maniera **atomica**, ossia tutte le operazioni indicate devono poter essere effettuate simultaneamente, altrimenti la `semop()` si blocca o ritorna immediatamente.
 
-Si blocca nel caso default, ovvero un'operazione dell'array non puó esser effettuata in maniera atomica e nessuna operazione ha specificato il flag `IPC_NOWAIT`. Quando avviene ció il processo che vuole effettuare queste operazioni viene **sospeso** finché le condizioni per eseguire tutte le operazioni sui semafori non diventano soddisfatte.
+Si blocca nel caso default, ovvero un'operazione dell'array non può esser effettuata in maniera atomica e nessuna operazione ha specificato il flag `IPC_NOWAIT`. Quando avviene ciò il processo che vuole effettuare queste operazioni viene **sospeso** finché le condizioni per eseguire tutte le operazioni sui semafori non diventano soddisfatte.
 
-Invece ritorna immediatamente un errore nel caso in **c'é una operazione non atomica**, e almeno una operazione dell'array ha specificato il flag `IPC_NOWAIT`. Questo perché prevale la **proprietá di atomicitá della `semop()`**
+Invece ritorna immediatamente un errore nel caso in **c'è una operazione non atomica**, e almeno una operazione dell'array ha specificato il flag `IPC_NOWAIT`. Questo perché prevale la **proprietá di atomicitá della `semop()`**
 
-Ogni operazione é eseguita sul semaforo individuato da `sem_num` (in `sembuf`). In altre parole `sem_num` indica su quale semaforo, tra quelli presenti nel *semaphor set*, dovrá esser eseguita l'operazione.
+Ogni operazione è eseguita sul semaforo individuato da `sem_num` (in `sembuf`). In altre parole `sem_num` indica su quale semaforo, tra quelli presenti nel *semaphor set*, dovrá esser eseguita l'operazione.
 
 Ovviamente specificando un valore di `sem_num` con un indice non valido, la chiamata `semop()` fallisce e ritorna `-1`, impostando `errno` a `EINVAL`.
 
-`errno` é una **variabile globale** usata dalle funzioni di sistema in C per indicare il tipo di errore avvenuto. Quando una chiamata di sistema fallisce (ritorna `-1`), imposta `errno` a un **codice numerico** che rappresenta la causa dell'errore.
+`errno` è una **variabile globale** usata dalle funzioni di sistema in C per indicare il tipo di errore avvenuto. Quando una chiamata di sistema fallisce (ritorna `-1`), imposta `errno` a un **codice numerico** che rappresenta la causa dell'errore.
 
 Nel caso analizzato: `EINVAL` è una costante simbolica (definita in `<errno.h>`) che significa "invalid argument", cioè **argomento non valido**.
 
@@ -187,9 +187,9 @@ Prendendo in considerazione la system call `semop()`:
 ```c
 int semop(int semid, struct sembuf *sops, size_t nsops);
 ```
-I valori che puó assumere il campo `sem_op` specificano tre possibili tipologie di operazioni che si possono compiere sul semaforo.
+I valori che può assumere il campo `sem_op` specificano tre possibili tipologie di operazioni che si possono compiere sul semaforo.
 
-Utilizzando queste tre tipi di operazioni, é possibile implementare le primitive *wait* (`sem_op < 0`), *wait for zero* (`sem_op == 0`) e *signal* (`sem_op > 0`).
+Utilizzando queste tre tipi di operazioni, è possibile implementare le primitive *wait* (`sem_op < 0`), *wait for zero* (`sem_op == 0`) e *signal* (`sem_op > 0`).
 
 #### Implementazione di `signal()`: `sem_op > 0`
 
@@ -198,7 +198,7 @@ Se `sem_op > 0`, l'operazione consisterá nell'addizionare il valore di `sem_op`
 semval += sem_op;
 ```
 
-Per implementare l'operazione di `signal()` é necessario che il processo chiamante dovrá avere i permessi per modificare i valori del semaforo.
+Per implementare l'operazione di `signal()` è necessario che il processo chiamante dovrá avere i permessi per modificare i valori del semaforo.
 
 Questa operazione **non** causa in alcun caso il blocco del processo.
 
@@ -223,7 +223,7 @@ void Signal_Sem (int id_sem,int numsem){
 
 Il comportamento della primitiva `semop()` nel momento in cui `sem_op < 0` dipende dal valore corrente di `semval`.
 
-- Se `semval >= |sem_op|` l'operazione procede immediatamente e il valore assoluto di `sem_op` é sottratto a `semval`.
+- Se `semval >= |sem_op|` l'operazione procede immediatamente e il valore assoluto di `sem_op` è sottratto a `semval`.
   
   Se specificato il flag `SEM_UNDO` il kernel addiziona il valore `sem_op` al valore del *semaphor adjustmnt* (`semadj`) corrispondente, il quale identifica un contatore delle operazioni *undo*.
 - Se `semval < |sem_op|`, se specificato il flag `IPC_NOWAIT` la system call fallisce (`errno = EAGAIN`);
@@ -236,7 +236,7 @@ Il comportamento della primitiva `semop()` nel momento in cui `sem_op < 0` dipen
 	Se specificato `SEM_UNDO` il sistema aggiornerá il contatore `semadj` del processo associato al semaforo in questione.
   - Il semaforo viene rimosso. In questo caso la system call fallisce (`errno = EIDRM`).
 
-Quindi conoscendo tali comportamenti della primitiva `semop()` nel momento in cui `sem_op < 0`, é possibile implementare una primitiva di `wait()` su un semaforo:
+Quindi conoscendo tali comportamenti della primitiva `semop()` nel momento in cui `sem_op < 0`, è possibile implementare una primitiva di `wait()` su un semaforo:
 
 ```c
 void Wait_Sem (int id_sem, int numsem){
@@ -249,13 +249,13 @@ void Wait_Sem (int id_sem, int numsem){
 ```
 
 #### Implementazione della `wait-for-zero()`
-Infine abbiamo il caso in cui `sem_op = 0`, il comportamento della primitiva `semop()` é il seguente:
-- se l valore `semval` é zero, l'operazione procede immediatamente (il processo non si sospende);
+Infine abbiamo il caso in cui `sem_op = 0`, il comportamento della primitiva `semop()` è il seguente:
+- se l valore `semval` è zero, l'operazione procede immediatamente (il processo non si sospende);
 - altrimenti se `semval ≠ 0` ci sono due casi:
-  - se é specificato il flag `IPC_NOWAIT` in `sem_flg`, la system call fallisce restituendo un codice di errore `EAGAIN` a mezzo della variabile globale `errno`;
-  - altrimenti la variabile `semzcnt` (indica il numero di processi sospesi nell'attesa che il **valore del semaforo** **diventi nullo**)  é incrementato di `1`, forzando il processo a sospendersi finché una delle seguenti condizioni si verificherá:
+  - se è specificato il flag `IPC_NOWAIT` in `sem_flg`, la system call fallisce restituendo un codice di errore `EAGAIN` a mezzo della variabile globale `errno`;
+  - altrimenti la variabile `semzcnt` (indica il numero di processi sospesi nell'attesa che il **valore del semaforo** **diventi nullo**)  è incrementato di `1`, forzando il processo a sospendersi finché una delle seguenti condizioni si verificherá:
 	- `semval` diventa `0` (di conseguenza viene decrementato il valore di `semzcnt`);
-	- il semaforo é rimosso: la system call fallisce (`errno = EIDRM`)
+	- il semaforo è rimosso: la system call fallisce (`errno = EIDRM`)
 
 Conoscendo questo comportamento possiamo implementare la funzione `wait-for-zero()`:
 ```c
