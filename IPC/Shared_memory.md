@@ -169,7 +169,8 @@ dove:
 - `shmaddr` è l'indirizzo dell'area di memoria del processo chiamante al quale collegare il segmento di memoria condivisa.
   
   Se si utilizza il valore `0` o `NULL`, il kernel proverá a trovare una regione di memoria non mappata giá per allocarla per la shared memory. Questo approccio è quello raccomandato.
-- `flag` indica le opzioni di collegamento, ad esempio per collegare in sola lettura si inserisce `IPC_RDONLY`
+- `flag` indica le opzioni di collegamento, ad esempio per collegare in sola lettura si inserisce `IPC_RDONLY`.
+
 
 
 La funzione `shmat()` restituirà l'indirizzo di memoria, nello spazio di indirizzamento del processo chiamante, al quale il segmento di memoria condivisa è stato collegato (*attached*). 
