@@ -56,7 +56,7 @@ int main(){
 		pid_t pid = fork();
 		if (pid == 0) // Sono nel contesto dei figli
 		{
-			int min = arr[1+ par*i];
+			int min = arr[par*i];
 			// ad ogni figlio spetta una partizione di array di 1000 elementi su cui operare
 			for (int j = 1 + par*i; j < par + par * i; j++)
 			{
