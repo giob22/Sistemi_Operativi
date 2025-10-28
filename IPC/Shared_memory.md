@@ -176,6 +176,25 @@ La funzione `shmat()` restituirà l'indirizzo di memoria, nello spazio di indiri
 
 In caso di fallimento, la funzione restituirà il valore `-1`.
 
+## Scollegamento
+
+Una volta finito di utilizzare una `shm` è necessario scollegarsi (*detach*) dalla memoria condivisa tramite la system call `shmdt()`.
+
+Questa operazione di norma è **inclusa** nel marcare come eliminabile una shared memory (`shmctl(shmid, IPC_RMID, NULL)`).
+
+```c
+int shmdt(const void *shmaddr);
+```
+
+dove:
+
+- `shmaddr` è l'indirizzo a cui la memoria condivisa era stata collegata precedentemente con `shmat()`.
+
+Ha come valore di ritorno:
+
+- `0` se l'operazione è andata a buon fine;
+- `1` in caso di errore, impostando `errno` (variabile globale delle funzioni in C) ad un valore corrispondente al tipo di errore riscontrato.
+
 ## Controllo
 La chiamata di sistema `shmctl()` permette di invocare un comando di controllo su una *shared memory* esistente.
 ```c

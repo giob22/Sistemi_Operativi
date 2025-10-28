@@ -130,7 +130,7 @@ La system call esegue l'operazione specificata in `cmd` sul *semaphor set* inden
 
 Alcuni possibili valori da usare per `cmd` sono:
 - `SETVAL`: imposta il valore, specificato come quarto parametro, di uno specifico semaforo indentificato da `semnum` all'interno del *semaphor set* `semid`;
-- `IPC_RMID`: rimuove il *semaphor set* `semid` dal kernel.
+- `IPC_RMID`: rimuove il *semaphor set* `semid` dal kernel. In realtà il *semaphor set* viene **marcato come eliminabile**, non eliminato direttamente. Viene effettivamente eliminato dal kernel nel momento in cui nessun processo lo sta ancora utilizzando.
 
 In definitiva per poter un array semaforico, a due valori `val1` e `val2`:
 

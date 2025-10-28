@@ -93,7 +93,8 @@ int main(){
 	
 
 	// marco la shm come eliminabile per il kernel
-	// elimino il semaphor set
+	// marco il semaphor set come eliminabile per il kernel
+	// entrambi verrano poi eliminati nel momento in cui più nessun processo è ad essi collegato.
 	shmctl(id_shm, IPC_RMID, 0);
 	semctl(id_sem,0,IPC_RMID);
 	
