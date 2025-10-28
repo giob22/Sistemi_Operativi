@@ -1,4 +1,4 @@
-# Semaphor
+# Semaphore
 
 I semafori sono delle risorse IPC, ma il loro valore interno si comporta come una variabile condivisa gestita dal kernel.
 
@@ -24,7 +24,7 @@ Queste due procedure ci serviranno per delimitare la sezione critica.
 
 Il kernel Linux mantiene due strutture per implementare un semaforo: `sem` e `semid_ds`.
 
-In particolare ogni volta che cerchiamo di istanziare un semaforo in realtà stiamo istanziando un *array* di semafori; puntatore a tale *array* è contenuto nella struttura `semid_ds`. Ogni elemento di questo array è a sua volta una struttura `sem` che descrive il singolo semaforo.
+In particolare ogni volta che cerchiamo di istanziare un semaforo in realtà stiamo istanziando un *array* di semafori; puntatore a tale *array* è contenuto nella struttura `semid_ds`. Ogni elemento di questo array è una struttura `sem` che descrive il singolo semaforo.
 
 La struttura `sem` è definita in `linux/sem.h`:
 
@@ -74,7 +74,7 @@ dove:
   Quindi il kernel, nel caso in cui un processo muore prima di poter effettuare la `signal()` e l'operazione che ha fatto utilizza il flag `SEM_UNDO`, annulla automaticamente tale operazione sul semaforo, riportandolo al valore iniziale;
 
   Evita situazioni di *deadlock*
-- `sem_nsems` è il numero di semafori nell'array di semafori (*semaphor set*).
+- `sem_nsems` è il numero di semafori nell'array di semafori (*semaphore set*).
   
 ## Semaphores' workflow
 
@@ -91,20 +91,20 @@ La primitiva che permette di creare un nuovo set di semafori è la system call `
 ```c
 int semget(key_t key, int nsems, int semflg);
 ```
-Tale funzione restituisce il **descrittore** del *semaphor set* associato alla chiave specificata in `key`.
+Tale funzione restituisce il **descrittore** del *semaphore set* associato alla chiave specificata in `key`.
 
-Il valore della chiave è ottenibile cablando un valore, con `IPC_PRIVATE`, o con `ftok()` a seconda degli utilizzi sul semaphor set.
+Il valore della chiave è ottenibile cablando un valore, con `IPC_PRIVATE`, o con `ftok()` a seconda degli utilizzi sul semaphore set.
 
 I flag inseribili in `semflg` sono: 
 - `IPC_CREAT`;
 - `IPC_EXCL`;
 - Permessi di accesso in ottale.
 
-Si possono inserire più di uno per un singolo semaphor set utilizzando l'operatore or logico `|`.
+Si possono inserire più di uno per un singolo semaphore set utilizzando l'operatore or logico `|`.
 
-In caso di successo, la `semget()`, restituisce il descrittore del semaphor set; in caso di fallimento viene restituito `-1`.
+In caso di successo, la `semget()`, restituisce il descrittore del semaphore set; in caso di fallimento viene restituito `-1`.
 
-Il numero massimo di semafori in un singolo semaphor set è definito in `linux/sem.h` come:
+Il numero massimo di semafori in un singolo semaphore set è definito in `linux/sem.h` come:
 ```c
 #define SEMMSL  250
 ```
@@ -126,11 +126,11 @@ Per poter inizializzare e rimuovere un semafor si utilizza la system call `semct
 int semctl(int semid, int semnum, int cmd, ...);
 ```
 
-La system call esegue l'operazione specificata in `cmd` sul *semaphor set* indentificato da `semid` e sull'`semnum`-esimo semaforo dell'array.
+La system call esegue l'operazione specificata in `cmd` sul *semaphore set* indentificato da `semid` e sull'`semnum`-esimo semaforo dell'array.
 
 Alcuni possibili valori da usare per `cmd` sono:
-- `SETVAL`: imposta il valore, specificato come quarto parametro, di uno specifico semaforo indentificato da `semnum` all'interno del *semaphor set* `semid`;
-- `IPC_RMID`: rimuove il *semaphor set* `semid` dal kernel. In realtà il *semaphor set* viene **marcato come eliminabile**, non eliminato direttamente. Viene effettivamente eliminato dal kernel nel momento in cui nessun processo lo sta ancora utilizzando.
+- `SETVAL`: imposta il valore, specificato come quarto parametro, di uno specifico semaforo indentificato da `semnum` all'interno del *semaphore set* `semid`;
+- `IPC_RMID`: rimuove il *semaphore set* `semid` dal kernel. In realtà il *semaphore set* viene **marcato come eliminabile**, non eliminato direttamente. Viene effettivamente eliminato dal kernel nel momento in cui nessun processo lo sta ancora utilizzando.
 
 In definitiva per poter un array semaforico, a due valori `val1` e `val2`:
 
@@ -144,7 +144,7 @@ Per poter rimuovere un array semaforico (in questo caso la variabile `semnum` vi
 semctl(semid, semnum, IPC_RMID);
 ```
 
-### Semaphor operations: `semop()`
+### semaphore operations: `semop()`
 
 Per eseguire operazioni sulla struttura identificativa di un semaforo (`sem`) è necessario utilizzare la system call `semop()`:
 
@@ -173,7 +173,7 @@ Si blocca nel caso default, ovvero un'operazione dell'array non può esser effet
 
 Invece ritorna immediatamente un errore nel caso in **c'è una operazione non atomica**, e almeno una operazione dell'array ha specificato il flag `IPC_NOWAIT`. Questo perché prevale la **proprietá di atomicitá della `semop()`**
 
-Ogni operazione è eseguita sul semaforo individuato da `sem_num` (in `sembuf`). In altre parole `sem_num` indica su quale semaforo, tra quelli presenti nel *semaphor set*, dovrá esser eseguita l'operazione.
+Ogni operazione è eseguita sul semaforo individuato da `sem_num` (in `sembuf`). In altre parole `sem_num` indica su quale semaforo, tra quelli presenti nel *semaphore set*, dovrá esser eseguita l'operazione.
 
 Ovviamente specificando un valore di `sem_num` con un indice non valido, la chiamata `semop()` fallisce e ritorna `-1`, impostando `errno` a `EINVAL`.
 
@@ -202,9 +202,9 @@ Per implementare l'operazione di `signal()` è necessario che il processo chiama
 
 Questa operazione **non** causa in alcun caso il blocco del processo.
 
-Nel caso in cui sia specificato il flag `SEM_UNDO`, il kernel sottrae il valore `sem_op` dal valore del *semaphor adjustment* (`semadj`), il quale identifica un contatore delle operazioni *undo*.
+Nel caso in cui sia specificato il flag `SEM_UNDO`, il kernel sottrae il valore `sem_op` dal valore del *semaphore adjustment* (`semadj`), il quale identifica un contatore delle operazioni *undo*.
 
-Tale contatore `semadj` è mantenuto all'interno di una struttura dati chiamata **semaphor undo list** che il kernel mantiene per **processo**.
+Tale contatore `semadj` è mantenuto all'interno di una struttura dati chiamata **semaphore undo list** che il kernel mantiene per **processo**.
 
 Il campo `semadj` indica **quanto bisogna correggere** il valore del semaforo se il processo muore prima di "bilanciare" le sue operazioni.
 
@@ -225,7 +225,7 @@ Il comportamento della primitiva `semop()` nel momento in cui `sem_op < 0` dipen
 
 - Se `semval >= |sem_op|` l'operazione procede immediatamente e il valore assoluto di `sem_op` è sottratto a `semval`.
   
-  Se specificato il flag `SEM_UNDO` il kernel addiziona il valore `sem_op` al valore del *semaphor adjustmnt* (`semadj`) corrispondente, il quale identifica un contatore delle operazioni *undo*.
+  Se specificato il flag `SEM_UNDO` il kernel addiziona il valore `sem_op` al valore del *semaphore adjustmnt* (`semadj`) corrispondente, il quale identifica un contatore delle operazioni *undo*.
 - Se `semval < |sem_op|`, se specificato il flag `IPC_NOWAIT` la system call fallisce (`errno = EAGAIN`);
   
   altrimenti il valore del campo `semncnt` (il contatore dei processi sospesi nell'attesa che il **valore del semaforo venga incrementato**) viene incrementato di `1` e il processo chiamante si sospende finché una delle seguenti condizioni si avveri:
