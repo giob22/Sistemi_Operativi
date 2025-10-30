@@ -6,8 +6,7 @@
 
 ## 📖 Descrizione
 
-Questo progetto contiene un **secondo programma** che utilizza le stesse interfacce di semafori e procedure del primo progetto. I file mostrano l’uso delle primitive **IPC System V** (semafori e memoria condivisa) e la presenza di processi figli gestiti con `wait()`.
-
+Implementazione del problema **consumatore-produttore** che si scambiano informazioni mediante una **shared memory** e la cooperazione é gestita mediante l'utilizzo di **semafori**.
 
 ---
 
@@ -127,23 +126,9 @@ Dal codice **presente** (dopo il tratto troncato `...`) si vedono:
 
 ## ▶️ Compilazione ed esecuzione
 
-### Opzione A – usare il Makefile esistente (compila l’altro programma)
-
 ```bash
 make
 ./main_prodcons_CC
-```
-
-### Opzione B – compilare **questo** programma (il main alternativo) direttamente da riga di comando
-
-Usando i file presenti in cartella:
-
-```bash
-gcc -std=c99 -Wall -Wextra -O2 \
-  main.c \
-  semafori.c procedure.c \
-  -o main_alt
-./main_alt
 ```
 
 ---
