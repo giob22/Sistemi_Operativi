@@ -1,10 +1,9 @@
 #include "semafori.h"
 #include "procedure.h"
 
-//gestione semafori
-//gestione shm
-//gestione lifecycle dei processi
-
+// gestione semafori
+// gestione shm
+// gestione lifecycle dei processi
 
 #include <sys/ipc.h>
 #include <sys/sem.h>
@@ -18,7 +17,8 @@
 
 #include <stdio.h>
 
-int main(){
+int main()
+{
 
     key_t shm_key = IPC_PRIVATE;
 
@@ -26,7 +26,7 @@ int main(){
 
     int ds_shm = shmget(shm_key, sizeof(struct pool_buffer), IPC_CREAT | 0644);
 
-    struct pool_buffer* p = (struct pool_buffer*) shmat(ds_shm,NULL,0);
+    struct pool_buffer *p = (struct pool_buffer *)shmat(ds_shm, NULL, 0);
     // viene condivisa da tutti i processi che ereditano da questo processo perché sono una copia dell'immagine
     p->coda = 0;
     p->testa = 0;
@@ -52,25 +52,23 @@ int main(){
         {
             printf("[PID: %d] CONSUMATORE avviato \n", getpid());
             sleep(1);
-            consumatore(p,ds_sem);
+            consumatore(p, ds_sem);
             exit(1); // necessario per evitare una forkbomb
         }
-        
     }
     for (int i = 0; i < NUM_PRODUTTORI; i++)
     {
         pid_t pid = fork();
-	    srand(getpid()*time(NULL));
+        srand(getpid() * time(NULL));
         if (pid == 0)
         {
             printf("[PID: %d] PRODUTTORE avviato \n", getpid());
-            sleep(1);           
-            produttore(p,ds_sem);
+            sleep(1);
+            produttore(p, ds_sem);
             exit(1); // necessario per evitare una forkbomb
         }
-        
     }
-    
+
     // il processo padre aspetta che tutti i processi figli terminino
     for (int i = 0; i < NUM_CONSUMATORI + NUM_PRODUTTORI; i++)
     {
@@ -79,10 +77,8 @@ int main(){
     printf("processo terminato ...\n");
 
     // marco shm e sem come da eliminare per il kernel
-    semctl(ds_sem,0, IPC_RMID);
+    semctl(ds_sem, 0, IPC_RMID);
     shmctl(ds_shm, IPC_RMID, 0);
-
-
 
     return 0;
 }
