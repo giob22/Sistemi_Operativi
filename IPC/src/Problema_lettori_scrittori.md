@@ -33,7 +33,10 @@ Mentre un processo **scrittore** può accedere alla risorsa solo se questa è **
 
 Ed è proprio questo vincolo dovuto alla sincronizzazione che può provocare condizione di **attesa indefinita (starvation)** per i processi **scrittori**.
 
-![demo](./images/Starvation_scrittore.gif)
+<p align="center">
+  <img src="images/Starvation_scrittore.gif" width="250" alt="Animazione dimostrativa">
+</p>
+
 
 - Uno **Scrittore** ogni qual volta inserisce un dato nella `shm` **sovrascrive il dato preesistente**.
 - La lettura non distrugge il dato contenuto
