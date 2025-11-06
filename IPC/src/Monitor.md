@@ -132,8 +132,7 @@ Quindi per ottenere una corretta cooperazione tra processi e quindi un **ordine 
 Possiamo schematizzare un monitor in questo modo:
 
 <p align="center">
-  <img src="images/panoramica_monitor.png
-  " width="300" >
+  <img src="images/paronamica_monitor.png" width="300" >
 </p>
 
 - Sono presenti diverse **code** in cui sono contenuti i processi che si sono sospesi e attendono si essere riattivati.
@@ -143,8 +142,7 @@ Possiamo schematizzare un monitor in questo modo:
 
 
 <p align="center">
-  <img src="images/p1.png
-  " width="300" >
+  <img src="images/p1.png" width="300" >
 </p>
 
 Il processo entra nel monitor chiedendo di eseguire una procedura in mutua esclusione. Quindi dopo la chiamata alla procedura di interesse viene chiamata una `enter_monitor()`.
@@ -161,8 +159,7 @@ Se la **condizione di sincronizzazione** è valida, il processo completa l'esecu
 Condizione **non** valida:
 
 <p align="center">
-  <img src="images/p2.png
-  " width="300" >
+  <img src="images/p2.png" width="300" >
 </p>
 
 Se al momento del controllo la **condizione di sincronizzazione non è valida**, il processo si sospende volontariamente usando la **condition** **variables** associata alla condizione che non è stata soddisfatta.
@@ -194,8 +191,7 @@ La `signal_cond()` **non ha alcun effetto** se **non vi è alcun processo in att
 A fronte di questa problematica abbiamo diverse implementazioni della procedura `signal_cond()`.
 
 <p align="center">
-  <img src="images/problemaSignal_cond.png
-  " width="300" >
+  <img src="images/problemaSignal_cond.png" width="300" >
 </p>
 
 Supponiamo che `P` acceda al monitor e debba eseguire una procedura in mutua esclusione, ma **non soddisfa** una condizione definita per la cooperazione.
@@ -249,8 +245,7 @@ Quindi `Q` dovrà uscire dalla risorsa monitor con una `leave_monitor()`.
 → `Q` attende l'uscira di `P` e **compete** con altri processi per rientrare nel monitor.
 
 <p align="center">
-  <img src="images/signal_and_wait.png
-  " width="300" >
+  <img src="images/signal_and_wait.png" width="300" >
 </p>
 
 ---
@@ -264,8 +259,7 @@ In questa soluzione, il processo `Q` ha la precedenza sugli altri processi in at
 Quindi `Q` non si sospende sulla coda in cui sono presenti tutti gli altri processi che sono in attesa, ma su una coda separata **urgent_queue**.
 
 <p align="center">
-  <img src="images/wait_hoare.png
-  " width="300" >
+  <img src="images/wait_hoare.png" width="300" >
 </p>
 
 Tale soluzione di Hoare è un caso particolare di signal_and_wait, detta **signal_and_urgent_wait**.
@@ -288,8 +282,7 @@ Quindi dopo il risvegli di `P` sospeso per il mancato soddisfacimento della cond
 Per semplicità di implementazione il monitor signal-and-continue non usa la coda **urgent**.
 
 <p align="center">
-  <img src="images/wait-continue.png
-  " width="400" >
+  <img src="images/wait-continue.png" width="400" >
 </p>
 
 Essendo che `P` compete con gli altri processi per accedere al monitor potrebbe verificarsi la situazione in cui ad esser schedulato prima di `P` è `K`, che entra nel monitor una volra che `Q` lo ha rilasciato.
@@ -326,8 +319,7 @@ signal_all();
 Tutti i processi risvegliati vengono messi nella *entry_queue*, dalla quale uno alla volta potraà rientrare nel monitor.
 
 <p align="center">
-  <img src="images/signal_all.png
-  " width="400" >
+  <img src="images/signal_all.png" width="400" >
 </p>
 
 ### Confronto: signal-and-wait vs signal-and-continue
