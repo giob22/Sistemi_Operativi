@@ -132,7 +132,7 @@ Quindi per ottenere una corretta cooperazione tra processi e quindi un **ordine 
 Possiamo schematizzare un monitor in questo modo:
 
 <p align="center">
-  <img src="images/paronamica_monitor.png" width="300" >
+  <img src="images/panoramica_monitor.png" width="300" >
 </p>
 
 - Sono presenti diverse **code** in cui sono contenuti i processi che si sono sospesi e attendono si essere riattivati.
