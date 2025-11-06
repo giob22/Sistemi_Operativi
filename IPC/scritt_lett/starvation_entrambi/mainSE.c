@@ -8,6 +8,7 @@
 #include <sys/wait.h>
 #include <sys/shm.h>
 #include <string.h>
+#include <unistd.h>
 #include <errno.h>
 
 #include "procedure.h"
@@ -16,7 +17,6 @@ int main(){
     int id_sem, id_shared, k;
         key_t k_shm = IPC_PRIVATE;
         key_t k_sem = IPC_PRIVATE;
-        
         Buffer *buff;
 
         pid_t pid;
@@ -32,12 +32,12 @@ int main(){
 
         id_sem = semget(k_sem, 4, IPC_CREAT | 0644);
 
-        semctl(k_sem, MUTEX, SETVAL, 1);
-        semctl(k_sem, MUTEXL, SETVAL, 1);
-        semctl(k_sem, MUTEXS, SETVAL, 1);
-        semctl(k_sem, SYNCH, SETVAL, 1);
+        semctl(id_sem, MUTEX, SETVAL, 1);
+        semctl(id_sem, MUTEXL, SETVAL, 1);
+        semctl(id_sem, MUTEXS, SETVAL, 1);
+        semctl(id_sem, SYNCH, SETVAL, 1);
 
-        for (int k = 0; k < 1; k++)
+        for (int k = 0; k < num_processi; k++)
         {
             pid = fork();
             if (pid == 0)
@@ -45,10 +45,8 @@ int main(){
                 
                 if ((k%2) == 0)
                 {
-                    printf("\n1\n");
                     printf("sono il figlio scrittore. Il mio pid %d \n", getpid());
                     Scrittore(id_sem, buff);
-                    printf("\n2\n");
                 }else
                 {
                     printf("sono il figlio lettore. Il mio pid %d \n", getpid());

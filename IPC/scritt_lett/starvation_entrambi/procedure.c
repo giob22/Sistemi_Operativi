@@ -8,15 +8,13 @@
 #include <stdlib.h>
 
 #include "procedure.h"
-#include "../../sem/semafori.h"
+#include "semafori.h"
 
 
 
 void Inizio_Scrittura(int sem, Buffer* buff){
-    printf("sono proto");
     
     Wait_sem(sem, MUTEXS);
-    printf("\n\n\n\n\n\nn\n\n\nn\n\n\nn\n\n\nprova");
     
     buff->num_scrittori++;
     if (buff->num_scrittori == 1) // il processo è il primo scrittore quindi esegue una wait su SYNCH
@@ -67,7 +65,6 @@ void Lettore(int sem, Buffer* buff){
     Fine_Lettura(sem, buff);
 }
 void Scrittore(int sem, Buffer* buff){
-    printf("sono proto");
     Inizio_Scrittura(sem, buff);
     
     struct timeval t1;
