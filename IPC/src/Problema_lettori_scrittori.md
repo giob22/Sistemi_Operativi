@@ -166,3 +166,4 @@ void Fine_Scrittura(int sem){
 Da notare che l'implementazione di queste due funzioni è l'analogo delle funzioni per inizio e fine lettura per i lettori. L'unica differenza sta nel fatto che per gli scrittori è da gestire la loro mutua esclusione sulla `shm` che non è necessario per i lettori.
 
 A questo proposito infatti è impiegato il semaforo identificato all'interno del *semaphor set* dalla costante `MUTEX`.
+
