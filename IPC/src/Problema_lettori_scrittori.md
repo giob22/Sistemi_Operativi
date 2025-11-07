@@ -114,6 +114,8 @@ void Fine_Scrittura(int sem){
     signal_sem(sem,SYNCH);
 }
 ```
+
+In questo caso il semaforo `SYNCH` gestisce sia la **mutua esclusione tra lettori e scrittori** che la **mutua esclusione tra gli scrittori stessi**.
 ## Implementazione con starvation di entrambi
 
 Inseriamo un comportamento analogo dei lettori anche agli scrittori, introducendo la variabile condivisa `NUM_LETTORI`.
@@ -129,7 +131,7 @@ In questo caso occorrono `4` semafori, tutti inizializzati ad `1`.
   
   ma gestisce unicamente la **mutua esclusione** tra **lettori** e **scrittori**.
 
-L'implementazione di `Inizio_Lettura()` e `Fine__Lettura()` in questo caso non varia; a variare è l'implementazione di `Inizio_Scrittura()` e `Fine_Scrittura()`.
+L'implementazione di `Inizio_Lettura()` e `Fine_Lettura()` in questo caso non varia; a variare è l'implementazione di `Inizio_Scrittura()` e `Fine_Scrittura()`.
 
 ```c
 void Inizio_Scrittura(int sem){
