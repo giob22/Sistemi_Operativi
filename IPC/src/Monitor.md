@@ -147,7 +147,7 @@ Possiamo schematizzare un monitor in questo modo:
 
 Il processo entra nel monitor chiedendo di eseguire una procedura in mutua esclusione. Quindi dopo la chiamata alla procedura di interesse viene chiamata una `enter_monitor()`.
 
-All'interno della procedura potrebbe esserci una condizione che potrebbe portare il processo a sospendersi nel caso in cui non siano verificata; condizioni associate a variabili condition.
+All'interno della procedura potrebbe esserci una condizione che potrebbe portare il processo a sospendersi nel caso in cui non sia verificata; condizioni associate a variabili condition.
 
 → Per ogni variabile condition oltre ad una condizione logica è associata una **coda** in cui saranno memorizzati tutti i processi che si sono sospesi per il mancato soddisfacimento della condizione logica.
 
