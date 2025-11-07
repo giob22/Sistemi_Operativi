@@ -110,7 +110,7 @@ Monitor M {
             x.wait_cond();
         // operazione su risorsa
         y.signal_cond();
-        leav_monitor();
+        leave_monitor();
     }
 }
 ```

@@ -26,14 +26,14 @@ void Inizio_Scrittura(int sem, Buffer* buff){
 }
 void Fine_Scrittura(int sem, Buffer* buff){
     Signal_sem(sem, MUTEX); // rilascio della shm per permette agli altri scrittori di scrivere se sono in attesa
-    // penso che si faccia prima per permettere subito ad altri processi scrittori di operare sulla shm
+    // fa subito il rilascio perché da questo momento in poi non opera più sulla shm, ma solo sulle variabili che sono condivise tra scrittori.
     // mentre il processo corrente aggiorna il numero di processi scrittori
     
     // si aggiorna il num_scrittori
     Wait_sem(sem, MUTEXS);
     buff->num_scrittori--;
     if(buff->num_scrittori == 0) // significa che il processo è l'ultimo scrittore -> deve segnalare che la risorsa è libera per eventuali lettori, o altri scrittori successivi
-    Signal_sem(sem, SYNCH);
+        Signal_sem(sem, SYNCH);
     // rilascio della variabile num_scrittore
     Signal_sem(sem, MUTEXS);
 }
