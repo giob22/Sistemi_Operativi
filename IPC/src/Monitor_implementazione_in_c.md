@@ -63,9 +63,8 @@ int queue_condition(Monitor*, int);
 **`signal_cond(Monitor* m, int id_var_cond)`**:
 
 1) Il processo verifica se ci sono processi sospesi su `id_var_cond` valutando il contatore associato a quella nell'array `m->cond_counts[]`;
-2) se la condizione è verificata fa una `signal_sem(m->id_conds, id_var_cond)` in modo da riattivare un processo sospeso su tale *condition variable*;
-3) altrimenti esegue una `signal_sem(m->mutex, 0)` per attivare un processo in attesa di ottenere il monitor in mutua esclusione;
-4) esegue una `wait_sem(m->mutex, 0)` per sospendersi volontariamente e rientrare quindi nella coda dei processi in attesa dell'accesso al mutex.
+2) se la condizione è verificata fa una `signal_sem(m->id_conds, id_var_cond)` in modo da riattivare un processo sospeso su tale *condition variable*, ed esegue in seguito una `wait_sem(m->mutex, 0)` sospendendosi sul semaforo per l'accesso al mutex;
+3) altrimenti se la condizione non è verificata la procedura `signal_cond(&m, id_var_cond)` è ininfluente e il processo segnalatore continua ad eseguire nel monitor. 
 
 
 ### signal-and-wait-Hoare
@@ -74,17 +73,16 @@ int queue_condition(Monitor*, int);
 
 1) Incremento il valore del contatore in `m->cond_counts[]` in posizione `id_var_cond` che identifica la posizione del contatore dei processi in attesa sulla *condition variable* `var_cond`;
 2) verifica la presenza di un processo in attesa sulla coda *urgent* (`*(m->urgent_counts)`) e lo riattiva con una `signal_sem(m->urgent_sem, 0)` se la condizione è verificata;
-3) altrimenti esegue una `signal_sem(m->mutex, 0)` per rilasciare il monitor e permettere l'accesso ad altri processi in attesa;
-4) `wait_sem(m->id_conds, id_var_cond)` si mette in attesa sul semaforo associato alla *condition variable* rappresentate la condizione di sincronizzazione che non ha soddisfatto;
-5) nel momento in cui viene risvegliato decrementa il contatore in `m->cond_counts[]` in posizione `id_var_cond`.
+3) altrimenti se la condizione non sia verificata esegue una `signal_sem(m->mutex, 0)` in modo da permettere ai processi in attesa del monitor di accedere;
+4) il processo si sospende sulla condition variable `id_var_cond` eseguendo una `wait_sem(m->id_conds, id_var_cond)`;
+5) nel momento in cui verrà riattivato il processo decrementa il contatore dei processi che sono in attesa sulla condition variable `id_var_cond`.
+
 
 **`signal_cond(Monitor* m, int id_var_cond)`**:
 
 1) Incrementa il contatore dei processi in attesa sulla coda urgente, `(*(m->urgent_count))++`
-2) Il processo verifica se ci sono processi sospesi su `id_var_cond` valutando il contatore associato a quella nell'array `m->cond_counts[]`;
-3) se la condizione è verificata fa una `signal_sem(m->id_conds, id_var_cond)` in modo da riattivare un processo sospeso su tale *condition variable*;
-4) altrimenti esegue una `signal_sem(m->mutex, 0)` per attivare un processo in attesa di ottenere il monitor in mutua esclusione;
-5) esegue una `wait_sem(m->urgent_sem, 0)`, si sospende sulla coda *urgent*;
-6) nel momento in cui viene riattivato decrementa il numero di processi in attesa sulla coda urgende: `(*(m->urgent_counts))--`;
+2) Il processo verifica se ci sono processi sospesi su `id_var_cond`, valutando il contatore associato a questa nell'array `m->cond_counts[]`;
+3) se la condizione è verificata fa una `signal_sem(m->id_conds, id_var_cond)` in modo da riattivare un processo sospeso su tale *condition variable* e successivamente esegue `wait_sem(m->urgent_sem, 0)` sospendendosi sulla coda urgente;
+4) altrimenti la procedura `signal_cond(&m, id_var_cond)` è ininfluente, il contatore dei processi in attesa nella coda urgente viene decrementato `(*(m->urgent_count))--` e il processo continua ad eseguire all'interno del monitor.
 
 ### signal-and-continue
