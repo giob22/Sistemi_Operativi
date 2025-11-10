@@ -1,10 +1,12 @@
-#include <monito_hoare.h>
+#include "monitor_hoare.h"
 
 // definiamo due identificatori, uno per ogni variabile condition
 
 #define VARCOND_CONSUMATORI 0
 #define VARCOND_PRODUTTORI 1
 
+
+#define DIM_BUFFER 15
 
 
 
@@ -21,11 +23,13 @@ typedef struct {
 	// all'interno del poll di buffer (buffer)
 	int num_occupati;
 	int num_liberi;
+
+	Monitor m;
 } Buffer;
 
 
 
 int consuma(Buffer*);
-void produci(Buffer*, int)
+void produci(Buffer*, int);
 
 
