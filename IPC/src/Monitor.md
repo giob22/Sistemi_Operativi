@@ -333,3 +333,20 @@ La semantica di *signal-and-continue* (e *signal-all*) è più **robusta**:
 - il processo segnalante può chiamarla anche quando non è sicuro di se/quali processi risegliare;
 - saranno i processi risvegliati a controllare se possono eseguire, oppure sospensersi.
 
+### Granularità: semaforo vs monitor
+
+Entrambi, sia monitor che semafori, sono dei concetti necessaria per la gestione di situazioni di cooperazione o competizione tra processi su una risorca condivisa.
+
+Sono simili nell'utilizzo ma hanno tante differenza sia rispetto alla robustezza che alla granularità.
+
+In particolar modo i semafori hanno una granularita *fine*, molto bassa, proprio perché gestiscono la mutua esclusione a **livello di singole operazioni**.
+
+Mentre i monitor hanno una granularità più alta: il controllo non è sulla singola operazione sulla risorsa condivisa, ma sull'intera risorsa condivisa.
+
+→ infatti nell'implementazione del problema produttori/consumatori con buffer di stato la modifica di questo a fine di un operazione (`IN_USO → OCCUPATO/LIBERO`), che sia di scrittura o lettura, deve essere eseguira all'interno del monitor (bloccando quindi gli altri processi che desiderano accedervi).
+
+Mentre con i semafori la modifica sul buffer di stato `IN_USO → OCCUPATO/LIBERO` non era inclusa nella sezione critica, non ostacolavamo gli altri processi ad operare sulla risorsa.
+
+Invece parlando di **robustezza** i monitor sono sicuramente molto più sicuri per via del loro **livello di astrazione maggiore**. Tutti le operazioni sulla memoria condivisa sono contenute all'interno del monitor. (possiamo dire che il monitor è un wrapper della `shm`)
+
+Mentre per i semafori la gestione è esplicita, quindi è più alto il rischio di eventuali **deadlock**.
