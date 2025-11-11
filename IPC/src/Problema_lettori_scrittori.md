@@ -169,3 +169,8 @@ Da notare che l'implementazione di queste due funzioni è l'analogo delle funzio
 
 A questo proposito infatti è impiegato il semaforo identificato all'interno del *semaphor set* dalla costante `MUTEX`.
 
+
+## Implementazione con MONITOR
+
+<!-- todo: fai l'implementazione di inizio e fine scrittura e lettura sfruttando un monitor signal-and-wait ed uno signal-and-continue-->
+
