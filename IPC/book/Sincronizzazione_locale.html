@@ -1,0 +1,461 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Sincronizzazione nel modello ad ambiente locale - IPC</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-cc69e1fb.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-56612340.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-c2b90f7e.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-18d1fdea.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">IPC</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="sincronizzazione-nel-modello-ad-ambiente-locale"><a class="header" href="#sincronizzazione-nel-modello-ad-ambiente-locale">Sincronizzazione nel modello ad ambiente locale</a></h1>
+<p>Il modello ad ambiente <strong>locale</strong> si riferisce ad una struttura in cui ogni processo opera nel proprio ambiente privato, <strong>senza alcuna memoria condivisa</strong> tra vari processi.</p>
+<p>In questo modello tutte le risorse sono privare a ciascun processo e non possono essere modificate direttamente da altri processi.</p>
+<p>Questo è un approccio tipico dei <strong>sistemi distribuiti</strong>.</p>
+<p>Quindi ogni processo evolve in un proprio ambiente:</p>
+<ul>
+<li>non esiste memoria condivisa;</li>
+<li>le <strong>risorse sono tutte private</strong>;</li>
+<li>Non possono esser modificate direttamente da altri processi.</li>
+</ul>
+<p>Il naturale supporto fisico a questo modello, come detto, sono i sistemi con architettura distribuita.</p>
+<p align="center">
+  <img src="images/modello_locale.png" width="400">
+</p>
+
+<hr>
+<p>Nota:</p>
+<p>Il <strong>middleware</strong> è un software intermedio che si trova “in mezzo” tra:</p>
+<ul>
+<li>
+<p>sistema operativo</p>
+<p>e</p>
+</li>
+<li>
+<p>le applicazioni che si trovano su macchine diverse.</p>
+</li>
+</ul>
+<p>Il suo compito è nascondere le differenze tra:</p>
+<ul>
+<li>sistema operativi diversi</li>
+<li>linguaggi di programmazione diversi</li>
+<li>reti e architetture hardware diverse</li>
+</ul>
+<p>Quindi serve a creare un ambiente uniforme di comunicazione, in modo che due programmi possano scambiarsi dati come se lavorassero nello stesso sistema.</p>
+<p>Noi faremo tutto in locale → con le mailbox System V permetteremo ai processi di comunicare su canali di comunicazione che saranno delle <em>shared memory</em>.</p>
+<hr>
+<p>La <strong>cooperazione</strong> si realizza mediante lo <strong>scambio diretto di messaggi</strong> per mezzo di primitive fornite dal S.O.</p>
+<p>In questo modello la mutua esclusione sulle risorse di un processo è <strong>garantita</strong>, appunto perché tutte le risorse sono private.</p>
+<h2 id="primitive"><a class="header" href="#primitive">Primitive</a></h2>
+<p>Per gestire quindi la cooperazione in un modello ad ambiente locale abbiamo la necessità di due tipologie di primitive:</p>
+<ul>
+<li><strong>send(destination, message)</strong></li>
+<li><strong>receive(source, message)</strong></li>
+</ul>
+<p>Variano fra i sistemi in base a due caratteristiche fondamentali:</p>
+<ul>
+<li><strong>tipo di sincronizzazione</strong> dei processi comunicanti;</li>
+<li><strong>indirizzamento</strong>: la modalità con cui si designano la provenienza e la destinazione.</li>
+</ul>
+<p>La semantica di un messaggio è composta:</p>
+<p align="center">
+  <img src="images/formato_messaggio.png" width="400">
+</p>
+
+<p>Operiamo sull’intestazione per gestire la comunicazione.</p>
+<ul>
+<li>Tipo di messaggio: discrimina il tipo di messaggio contenuto all’interno del corpo;</li>
+<li>informazioni di controllo: ci permettono di modificare la semantica dell’interazione tra i processi.</li>
+</ul>
+<p>L’<strong>intestazione</strong> è usata dal sistema operativo per gestire e instradare la comunicazione.</p>
+<p>Mentre il <strong>corpo</strong> contiene le informazioni scambiate tra i processi.</p>
+<h3 id="send"><a class="header" href="#send">Send</a></h3>
+<p>La primitiva <strong>send</strong> può avere diverse caratteristiche a seconda del sistema operativo. In particolare il comportamento della primitiva piò essere di due tipi:</p>
+<ul>
+<li><strong>sincrono</strong>: il processo che esegue la send <strong>rimane in attesa</strong> fin quando il messaggio non è stato ricevuto dal destinatario. Dopo la conferma di avvenuta ricezione il processo chiamante viene sbloccato;</li>
+<li><strong>asincrono</strong>: il processo che esegue la send continua la sua esecuzione, <strong>senza attendere</strong> l’avvenuta ricezione del messaggio.</li>
+</ul>
+<p align="center">
+  <img src="images/send_comportamento.png" width="400">
+</p>
+
+<p><strong>System V linux</strong> di default ci garantisce l’implementazione di una <strong>send</strong> asincrona.</p>
+<p>Quindi per implementare la send sincrona dobbiamo sfruttare la send asincrona e la receive.</p>
+<h3 id="receive"><a class="header" href="#receive">Receive</a></h3>
+<p>Analogamente alla primitiva send, la primitiva receive ha caratteristiche differenti a seconda del sistema operativo. In particolare può avere un comportamento di due tipi:</p>
+<ul>
+<li><strong>bloccante</strong>: se il messaggio non è stato ancora inviato, il processo <strong>rimane in attesa fino alla ricezione</strong>;</li>
+<li><strong>non bloccante</strong>: il processo continua la sua esecuzione <strong>senza attendere</strong> l’avvenuta consegna del messaggio.</li>
+</ul>
+<p>Ovviamente se il sender ha già inviato il messaggio, il processo lo riceve e continua l’esecuzione senza sospendersi.</p>
+<p align="center">
+  <img src="images/receive_comportamento.png" width="400">
+</p>
+
+<p><strong>System V linux</strong> di default ci garantisce l’implementazione di una receive <strong>bloccante</strong>.</p>
+<hr>
+<p>Quando si parla di blocco e sblocco ci si riferisce ai possibili stati di un processo.</p>
+<hr>
+<h2 id="tipi-di-sincronizzazione"><a class="header" href="#tipi-di-sincronizzazione">Tipi di <strong>sincronizzazione</strong></a></h2>
+<p>Quindi a seconda del comportamento delle primitive di send e receive tra il sender e il receiver possono avere <strong>tre</strong> diverse combinazioni che in genere vengono utilizzate.</p>
+<ul>
+<li>
+<p><strong>Send sincrona, receive bloccante</strong></p>
+<ul>
+<li>stretta sincronizzazione tra sender e receiver;</li>
+<li>entrambi in attesa della consegna del messaggio, entrambi si bloccano nella comunicazione;</li>
+<li>denominato anche “<strong>rendezvous</strong>”.</li>
+</ul>
+</li>
+<li>
+<p><strong>Send asincrona, receive bloccante</strong></p>
+<ul>
+<li>il sender continua a eseguire dopo l’invio;</li>
+<li>il receiver rimane in attesa fino a che non riceve il messaggio.</li>
+</ul>
+</li>
+<li>
+<p><strong>Send asincrona, receive asincrona</strong></p>
+<ul>
+<li>Nessuna delle due parti, sender e receiver, rimane in attesa della consegna;</li>
+<li>completo disaccoppiamento tra mittente e destinatario;</li>
+<li>tipo sincronizzazione è il più comune tra processi distribuiti, non conosciamo il momento in cui il destinatario o il sorgete è pronto.</li>
+</ul>
+</li>
+</ul>
+<p>Send asincrona e receive bloccante sono quelle che si trovano più spesso nei sistemi operativi e linguaggi di programmazione.</p>
+<h2 id="implementazione-di-una-send-sincrona-a-mezzo-di-send-asincrona"><a class="header" href="#implementazione-di-una-send-sincrona-a-mezzo-di-send-asincrona">Implementazione di una send sincrona a mezzo di send asincrona</a></h2>
+<p>Siamo in grado di implementare una <strong>send sincrona</strong> utilizzando send asincrona + receive bloccante (default di <strong>System V linux</strong>).</p>
+<p>La send sincrona è utile quando il mittende deve conoscere se il destinatario ha ricevuto o meno il messaggio.</p>
+<p>→ il sender deve determinare se il messaggio è stato ricevuto e lo fa inviando dei messaggi aggiuntivi al messaggio contenente l’informazione da scambiare.</p>
+<p align="center">
+  <img src="images/send_sincrona_SVL.png" width="300">
+</p>
+
+<p>Quindi, tra mittente e destinatario, per la cominicazione sincrona è necessario che questi si scambino una serie di messaggi prima di inviare il messaggio contenente l’informazione.</p>
+<ul>
+<li>
+<p>Il sender dopo aver inviato una richiesta <em>request-to-send</em> si mette in attesa di una risposta da parte del destinatario.</p>
+</li>
+<li>
+<p>Nel momento in cui il destinatario è pronto per la comunicazione invia una richiesta di <em>OK-to-send</em> al sender e a sua volta si mette in attesa per il messaggio.</p>
+</li>
+<li>
+<p>Il sender una volta sbloccato invia la il messaggio effettivo.</p>
+</li>
+</ul>
+<p>Implementado questo scambio di messaggi tra sender e receiver è quindi possibile implementare quella che è una <strong>send sincrona</strong>.</p>
+<p>Ovviamente questo procedura è da visualizzare in maniera <strong>atomica</strong>.</p>
+<p>Implementazione tipo:</p>
+<p><strong>send</strong></p>
+<pre><code>procedure sendSincrona(dest, mess){
+    sendAsincrona(dest, messRTS)
+  
+    // messRTS è un messaggio di "pronto ad inviare"
+  
+    receiveBloccante(dest, messOTS)
+  
+    // messOTS è un messaggio di "pronto a ricevere"
+  
+    sendAsincrona(dest, mess)
+}
+</code></pre>
+<p><strong>receive</strong></p>
+<pre><code>procedure receive(source, mess){
+  receiveBloccante(source, messRTS)
+
+  // il ricevente si blocca sulla ricezione di un messaggio
+  // di richiesta di invio
+  
+  sendAsincrona(source, messOTR)
+  
+  // una volta ricevuto invia un messaggio inivia un messaggio
+  // che sintetizza l'accettazione da parte del destinatario
+  // di ricevere il messaggio
+  
+  receiveBloccante(source, mess);
+}
+</code></pre>
+<p>Utilizzando procedure per il sender e per il receiver aventi tale workflow possiamo implementare una <strong>send</strong> avente un comportamento <strong>sincrono</strong>.</p>
+<p align="center">
+  <img src="images/send_synch.png" width="400">
+</p>
+
+<p>Ovviamente il r<strong>icevente potrebbe essere già pronto</strong> per la ricezione di un messaggio RTS ancor prima che questo venga inviato;</p>
+<p>in questa situazione il <strong>receiver è già sospeso</strong> e alla ricezione del messaggio si sblocca e invia il messaggio di risposta.</p>
+<h2 id="indirizzamento"><a class="header" href="#indirizzamento"><strong>Indirizzamento</strong></a></h2>
+<p>Mi peremtte di specificare la destinazione e la provenienza della gestione del messaggio.</p>
+<p>In che modo posso specificare mittente e destinatario?</p>
+<p>Esistono più modi:</p>
+<ul>
+<li>
+<p><strong>comunicazione diretta simmetrica</strong></p>
+<p>sia il mittente che il destinatario specificano l’identificativo dell’altro.</p>
+<ul>
+<li>mittente specifica il <strong>PID</strong> del destinatario nella send();</li>
+<li>destinatario specifica il <strong>PID</strong> del mittente nella receive().</li>
+</ul>
+</li>
+<li>
+<p><strong>comunicazione diretta asimmetrica</strong></p>
+<ul>
+<li>il mittente esplicita il <strong>PID</strong> del destinatario nella send();</li>
+<li>il destinatario non indica un <strong>PID</strong>, viene a <strong>conoscenza</strong> del PID del mittente <strong>alla ricezione del messaggio</strong>, tramite parametro di uscita (specificato all’interno dell’intestazione del messaggio).</li>
+</ul>
+</li>
+<li>
+<p><strong>comunicazione indiretta</strong></p>
+<ul>
+<li>il mittente fa riferimento ad una <strong>mailbox</strong> nella send();</li>
+<li>il destinatario fa riferimento alla stessa <strong>mailbox</strong>, da cui preleva il messaggio tramite receive().</li>
+</ul>
+</li>
+</ul>
+<p>Questa ultima comunicazione <strong>indiretta</strong> fa riferimento a ciò che viene implementato e fornito da Linux che sfruttano le <strong>mailbox System V</strong></p>
+<p>Mittente e destinatario fanno riferiemento ad un <strong>nodo intermendio</strong>.</p>
+<hr>
+<p><strong>ESEMPI:</strong></p>
+<p><strong>COMUNICAZIONE DIRETTA</strong></p>
+<p>comunicazione diretta simmetrica: <strong>schema a pipeline</strong></p>
+<p align="center">
+  <img src="images/pipeline.png" width="400">
+</p>
+
+<p>comunicazione diretta asimmetrica: <strong>schema client-server</strong></p>
+<p align="center">
+  <img src="images/client_server.png" width="400">
+</p>
+
+<p><strong>COMUNICAZIONE INDIRETTA</strong></p>
+<p>I messaggi vengono inviati ad una struttura dati condivisa (detta <strong>coda</strong> o <strong>mailbox</strong>)</p>
+<p>Il vantaggio di questo tipo di comunicazione è che sender e receiver sono <strong>indipendenti</strong>, per la presenza della mailbox.</p>
+<p>Possibili schemi di implementazione:</p>
+<ul>
+<li>one-to-one</li>
+<li>one-to-many</li>
+<li>many-to-one</li>
+<li>many-to-many</li>
+</ul>
+<p align="center">
+  <img src="images/mailbox.png" width="400">
+</p>
+
+<p>Infine possiamo quindi avere diversi modelli di comunicazione ad ambiente locale che sono determinati dalla combinazione tra le tipologie di sincronizzazione che possiamo ottenere e i possibili indirizzamenti utilizzabili.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="Monitor_implementazione_in_c.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="Monitor_implementazione_in_c.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

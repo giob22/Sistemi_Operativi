@@ -1,0 +1,656 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Shared Memory - IPC</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-cc69e1fb.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-56612340.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-c2b90f7e.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-18d1fdea.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">IPC</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="shared-memory"><a class="header" href="#shared-memory">Shared memory</a></h1>
+<p>I processi UNIX( a differenza dei thread) non possono condividere memoria, neanche i processi “parenti”; questi non sono altro che copie dell’immagine del processo padre e hanno uno <em>spazio di indirizzamento</em> diverso. Un processo <strong>figlio</strong> eredita una <strong>copia</strong> dei dati del processo <strong>padre</strong>: dopo la system call <code>fork()</code> la modifica dei dati da parte di un processo non si ripercuite sui dati dell’altro processo.</p>
+<p>Una memoria condivisa (SHM) è una porzione di memoria accessibile da piú processi.</p>
+<p><img src="images/shared_memory.png" alt="alt text"></p>
+<p>L’utilizzo di una memoria condivisa SHM prevede il seguente workflow:</p>
+<ol>
+<li>Creazione della SHM</li>
+<li>Collegamento alla SHM</li>
+<li>Uso della SHM</li>
+<li>Scollegamento della SHM</li>
+<li>Eliminazione della SHM</li>
+</ol>
+<p>Per implementare una shared memory mediante i meccanismi offerti dallo <strong>standard systemV</strong> è necessario l’utilizzo di alcune primitive implementate in:</p>
+<pre><code class="language-c">#include &lt;sys/types&gt;
+#include &lt;sys/ipc.h&gt;
+#include &lt;sys/shm.h&gt;
+</code></pre>
+<p>Il kernel per tener traccia di una <strong>shared memory SystemV</strong> utilizza una struttura dati interna speciale per ogni segmento di memoria condivisa. Il nome della struttura che utilizza è <code>shmid_ds</code>, ed è definita in <code>linux/shm.h</code>.</p>
+<p>Tale struttura è utilizzabile tramite la libreria <code>sys/shm.h</code>.</p>
+<pre><code class="language-c">    /* One shmid data structure for each shared memory segment in the system. */
+
+struct shmid_ds {
+	struct ipc_perm shm_perm;        /* operation perms */
+	int     shm_segsz;               /* size of segment (bytes) */
+	time_t  shm_atime;               /* last attach time */
+	time_t  shm_dtime;               /* last detach time */
+	time_t  shm_ctime;               /* last change time */
+	unsigned short  shm_cpid;        /* pid of creator */
+	unsigned short  shm_lpid;        /* pid of last operator */
+	short   shm_nattch;              /* no. of current attaches */
+
+	/* the following are private */
+	unsigned short shm_npages;       /* size of segment (pages) */
+	unsigned long  *shm_pages;       /* array of ptrs to frames -&gt; SHMMAX */ 
+	struct vm_area_struct *attaches; /* descriptors for attaches */
+};
+</code></pre>
+<p><img src="images/struct_shm.png" alt="alt text"></p>
+<h3 id="creazione"><a class="header" href="#creazione">Creazione:</a></h3>
+<pre><code class="language-c">int shmget(key_t key, int size, int flag);
+</code></pre>
+<p><code>size</code> è la dimensione in byte della memoria condivisa. Possiamo quindi specificare qualsiasi valore di dimensione; supponendo di scegliere <code>size = 4</code> stiamo chiedendo di avere una memoria condivisa di <code>4 byte</code> ma in realtá il kernel sta allocando uno spazio di memoria pari a <code>4KB</code> perché la memoria condivisa viene alocata in <strong>unitá di pagina</strong> del sistema, e la <strong>dimensione di una pagina su linux</strong> è pari a <strong><code>4 KB</code></strong>.</p>
+<p>Restituisce <code>-1</code> in caso di fallimento. Invece se ha successo restituisce il <strong>descrittore della risorsa</strong>.</p>
+<hr>
+<p>ESEMPIO: con chiave cablata e senza flags</p>
+<pre><code class="language-c">	...
+	key_t chiave = 40;
+	int ds_shm;
+	ds_shm = shmget(chiave, 1024, 0);
+
+	if(ds_shm &lt; 0) {
+   		// la risorsa non esiste! esci dal programma
+    	perror(“errore shmget!”);
+    	exit(1);
+  	}
+  	... Utilizza la shared memory già esistente...
+</code></pre>
+<p>Se la shared memory non è stata giá creata da un altro processo, la funzione <code>shmget()</code> restituisce <code>-1</code>.</p>
+<hr>
+<p>ESEMPIO: con chiave cablata e flag <code>IPC_CREAT</code></p>
+<pre><code class="language-c">  	...
+	key_t chiave = 40;
+  	int ds_shm;
+  	ds_shm = shmget(chiave, 1024, IPC_CREAT | 0664);
+
+  	if(ds_shm &lt; 0) {
+   		// qualcosa è andato storto (memoria esaurita, etc.)
+    	perror(“errore shmget!”);
+    	exit(1);
+  	}
+  	... Utilizza la shared memory (esistente o nuova)...
+</code></pre>
+<p>In questo caso il flag <code>IPC_CREAT</code> impone di creare una nuova shared memory se non ne esiste una con la stessa <code>key</code>; la crea con le caratteristiche specificate di dimensione e permessi di accesso.</p>
+<p>Nel caso in cui esiste giá una shared memory vente tale valore di <code>key</code>,  la chiamata restituisce semplicemente il descrittore della risorsa senza tener conto di <code>size</code> e dei permessi di accesso specificati.</p>
+<hr>
+<p>ESEMPIO: chiave cablata e flag <code>IPC_CREAT</code> e <code>IPC_EXCL</code></p>
+<pre><code class="language-c">	key_t chiave = 40;
+ 	int ds_shm = shmget(chiave,1024,IPC_CREAT|IPC_EXCL|0664);
+ 	if(ds_shm &lt; 0) {
+   		// La risorsa già esiste, viene segnalato con ds_shm&lt;0.
+		// Per ottenere un descrittore dalla SHM, occorre
+   		// chiamare nuovamente shmget
+   		// (senza nè IPC_CREAT nè IPC_EXCL)
+   		
+   		ds_shm = shmget(chiave, 1024, 0);
+   		if(ds_shm&lt;0) { 
+   			/* errore */ 
+   		}
+	} else {
+   		// La risorsa non esisteva, ed è stata appena creata.
+   		// Il programma ha l’opportunità di inizializzarne
+   		// il contenuto (ad esempio, «0» o una stringa vuota).
+	}
+	... Utilizza la shared memory ...
+</code></pre>
+<p>La shared memory viene creata dal primo <code>get</code> solamente se non ne esiste giá una con la stessa chiave, altrimenti restituisce <code>-1</code>.</p>
+<p>In quest’ultimo caso otteniamo il descrittore con una chiamata <code>get</code> senza flag poichè sappiamo esistere la risorse IPC.</p>
+<hr>
+<p>ESEMPIO: utilizzo <code>ftok()</code> per creare una key adatta ad una risorsa IPC</p>
+<pre><code class="language-c">	key_t chiave = ftok("./eseguibile", 'k');
+  	int ds_shm;
+  	ds_shm = shmget(chiave, 1024, IPC_CREAT | 0664);
+
+  	if(ds_shm &lt; 0) {
+    	// qualcosa è andato storto (memoria esaurita, etc.)
+    	perror(“errore shmget!”);
+    	exit(1);
+  	}
+  	... Utilizza la shared memory (esistente o nuova)...
+</code></pre>
+<p>In questo esempio non viene utilizzata una chiave cablata nel codice, ma più opportunamente si utilizza la system call <code>ftok()</code> per ottenere una IPC key univoca.</p>
+<p>Se due programmi differenti utilizzassero gli stessi parametri per la <code>ftok()</code> otterrebbero la stessa IPC key.</p>
+<hr>
+<p>ESEMPIO: chiave privata con <code>IPC_PRIVATE</code></p>
+<pre><code class="language-c">	int ds_shm = shmget(IPC_PRIVATE, 1024, IPC_CREAT|0664);
+
+  	if(ds_shm &lt; 0) {
+    	// qualcosa è andato storto (memoria esaurita, etc.)
+    	perror(“errore shmget!”);
+    	exit(1);
+  	}
+  	... Utilizza la shared memory ...
+</code></pre>
+<p>In questo esempio si crea una shared memory senza assegnare una chiave, dal momento che IPC_PRIVATE equivale ad una chiave IPC pari a <code>0</code>.</p>
+<p>Infatti, utilizzando il comando ipcs, la chiave apparirà con il valore pari a <code>0</code>.</p>
+<p>In questo caso, la shared memory è utilizzabile solo dal padre e i suoi figli, ovvero non è una soluzione corretta nel caso in cui avessimo più programmi eseguibili.</p>
+<h2 id="collegamento"><a class="header" href="#collegamento">Collegamento</a></h2>
+<p>Per poter utilizzare una shared memory e necessario effettuare il cosidetto <em>attach</em> tramite la system call <code>shmat()</code>,</p>
+<pre><code class="language-c">void *shmat(int shmid, const void *shmaddr, int shmflg);
+</code></pre>
+<p>dove:</p>
+<ul>
+<li>
+<p><code>shmid</code> e l’identificatore del segmento di memoria:</p>
+</li>
+<li>
+<p><code>shmaddr</code> è l’indirizzo dell’area di memoria del processo chiamante al quale collegare il segmento di memoria condivisa.</p>
+<p>Se si utilizza il valore <code>0</code> o <code>NULL</code>, il kernel proverá a trovare una regione di memoria non mappata giá per allocarla per la shared memory. Questo approccio è quello raccomandato.</p>
+</li>
+<li>
+<p><code>flag</code> indica le opzioni di collegamento, ad esempio per collegare in sola lettura si inserisce <code>IPC_RDONLY</code>.</p>
+</li>
+</ul>
+<p>La funzione <code>shmat()</code> restituirà l’indirizzo di memoria, nello spazio di indirizzamento del processo chiamante, al quale il segmento di memoria condivisa è stato collegato (<em>attached</em>).</p>
+<p>In caso di fallimento, la funzione restituirà il valore <code>-1</code>.</p>
+<h2 id="scollegamento"><a class="header" href="#scollegamento">Scollegamento</a></h2>
+<p>Una volta finito di utilizzare una <code>shm</code> è necessario scollegarsi (<em>detach</em>) dalla memoria condivisa tramite la system call <code>shmdt()</code>.</p>
+<p>Questa operazione di norma è <strong>inclusa</strong> nel marcare come eliminabile una shared memory (<code>shmctl(shmid, IPC_RMID, NULL)</code>).</p>
+<pre><code class="language-c">int shmdt(const void *shmaddr);
+</code></pre>
+<p>dove:</p>
+<ul>
+<li><code>shmaddr</code> è l’indirizzo a cui la memoria condivisa era stata collegata precedentemente con <code>shmat()</code>.</li>
+</ul>
+<p>Ha come valore di ritorno:</p>
+<ul>
+<li><code>0</code> se l’operazione è andata a buon fine;</li>
+<li><code>1</code> in caso di errore, impostando <code>errno</code> (variabile globale delle funzioni in C) ad un valore corrispondente al tipo di errore riscontrato.</li>
+</ul>
+<h2 id="controllo"><a class="header" href="#controllo">Controllo</a></h2>
+<p>La chiamata di sistema <code>shmctl()</code> permette di invocare un comando di controllo su una <em>shared memory</em> esistente.</p>
+<pre><code class="language-c">int shmctl(int shmid, int cmd, struct shmid_ds *buf);
+</code></pre>
+<p>dove:</p>
+<ul>
+<li>
+<p><code>shmid</code> è il descrittore della memoria condivisa su cui si vuole operare;</p>
+</li>
+<li>
+<p><code>cmd</code> specifica il comando da eseguire.</p>
+<p>Valori validi sono:</p>
+<ul>
+<li><code>IPC_STAT</code>: copia le informazioni di stato, della memoria condivisa, dalla struttura dati interna la kernel nella struttura <code>shmid_ds</code> puntata dalla variabile <code>buf</code>;</li>
+<li><code>IPC_SET</code>: permette di scrivere i valori di qualche membro della struttura <code>shmid_ds</code> puntata dalla variabile <code>buf</code> alla struttura interna al kernel;</li>
+<li><code>IPC_RMID</code>: marca da eliminare la shared memory, in modo che il kernel la rimuova solo quando non vi sono piú processi collegati;</li>
+<li><code>SHM_LOCK</code>: impedisce che il segmento di memoria condiviso venga <em>swappato</em> o paginato.</li>
+</ul>
+</li>
+<li>
+<p><code>buf</code> è il puntatore alla struttura di tipo <code>shmid_ds</code>; funge sia da parametro di ingresso che da parametro di uscita, a seconda del <code>cmd</code> inserito.</p>
+</li>
+</ul>
+<p>La chiamata a sistema se fallisce restituisce <code>-1</code>.</p>
+<h2 id="codice-visto-in-aula-contenente-i-concetti-chiave"><a class="header" href="#codice-visto-in-aula-contenente-i-concetti-chiave">Codice visto in aula (contenente i concetti chiave)</a></h2>
+<h3 id="wokrflow-di-una-shared-memory"><a class="header" href="#wokrflow-di-una-shared-memory">wokrflow di una shared memory</a></h3>
+<pre><code class="language-c">#include &lt;sys/shm.h&gt;
+#include &lt;sys/ipc.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+
+
+int main(){
+    //obiettivi
+    // creare una chiave 
+    // ottenere il descrittore
+    // utilizzare la shm
+
+    // creiamo/otteniamo il descrittore della risorsa
+    int *p = NULL;
+    key_t shm_key = IPC_PRIVATE;
+    int ds_shm = shmget(shm_key, sizeof(int), IPC_CREAT | 0664);
+    if (ds_shm &lt; 0){
+        printf("errore nella creazione della shm");
+        exit(-1);
+    }
+
+    // colleghiamoci alla risorsa
+
+    p = (int *) shmat(ds_shm,NULL,0); 
+    // avenfo inserto NULL al secondo parametro do il compito di trovare un buffer di memoria disponibile da utilizzare per la shared memory
+    // al posto di 0 avrei potuto inserire dei flag.
+    if(p == NULL){
+        printf("errore nella shmat()\n");
+        exit(-1);
+    }
+
+    printf("dettagli della shm\n");
+    printf("chiave IPC: %d\n", shm_key);
+    printf("descrittore IPC: %d\n",ds_shm);
+    printf("indirizzo della shm dopo l'attach: %p\n",p);
+
+    // utilizziamo la risorsa
+    *p = 10;
+
+    // marco la shm come da eliminare per il kernel
+    shmctl(ds_shm, IPC_RMID,NULL); // non sará eliminata fin tanto che esiste un processo attached
+
+
+    return 0;
+}
+</code></pre>
+<p>Il risultato dell’esecuzione:</p>
+<pre><code class="language-bash">dettagli della shm
+chiave IPC: 0
+descrittore IPC: 98326
+indirizzo della shm dopo l'attach: 0x7948fda27000
+</code></pre>
+<hr>
+<h3 id="shared-memory-tra-processo-padre-e-figlio"><a class="header" href="#shared-memory-tra-processo-padre-e-figlio">Shared memory tra processo padre e figlio</a></h3>
+<p>Proviamo adesso ad utilizzare la shared memory tra processo padre e processo figio.</p>
+<p>Prima utilizzando <code>IPC_PRIVATE</code> come chiave e successivamente utilizzarne una ricavata dalla chiamata di sistema <code>ftok()</code>.</p>
+<pre><code class="language-c">#include &lt;sys/shm.h&gt;
+#include &lt;sys/ipc.h&gt;
+#include &lt;sys/wait.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+
+int main(){
+   //obiettivi
+   // creare una chiave 
+   // ottenere il descrittore
+   // utilizzare la shm
+
+   // creiamo/otteniamo il descrittore della risorsa
+   int *p = NULL;
+   key_t shm_key = IPC_PRIVATE;
+   //key_t shm_key = ftok(".sharedMemory_padre_figlio.c",'b');
+   int ds_shm = shmget(shm_key, sizeof(int), IPC_CREAT | 0664);
+   if (ds_shm &lt; 0){
+       printf("errore nella creazione della shm");
+       exit(-1);
+   }
+
+   // colleghiamoci alla risorsa
+
+   p = (int *) shmat(ds_shm,NULL,0); 
+   // avenfo inserto NULL al secondo parametro do il compito di trovare un buffer di memoria disponibile da utilizzare per la shared memory
+   // al posto di 0 avrei potuto inserire dei flag.
+   if(p == NULL){
+       printf("errore nella shmat()\n");
+       exit(-1);
+   }
+
+   printf("dettagli della shm\n");
+   printf("chiave IPC: %d\n", shm_key);
+   printf("descrittore IPC: %d\n",ds_shm);
+   printf("indirizzo della shm dopo l'attach: %p\n",p);
+
+   // creiamo un processo figlio per provare la shared memory appena creata.
+   pid_t pid = fork();
+   if ( pid == 0 ) {// FIGLIO
+       printf("[FIGLIO %d] il contenuto della shm: %d\n",getpid(),*p);
+       *p = 123;// cambio il valore contenuto nella shared memory
+       exit(0);
+   }else if ( pid &gt; 0 ){// PADRE
+       wait(NULL);
+       printf("[PADRE %d] contenuto della shm: %d\n",getpid(),*p);
+   }
+
+
+   
+
+   // macro la shm come da eliminare per il kernel
+   shmctl(ds_shm, IPC_RMID,NULL); // non sará eliminata fin tanto che esiste un processo attached
+
+
+   return 0;
+}
+</code></pre>
+<p>Il risultato dell’esecuzione è:</p>
+<pre><code class="language-bash">chiave IPC: 0
+descrittore IPC: 98333
+indirizzo della shm dopo l`attach: 0x7ed908c19000
+[FIGLIO 70150] il contenuto della shm: 0
+[PADRE 70149] contenuto della shm: 123
+</code></pre>
+<p><code> 0x7608e5496000</code> è l’indirizzo di memoria, nello spazio di indirizzamento del processo chiamante, al quale il segmento di memoria condivisa è stato collegato (<em>attached</em>).</p>
+<p>Sia il processo padre che il processo figlio ottengono una copia del puntatore a memoria condivisa.</p>
+<p>Possiamo visualizzare lo spazio di indirizzamento e verificare in che posizione di questo si trova la shared memory nello pseudo filesystem <code>proc</code>; conoscendo il PID del processo in questione</p>
+<p>Utilizziamo quindi il comando:</p>
+<pre><code class="language-bash">sudo cat /proc/70149/maps
+</code></pre>
+<p>ottengo:</p>
+<pre><code class="language-bash">59c2dcab7000-59c2dcab8000 r--p 00000000 103:04 1734183   /home/giovanni/Desktop/SO/Sistemi_Operativi/IPC/sharedMemory_padre_figlio
+59c2dcab8000-59c2dcab9000 r-xp 00001000 103:04 1734183   /home/giovanni/Desktop/SO/Sistemi_Operativi/IPC/sharedMemory_padre_figlio
+59c2dcab9000-59c2dcaba000 r--p 00002000 103:04 1734183   /home/giovanni/Desktop/SO/Sistemi_Operativi/IPC/sharedMemory_padre_figlio
+59c2dcaba000-59c2dcabb000 r--p 00002000 103:04 1734183   /home/giovanni/Desktop/SO/Sistemi_Operativi/IPC/sharedMemory_padre_figlio
+59c2dcabb000-59c2dcabc000 rw-p 00003000 103:04 1734183   /home/giovanni/Desktop/SO/Sistemi_Operativi/IPC/sharedMemory_padre_figlio
+59c2eb298000-59c2eb2b9000 rw-p 00000000 00:00 0          [heap]
+7ed908800000-7ed908828000 r--p 00000000 103:04 688600    /usr/lib/x86_64-linux-gnu/libc.so.6
+7ed908828000-7ed9089b0000 r-xp 00028000 103:04 688600    /usr/lib/x86_64-linux-gnu/libc.so.6
+7ed9089b0000-7ed9089ff000 r--p 001b0000 103:04 688600    /usr/lib/x86_64-linux-gnu/libc.so.6
+7ed9089ff000-7ed908a03000 r--p 001fe000 103:04 688600    /usr/lib/x86_64-linux-gnu/libc.so.6
+7ed908a03000-7ed908a05000 rw-p 00202000 103:04 688600    /usr/lib/x86_64-linux-gnu/libc.so.6
+7ed908a05000-7ed908a12000 rw-p 00000000 00:00 0 
+7ed908bfd000-7ed908c00000 rw-p 00000000 00:00 0 
+7ed908c19000-7ed908c1a000 rw-s 00000000 00:01 98333      /SYSV00000000 (deleted)
+7ed908c1a000-7ed908c1c000 rw-p 00000000 00:00 0 
+7ed908c1c000-7ed908c1e000 r--p 00000000 00:00 0          [vvar]
+7ed908c1e000-7ed908c20000 r--p 00000000 00:00 0          [vvar_vclock]
+7ed908c20000-7ed908c22000 r-xp 00000000 00:00 0          [vdso]
+7ed908c22000-7ed908c23000 r--p 00000000 103:04 688597    /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7ed908c23000-7ed908c4e000 r-xp 00001000 103:04 688597    /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7ed908c4e000-7ed908c58000 r--p 0002c000 103:04 688597    /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7ed908c58000-7ed908c5a000 r--p 00036000 103:04 688597    /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7ed908c5a000-7ed908c5c000 rw-p 00038000 103:04 688597    /usr/lib/x86_64-linux-gnu/ld-l
+7ffe4f02e000-7ffe4f050000 rw-p 00000000 00:00 0          [stack]
+ffffffffff600000-ffffffffff601000 --xp 00000000 00:00 0  [vsyscall]
+
+</code></pre>
+<p>Dove ritroviamo il segmento a noi di interesse:</p>
+<pre><code class="language-bash">7ed908c19000-7ed908c1a000 rw-s 00000000 00:01 98333   /SYSV00000000 (deleted)
+</code></pre>
+<p>Notiamo che il primo indirizzo coincide con l’indirizzo del puntatore alla shared memory.</p>
+<p>Inoltre nonostante la <code>size</code> specificata per la shared memory fosse di soli <code>4 byte</code> (dimensione di un intero sulla mia architettura), ritroviamo un’area di memoria dedicata alla shared memory di dimensione <code>4KB</code>. <code>7ed908c1a000 - 7ed908c19000 = 4096</code>.</p>
+<p>Questo per il motivo specificato prima quando si è parlato della chiamata <code>get</code>.</p>
+<h3 id="shared-memory-con-exec"><a class="header" href="#shared-memory-con-exec">Shared memory con <code>exec()</code></a></h3>
+<p>Il processo padre crea un figlio che esegue una <code>exec()</code>, quindi non possiede piú la stessa immagine del padre ma è un processo del tutto diverso, anche nel testo (codice). In questi casi l’unica soluzione per ottenere una risorsa condivida è l’utilizzo della chiamata <code>ftok()</code>.</p>
+<p>NON possiamo utilizzare <code>IPC_PRIVATE</code>.</p>
+<pre><code class="language-c">#include &lt;sys/shm.h&gt;
+#include &lt;sys/ipc.h&gt;
+#include &lt;sys/wait.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+
+int main(){
+    //obiettivi
+    // creare una chiave 
+    // ottenere il descrittore
+    // utilizzare la shm
+
+    // creiamo/otteniamo il descrittore della risorsa
+    int *p = NULL;
+    //key_t shm_key = IPC_PRIVATE;
+    key_t shm_key = ftok(".shared_memory_exec&amp;ftok.c",'p');
+    int ds_shm = shmget(shm_key, sizeof(int), IPC_CREAT | 0664);
+    if (ds_shm &lt; 0){
+        printf("errore nella creazione della shm");
+        exit(-1);
+    }
+
+    // colleghiamoci alla risorsa
+
+    p = (int *) shmat(ds_shm,NULL,0); 
+    // avenfo inserto NULL al secondo parametro do il compito di trovare un buffer di memoria disponibile da utilizzare per la shared memory
+    // al posto di 0 avrei potuto inserire dei flag.
+    if(p == NULL){
+        printf("errore nella shmat()\n");
+        exit(-1);
+    }
+
+    printf("dettagli della shm\n");
+    printf("chiave IPC: %d\n", shm_key);
+    printf("descrittore IPC: %d\n",ds_shm);
+    printf("indirizzo della shm dopo l'attach: %p\n",p);
+
+    // creiamo un processo figlio per provare la shared memory appena creata.
+    pid_t pid = fork();
+    if ( pid == 0 ) {// FIGLIO
+        execl("./altro_prog","./altro_prog", (char *) 0);
+        printf("errore\n");
+        exit(-5);
+    }else if ( pid &gt; 0 ){// PADRE
+        wait(NULL);
+        printf("[PADRE %d] contenuto della shm: %d\n",getpid(),*p);
+    }
+
+
+   
+
+    // macro la shm come da eliminare per il kernel
+    shmctl(ds_shm, IPC_RMID,NULL); // non sará eliminata fin tanto che esiste un processo attached
+
+
+    return 0;
+}
+</code></pre>
+<p>Risultato ottenuto:</p>
+<pre><code class="language-bash">dettagli della shm
+chiave IPC: -1
+descrittore IPC: 98336
+indirizzo della shm dopo l`attach: 0x76e4e8c28000
+dettagli della shm
+chiave IPC: -1
+descrittore IPC: 98336
+indirizzo della shm dopo l`attach: 0x78f6872c7000
+[FIGLIO 73759] il contenuto della shm: 0
+[PADRE 73758] contenuto della shm: 123
+</code></pre>
+<p>Da notare che l’indirizzo per la shared memory è cambiato. Appunto perché il processo figlio non è piú una copia <strong>dell’immagine</strong> del processo padre una volta utilizzato la chiamata <code>exec()</code>.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="IPC.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="Semaphore.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="IPC.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="Semaphore.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

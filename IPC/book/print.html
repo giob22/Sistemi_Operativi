@@ -1,0 +1,1727 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>IPC</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-cc69e1fb.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-56612340.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-c2b90f7e.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-18d1fdea.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">IPC</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="ipc-interprocess-communication"><a class="header" href="#ipc-interprocess-communication">IPC: Interprocess Communication</a></h1>
+<p>Per implementare la comunicazione e quindi anche la sincronizzazione tra processi, abbiamo bisogno che questi comunichino mediante un mezzo; tale mezzo è definito come <strong>risorse IPC</strong>.</p>
+<p>Utilizzeremo <strong>meccanismi di comunicazione</strong> introdotti originariamente nel sistema operativo <strong>UNIX System V</strong>. In particolare <strong>System V IPC</strong> fornisce tre principali tipi di risorse gestite dal kernel:</p>
+<ul>
+<li><strong>Shared memory (SHM)</strong> → memoria condivisa tra piú processi;</li>
+<li><strong>Semaphores (SEM)</strong> → strutture per la sincronizzazione e mutua esclusione;</li>
+<li><strong>Message queue (MSG)</strong> → code di messaggi per lo scambio asincrono di dati.</li>
+</ul>
+<p>Quindi Linux/UNIX permette la <strong>comunicazione tra processi</strong> mediante primitive e strutture dati fornite dal kernel.</p>
+<p>Alla base dei meccanismi di comunicazione è presente una <em>shared memory</em>; per implementare semafori e code di messaggi, necessari a gestire rispettivamente mutua  escluzione (competizione) e sincronizzazione (cooperazione), sono necessarie delle porzioni di memoria condivise tra i processi.</p>
+<h2 id="primitive-get-e-ctl"><a class="header" href="#primitive-get-e-ctl">Primitive GET e CTL</a></h2>
+<p>Ogni risorsa <strong>IPC</strong> è gestita con l’utilizzo di due primitive <strong>get</strong> e <strong>ctl</strong>.</p>
+<p>La primitiva <strong>get</strong> utilizza una “chiave” (IPC key), ed opportuni parametri, per restituire al processo un <strong>descrittore della risorsa</strong>.</p>
+<p>La primitiva <strong>ctl</strong> (control) permette, dato un descrittore, di:</p>
+<ul>
+<li>verificare lo stato di una risorsa;</li>
+<li>cambiare lo stato di una risorsa;</li>
+<li>rimuovere una risorsa</li>
+</ul>
+<p>La rimozione però non nel senso stretto, in realtá la risorsa vine <strong>solamente etichettata</strong> come eliminabile al kernel: infatti questa viene eliminata se non sono presenti processi che la stanno utilizzando; ovvero processi <code>attached</code> alla risorsa.</p>
+<p><img src="images/shared_memory_flow.svg" alt="Diagramma chiave IPC"></p>
+<hr>
+<p>Le risorse IPC sono <strong>permanenti</strong>: se un processo termina o si stacca dalla risorsa questa non si elimina automaticamente. è necessario una chiamata eplicita alla primitiva <code>clt</code>.</p>
+<p><img src="images/persistenza_ipc.svg" alt="Diagramma chiave IPC"></p>
+<h2 id="primitiva-get"><a class="header" href="#primitiva-get">Primitiva <code>get</code></a></h2>
+<p>La primitiva <code>get</code> ha la seguente firma:</p>
+<pre><code class="language-c">  int ...get(key_t key, ..., int flag);
+</code></pre>
+<ul>
+<li>
+<p><strong>key</strong> è la chiave dell’oggetto IPC.</p>
+<p>Tale chiave è un valore intero arbitrario che può essere:</p>
+<ul>
+<li>cablato nel codice;</li>
+<li>generato da <code>ftok()</code>;</li>
+<li>impostato con la macro <code>IPC_PRIVATE</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong>flag</strong>: indica la modalitá di acquisizione della risorsa e i permessi di accesso.</p>
+<p>Corrisponde ad una o piú costanti, passate insieme in “or logico” (carattere di pipe <code>|</code> ). Tali costanti sono:</p>
+<ul>
+<li>macro <code>IPC_CREAT</code> definita in <code>sys/ipc.h</code>: impone di creare una nuova risorsa se non ne esiste giá una con la stessa chiave indicata. Se la risorsa è giá esistente allora il flag è ininfluente.</li>
+<li>macro <code>IPC_EXCL</code> definita in <code>sys/ipc.h</code>: utilizzabile con <code>IPC_CREAT</code> per imporre di ritornare un errore se la risorsa è giá esistente. Questa modalitá è utile per evitare di inizializzare la risorsa IPC piú volte. Però nel caso la risorsa non esista questa viene creata.</li>
+<li><strong>Permessi di accesso</strong>: sono specificati con la notazione ottale. Per esempio, il valore <code>0664</code> indica i permessi di lettura e scrittura per <code>user</code> e <code>group</code>, e di sola lettura per <code>others</code>.</li>
+</ul>
+</li>
+</ul>
+<p>La primitiva <code>get</code> infine restituisce come risultato il <strong>descrittore della risorsa IPC</strong>, ovvero un valore intero che identifica la risorsa.</p>
+<h2 id="primitiva-ctl"><a class="header" href="#primitiva-ctl">Primitiva <code>ctl</code></a></h2>
+<p>La primitiva <code>ctl</code> ha la seguente firma:</p>
+<pre><code class="language-c">  int ...ctl(int desc, ..., int cmd, ...);
+</code></pre>
+<ul>
+<li><code>desc</code>: indica il descrittore della risorsa ( ottenuto dalla chiamata <code>get()</code>).</li>
+<li><code>cmd</code>: specifica il comando da eseguire, è possibile scegliere tra:
+<ul>
+<li><code>IPC_RMID</code>: rimozione della risorsa indicata;</li>
+<li><code>IPC_STAT</code>: richiede informazioni statistiche sulla risorsa indicata;</li>
+<li><code>IPC_SET</code>: richiede al sistema la modifica di un sottoinsieme degli attributi della risorsa (es. i permessi di accesso).</li>
+</ul>
+</li>
+</ul>
+<p>Il parametro di ritorno di <code>ctl()</code> è pari ad <code>-1</code> nel caso di un errore, <code>0</code> nel caso di operazione riuscita.</p>
+<h2 id="ipc-keys"><a class="header" href="#ipc-keys">IPC keys</a></h2>
+<p>Ogni risorsa <code>IPC</code> è identificata da un <strong>valore univoco nel sistema</strong>, denominato <strong>chiave</strong>(IPC key). Abbiamo diversi modi per assegnare una chiave ad una risorsa IPC:</p>
+<h3 id="chiave-cablata-nel-codice"><a class="header" href="#chiave-cablata-nel-codice">Chiave cablata nel codice</a></h3>
+<p>Il modo piú semplice di <strong>scegliere una chiave</strong> è <strong>usare un valore a piacere</strong> del programmatore, “cablato” nel programma.</p>
+<p>ESEMPIO:</p>
+<pre><code class="language-c">key_t mykey = 123;
+int id = ...get(mykey,...);
+</code></pre>
+<p>Tale approccio è molto svantaggioso perché è <strong>statico</strong>, la chiave viene assegnata in modo statico, questo vuol dire che erroneamente un processo potrebbe utilizzare una chiave giá utilizzata per un’altra risorsa IPC destinata ad uno scopo completamente diverso.</p>
+<p>In questo caso potrebbero crearsi delle <strong>interferenzze</strong> e quindi problemi di comunicazione tra processi.</p>
+<h3 id="chiave-generata-da-ftok"><a class="header" href="#chiave-generata-da-ftok">Chiave generata da <code>ftok()</code></a></h3>
+<p>La chiamata di sistema <code>ftok()</code> genera una chiave univoca per una risorsa partendo da una stringa e un carattere passatogli per parametri.</p>
+<pre><code class="language-c">key_t ftok(char * path, char id);
+</code></pre>
+<p>ESEMPIO:</p>
+<pre><code class="language-c">key_t mykey = ftok("./percorso", 'a');
+</code></pre>
+<p>Per convesione si utilizza come prima stringa il percorso file dell’eseguibile che intende creare la risorsa. In generale piú esser inserita una qualsiasi stringa di caratteri. Il secondo parametro <code>id</code> invece è un carattere scelto a piacere.</p>
+<p>La primitiva restituisce una chiave IPC ottenuta da una funzione aritmetica che combina l’<em>inode number</em>, il <em>minor device number</em>, del file indicato dal path, e il carattere indicato come secondo argomento.</p>
+<ul>
+<li><em>inode number</em> è l’identificatore univoco del file nel filesystem;</li>
+<li><em>minor device number</em> è l’identificatore della partizione/dispositivo dove risiede il file.</li>
+</ul>
+<p>Il metodo che utilizza <code>ftok()</code> per la creazione di una chiave associabile ad una risorsa IPC è quello piú versatile; è l’unico modo che abbiamo per permettere la comunicazione tra due processi associati ad eseguibili differenti.</p>
+<h2 id="chiave-ipc_private"><a class="header" href="#chiave-ipc_private">Chiave <code>IPC_PRIVATE</code></a></h2>
+<p><code>IPC_PRIVATE</code> (equivale a <code>0</code>), è un valore costante, che può essere usato per creare una risorsa <strong>senza chiave</strong>. In questo caso la risorsa è accessibile unicamente dal processo creatore e degli eventuali figli aventi la stessa immagine (utilizzare <code>exec()</code> significherebbe perdere l’accesso alla risorsa).</p>
+<p>ESEMPIO:</p>
+<pre><code class="language-c">key_t mykey = IPC_PRIVATE;
+int id = ...get(mykey, ...);
+
+pid_t pid = fork();
+if(pid == 0){
+  /*figlio, utilizza il descrittore "id" */
+}
+else if(pid &gt; 0){
+  /*padre, utilizza il descrittore "id" */
+}
+</code></pre>
+<h2 id="i-comandi-ipcs-e-ipcrm"><a class="header" href="#i-comandi-ipcs-e-ipcrm">I comandi <code>ipcs</code> e <code>ipcrm</code></a></h2>
+<p>Il comando <code>ipcs</code> visualizza tutte le strutture IPC (code di messaggi, shared memory, semafori) allocate, mostrandone la chiave IPC, l’identificativo del descrittore della risorsa, l’utente proprietario, i permessi per la risorsa e informazioni legate al tipo di risorsa IPC.</p>
+<pre><code class="language-bash">------ Message Queues --------
+key        msqid      owner      perms      used-bytes   messages    
+
+------ Shared Memory Segments --------
+key        shmid      owner      perms      bytes      nattch     status      
+0x00000000 6          giovanni   600        524288     2          dest         
+0x00000000 65564      giovanni   600        33554432   2          dest         
+0x00000000 65573      giovanni   606        4718592    2          dest         
+0x00000000 65574      giovanni   606        4718592    2          dest         
+0x00000000 32810      giovanni   606        12072960   2          dest         
+0x00000000 32811      giovanni   606        12072960   2          dest         
+0x00000000 32821      giovanni   600        524288     2          dest         
+
+------ Semaphore Arrays --------
+key        semid      owner      perms      nsems   
+</code></pre>
+<p>è possibile utilizzare i seguenti flag per mostrare solo alcune risorse IPC:</p>
+<pre><code class="language-bash">  Resource options:
+ -m, --shmems      shared memory segments
+ -q, --queues      message queues
+ -s, --semaphores  semaphores
+ -a, --all         all (default)
+</code></pre>
+<p>Tale comando (<code>ipcs</code>) cattura le sue informazione dal <strong>filesystem virtuale</strong> <code>/proc</code> di Linux. In particolar modo in <code>/proc/sysvipc/shm</code> sono contenute tutte le informazioni sulle shared memory.</p>
+<p>Sempre nella stessa cartella possiamo trovare informazioni anche per le altre IPC:</p>
+<ul>
+<li><strong>message queue</strong> → <code>/proc/sysvipc/msg</code>;</li>
+<li><strong>semafori</strong> → <code>/proc/sysvipc/sem</code>.</li>
+</ul>
+<p>Il comando <code>ipcrm</code> invece ci permette di marcare come eliminabile al kernel una struttura IPC dato il suo identificativo. Il comando è molto utile quando il programmatore non ha rimosso esplicitamente le strutture allocate.</p>
+<p>ESEMPIO: eliminiamo la shared memory evente pid <code>133215</code></p>
+<pre><code class="language-bash">ipcrm -m 133215
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="shared-memory"><a class="header" href="#shared-memory">Shared memory</a></h1>
+<p>I processi UNIX( a differenza dei thread) non possono condividere memoria, neanche i processi “parenti”; questi non sono altro che copie dell’immagine del processo padre e hanno uno <em>spazio di indirizzamento</em> diverso. Un processo <strong>figlio</strong> eredita una <strong>copia</strong> dei dati del processo <strong>padre</strong>: dopo la system call <code>fork()</code> la modifica dei dati da parte di un processo non si ripercuite sui dati dell’altro processo.</p>
+<p>Una memoria condivisa (SHM) è una porzione di memoria accessibile da piú processi.</p>
+<p><img src="images/shared_memory.png" alt="alt text"></p>
+<p>L’utilizzo di una memoria condivisa SHM prevede il seguente workflow:</p>
+<ol>
+<li>Creazione della SHM</li>
+<li>Collegamento alla SHM</li>
+<li>Uso della SHM</li>
+<li>Scollegamento della SHM</li>
+<li>Eliminazione della SHM</li>
+</ol>
+<p>Per implementare una shared memory mediante i meccanismi offerti dallo <strong>standard systemV</strong> è necessario l’utilizzo di alcune primitive implementate in:</p>
+<pre><code class="language-c">#include &lt;sys/types&gt;
+#include &lt;sys/ipc.h&gt;
+#include &lt;sys/shm.h&gt;
+</code></pre>
+<p>Il kernel per tener traccia di una <strong>shared memory SystemV</strong> utilizza una struttura dati interna speciale per ogni segmento di memoria condivisa. Il nome della struttura che utilizza è <code>shmid_ds</code>, ed è definita in <code>linux/shm.h</code>.</p>
+<p>Tale struttura è utilizzabile tramite la libreria <code>sys/shm.h</code>.</p>
+<pre><code class="language-c">    /* One shmid data structure for each shared memory segment in the system. */
+
+struct shmid_ds {
+	struct ipc_perm shm_perm;        /* operation perms */
+	int     shm_segsz;               /* size of segment (bytes) */
+	time_t  shm_atime;               /* last attach time */
+	time_t  shm_dtime;               /* last detach time */
+	time_t  shm_ctime;               /* last change time */
+	unsigned short  shm_cpid;        /* pid of creator */
+	unsigned short  shm_lpid;        /* pid of last operator */
+	short   shm_nattch;              /* no. of current attaches */
+
+	/* the following are private */
+	unsigned short shm_npages;       /* size of segment (pages) */
+	unsigned long  *shm_pages;       /* array of ptrs to frames -&gt; SHMMAX */ 
+	struct vm_area_struct *attaches; /* descriptors for attaches */
+};
+</code></pre>
+<p><img src="images/struct_shm.png" alt="alt text"></p>
+<h3 id="creazione"><a class="header" href="#creazione">Creazione:</a></h3>
+<pre><code class="language-c">int shmget(key_t key, int size, int flag);
+</code></pre>
+<p><code>size</code> è la dimensione in byte della memoria condivisa. Possiamo quindi specificare qualsiasi valore di dimensione; supponendo di scegliere <code>size = 4</code> stiamo chiedendo di avere una memoria condivisa di <code>4 byte</code> ma in realtá il kernel sta allocando uno spazio di memoria pari a <code>4KB</code> perché la memoria condivisa viene alocata in <strong>unitá di pagina</strong> del sistema, e la <strong>dimensione di una pagina su linux</strong> è pari a <strong><code>4 KB</code></strong>.</p>
+<p>Restituisce <code>-1</code> in caso di fallimento. Invece se ha successo restituisce il <strong>descrittore della risorsa</strong>.</p>
+<hr>
+<p>ESEMPIO: con chiave cablata e senza flags</p>
+<pre><code class="language-c">	...
+	key_t chiave = 40;
+	int ds_shm;
+	ds_shm = shmget(chiave, 1024, 0);
+
+	if(ds_shm &lt; 0) {
+   		// la risorsa non esiste! esci dal programma
+    	perror(“errore shmget!”);
+    	exit(1);
+  	}
+  	... Utilizza la shared memory già esistente...
+</code></pre>
+<p>Se la shared memory non è stata giá creata da un altro processo, la funzione <code>shmget()</code> restituisce <code>-1</code>.</p>
+<hr>
+<p>ESEMPIO: con chiave cablata e flag <code>IPC_CREAT</code></p>
+<pre><code class="language-c">  	...
+	key_t chiave = 40;
+  	int ds_shm;
+  	ds_shm = shmget(chiave, 1024, IPC_CREAT | 0664);
+
+  	if(ds_shm &lt; 0) {
+   		// qualcosa è andato storto (memoria esaurita, etc.)
+    	perror(“errore shmget!”);
+    	exit(1);
+  	}
+  	... Utilizza la shared memory (esistente o nuova)...
+</code></pre>
+<p>In questo caso il flag <code>IPC_CREAT</code> impone di creare una nuova shared memory se non ne esiste una con la stessa <code>key</code>; la crea con le caratteristiche specificate di dimensione e permessi di accesso.</p>
+<p>Nel caso in cui esiste giá una shared memory vente tale valore di <code>key</code>,  la chiamata restituisce semplicemente il descrittore della risorsa senza tener conto di <code>size</code> e dei permessi di accesso specificati.</p>
+<hr>
+<p>ESEMPIO: chiave cablata e flag <code>IPC_CREAT</code> e <code>IPC_EXCL</code></p>
+<pre><code class="language-c">	key_t chiave = 40;
+ 	int ds_shm = shmget(chiave,1024,IPC_CREAT|IPC_EXCL|0664);
+ 	if(ds_shm &lt; 0) {
+   		// La risorsa già esiste, viene segnalato con ds_shm&lt;0.
+		// Per ottenere un descrittore dalla SHM, occorre
+   		// chiamare nuovamente shmget
+   		// (senza nè IPC_CREAT nè IPC_EXCL)
+   		
+   		ds_shm = shmget(chiave, 1024, 0);
+   		if(ds_shm&lt;0) { 
+   			/* errore */ 
+   		}
+	} else {
+   		// La risorsa non esisteva, ed è stata appena creata.
+   		// Il programma ha l’opportunità di inizializzarne
+   		// il contenuto (ad esempio, «0» o una stringa vuota).
+	}
+	... Utilizza la shared memory ...
+</code></pre>
+<p>La shared memory viene creata dal primo <code>get</code> solamente se non ne esiste giá una con la stessa chiave, altrimenti restituisce <code>-1</code>.</p>
+<p>In quest’ultimo caso otteniamo il descrittore con una chiamata <code>get</code> senza flag poichè sappiamo esistere la risorse IPC.</p>
+<hr>
+<p>ESEMPIO: utilizzo <code>ftok()</code> per creare una key adatta ad una risorsa IPC</p>
+<pre><code class="language-c">	key_t chiave = ftok("./eseguibile", 'k');
+  	int ds_shm;
+  	ds_shm = shmget(chiave, 1024, IPC_CREAT | 0664);
+
+  	if(ds_shm &lt; 0) {
+    	// qualcosa è andato storto (memoria esaurita, etc.)
+    	perror(“errore shmget!”);
+    	exit(1);
+  	}
+  	... Utilizza la shared memory (esistente o nuova)...
+</code></pre>
+<p>In questo esempio non viene utilizzata una chiave cablata nel codice, ma più opportunamente si utilizza la system call <code>ftok()</code> per ottenere una IPC key univoca.</p>
+<p>Se due programmi differenti utilizzassero gli stessi parametri per la <code>ftok()</code> otterrebbero la stessa IPC key.</p>
+<hr>
+<p>ESEMPIO: chiave privata con <code>IPC_PRIVATE</code></p>
+<pre><code class="language-c">	int ds_shm = shmget(IPC_PRIVATE, 1024, IPC_CREAT|0664);
+
+  	if(ds_shm &lt; 0) {
+    	// qualcosa è andato storto (memoria esaurita, etc.)
+    	perror(“errore shmget!”);
+    	exit(1);
+  	}
+  	... Utilizza la shared memory ...
+</code></pre>
+<p>In questo esempio si crea una shared memory senza assegnare una chiave, dal momento che IPC_PRIVATE equivale ad una chiave IPC pari a <code>0</code>.</p>
+<p>Infatti, utilizzando il comando ipcs, la chiave apparirà con il valore pari a <code>0</code>.</p>
+<p>In questo caso, la shared memory è utilizzabile solo dal padre e i suoi figli, ovvero non è una soluzione corretta nel caso in cui avessimo più programmi eseguibili.</p>
+<h2 id="collegamento"><a class="header" href="#collegamento">Collegamento</a></h2>
+<p>Per poter utilizzare una shared memory e necessario effettuare il cosidetto <em>attach</em> tramite la system call <code>shmat()</code>,</p>
+<pre><code class="language-c">void *shmat(int shmid, const void *shmaddr, int shmflg);
+</code></pre>
+<p>dove:</p>
+<ul>
+<li>
+<p><code>shmid</code> e l’identificatore del segmento di memoria:</p>
+</li>
+<li>
+<p><code>shmaddr</code> è l’indirizzo dell’area di memoria del processo chiamante al quale collegare il segmento di memoria condivisa.</p>
+<p>Se si utilizza il valore <code>0</code> o <code>NULL</code>, il kernel proverá a trovare una regione di memoria non mappata giá per allocarla per la shared memory. Questo approccio è quello raccomandato.</p>
+</li>
+<li>
+<p><code>flag</code> indica le opzioni di collegamento, ad esempio per collegare in sola lettura si inserisce <code>IPC_RDONLY</code>.</p>
+</li>
+</ul>
+<p>La funzione <code>shmat()</code> restituirà l’indirizzo di memoria, nello spazio di indirizzamento del processo chiamante, al quale il segmento di memoria condivisa è stato collegato (<em>attached</em>).</p>
+<p>In caso di fallimento, la funzione restituirà il valore <code>-1</code>.</p>
+<h2 id="scollegamento"><a class="header" href="#scollegamento">Scollegamento</a></h2>
+<p>Una volta finito di utilizzare una <code>shm</code> è necessario scollegarsi (<em>detach</em>) dalla memoria condivisa tramite la system call <code>shmdt()</code>.</p>
+<p>Questa operazione di norma è <strong>inclusa</strong> nel marcare come eliminabile una shared memory (<code>shmctl(shmid, IPC_RMID, NULL)</code>).</p>
+<pre><code class="language-c">int shmdt(const void *shmaddr);
+</code></pre>
+<p>dove:</p>
+<ul>
+<li><code>shmaddr</code> è l’indirizzo a cui la memoria condivisa era stata collegata precedentemente con <code>shmat()</code>.</li>
+</ul>
+<p>Ha come valore di ritorno:</p>
+<ul>
+<li><code>0</code> se l’operazione è andata a buon fine;</li>
+<li><code>1</code> in caso di errore, impostando <code>errno</code> (variabile globale delle funzioni in C) ad un valore corrispondente al tipo di errore riscontrato.</li>
+</ul>
+<h2 id="controllo"><a class="header" href="#controllo">Controllo</a></h2>
+<p>La chiamata di sistema <code>shmctl()</code> permette di invocare un comando di controllo su una <em>shared memory</em> esistente.</p>
+<pre><code class="language-c">int shmctl(int shmid, int cmd, struct shmid_ds *buf);
+</code></pre>
+<p>dove:</p>
+<ul>
+<li>
+<p><code>shmid</code> è il descrittore della memoria condivisa su cui si vuole operare;</p>
+</li>
+<li>
+<p><code>cmd</code> specifica il comando da eseguire.</p>
+<p>Valori validi sono:</p>
+<ul>
+<li><code>IPC_STAT</code>: copia le informazioni di stato, della memoria condivisa, dalla struttura dati interna la kernel nella struttura <code>shmid_ds</code> puntata dalla variabile <code>buf</code>;</li>
+<li><code>IPC_SET</code>: permette di scrivere i valori di qualche membro della struttura <code>shmid_ds</code> puntata dalla variabile <code>buf</code> alla struttura interna al kernel;</li>
+<li><code>IPC_RMID</code>: marca da eliminare la shared memory, in modo che il kernel la rimuova solo quando non vi sono piú processi collegati;</li>
+<li><code>SHM_LOCK</code>: impedisce che il segmento di memoria condiviso venga <em>swappato</em> o paginato.</li>
+</ul>
+</li>
+<li>
+<p><code>buf</code> è il puntatore alla struttura di tipo <code>shmid_ds</code>; funge sia da parametro di ingresso che da parametro di uscita, a seconda del <code>cmd</code> inserito.</p>
+</li>
+</ul>
+<p>La chiamata a sistema se fallisce restituisce <code>-1</code>.</p>
+<h2 id="codice-visto-in-aula-contenente-i-concetti-chiave"><a class="header" href="#codice-visto-in-aula-contenente-i-concetti-chiave">Codice visto in aula (contenente i concetti chiave)</a></h2>
+<h3 id="wokrflow-di-una-shared-memory"><a class="header" href="#wokrflow-di-una-shared-memory">wokrflow di una shared memory</a></h3>
+<pre><code class="language-c">#include &lt;sys/shm.h&gt;
+#include &lt;sys/ipc.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+
+
+int main(){
+    //obiettivi
+    // creare una chiave 
+    // ottenere il descrittore
+    // utilizzare la shm
+
+    // creiamo/otteniamo il descrittore della risorsa
+    int *p = NULL;
+    key_t shm_key = IPC_PRIVATE;
+    int ds_shm = shmget(shm_key, sizeof(int), IPC_CREAT | 0664);
+    if (ds_shm &lt; 0){
+        printf("errore nella creazione della shm");
+        exit(-1);
+    }
+
+    // colleghiamoci alla risorsa
+
+    p = (int *) shmat(ds_shm,NULL,0); 
+    // avenfo inserto NULL al secondo parametro do il compito di trovare un buffer di memoria disponibile da utilizzare per la shared memory
+    // al posto di 0 avrei potuto inserire dei flag.
+    if(p == NULL){
+        printf("errore nella shmat()\n");
+        exit(-1);
+    }
+
+    printf("dettagli della shm\n");
+    printf("chiave IPC: %d\n", shm_key);
+    printf("descrittore IPC: %d\n",ds_shm);
+    printf("indirizzo della shm dopo l'attach: %p\n",p);
+
+    // utilizziamo la risorsa
+    *p = 10;
+
+    // marco la shm come da eliminare per il kernel
+    shmctl(ds_shm, IPC_RMID,NULL); // non sará eliminata fin tanto che esiste un processo attached
+
+
+    return 0;
+}
+</code></pre>
+<p>Il risultato dell’esecuzione:</p>
+<pre><code class="language-bash">dettagli della shm
+chiave IPC: 0
+descrittore IPC: 98326
+indirizzo della shm dopo l'attach: 0x7948fda27000
+</code></pre>
+<hr>
+<h3 id="shared-memory-tra-processo-padre-e-figlio"><a class="header" href="#shared-memory-tra-processo-padre-e-figlio">Shared memory tra processo padre e figlio</a></h3>
+<p>Proviamo adesso ad utilizzare la shared memory tra processo padre e processo figio.</p>
+<p>Prima utilizzando <code>IPC_PRIVATE</code> come chiave e successivamente utilizzarne una ricavata dalla chiamata di sistema <code>ftok()</code>.</p>
+<pre><code class="language-c">#include &lt;sys/shm.h&gt;
+#include &lt;sys/ipc.h&gt;
+#include &lt;sys/wait.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+
+int main(){
+   //obiettivi
+   // creare una chiave 
+   // ottenere il descrittore
+   // utilizzare la shm
+
+   // creiamo/otteniamo il descrittore della risorsa
+   int *p = NULL;
+   key_t shm_key = IPC_PRIVATE;
+   //key_t shm_key = ftok(".sharedMemory_padre_figlio.c",'b');
+   int ds_shm = shmget(shm_key, sizeof(int), IPC_CREAT | 0664);
+   if (ds_shm &lt; 0){
+       printf("errore nella creazione della shm");
+       exit(-1);
+   }
+
+   // colleghiamoci alla risorsa
+
+   p = (int *) shmat(ds_shm,NULL,0); 
+   // avenfo inserto NULL al secondo parametro do il compito di trovare un buffer di memoria disponibile da utilizzare per la shared memory
+   // al posto di 0 avrei potuto inserire dei flag.
+   if(p == NULL){
+       printf("errore nella shmat()\n");
+       exit(-1);
+   }
+
+   printf("dettagli della shm\n");
+   printf("chiave IPC: %d\n", shm_key);
+   printf("descrittore IPC: %d\n",ds_shm);
+   printf("indirizzo della shm dopo l'attach: %p\n",p);
+
+   // creiamo un processo figlio per provare la shared memory appena creata.
+   pid_t pid = fork();
+   if ( pid == 0 ) {// FIGLIO
+       printf("[FIGLIO %d] il contenuto della shm: %d\n",getpid(),*p);
+       *p = 123;// cambio il valore contenuto nella shared memory
+       exit(0);
+   }else if ( pid &gt; 0 ){// PADRE
+       wait(NULL);
+       printf("[PADRE %d] contenuto della shm: %d\n",getpid(),*p);
+   }
+
+
+   
+
+   // macro la shm come da eliminare per il kernel
+   shmctl(ds_shm, IPC_RMID,NULL); // non sará eliminata fin tanto che esiste un processo attached
+
+
+   return 0;
+}
+</code></pre>
+<p>Il risultato dell’esecuzione è:</p>
+<pre><code class="language-bash">chiave IPC: 0
+descrittore IPC: 98333
+indirizzo della shm dopo l`attach: 0x7ed908c19000
+[FIGLIO 70150] il contenuto della shm: 0
+[PADRE 70149] contenuto della shm: 123
+</code></pre>
+<p><code> 0x7608e5496000</code> è l’indirizzo di memoria, nello spazio di indirizzamento del processo chiamante, al quale il segmento di memoria condivisa è stato collegato (<em>attached</em>).</p>
+<p>Sia il processo padre che il processo figlio ottengono una copia del puntatore a memoria condivisa.</p>
+<p>Possiamo visualizzare lo spazio di indirizzamento e verificare in che posizione di questo si trova la shared memory nello pseudo filesystem <code>proc</code>; conoscendo il PID del processo in questione</p>
+<p>Utilizziamo quindi il comando:</p>
+<pre><code class="language-bash">sudo cat /proc/70149/maps
+</code></pre>
+<p>ottengo:</p>
+<pre><code class="language-bash">59c2dcab7000-59c2dcab8000 r--p 00000000 103:04 1734183   /home/giovanni/Desktop/SO/Sistemi_Operativi/IPC/sharedMemory_padre_figlio
+59c2dcab8000-59c2dcab9000 r-xp 00001000 103:04 1734183   /home/giovanni/Desktop/SO/Sistemi_Operativi/IPC/sharedMemory_padre_figlio
+59c2dcab9000-59c2dcaba000 r--p 00002000 103:04 1734183   /home/giovanni/Desktop/SO/Sistemi_Operativi/IPC/sharedMemory_padre_figlio
+59c2dcaba000-59c2dcabb000 r--p 00002000 103:04 1734183   /home/giovanni/Desktop/SO/Sistemi_Operativi/IPC/sharedMemory_padre_figlio
+59c2dcabb000-59c2dcabc000 rw-p 00003000 103:04 1734183   /home/giovanni/Desktop/SO/Sistemi_Operativi/IPC/sharedMemory_padre_figlio
+59c2eb298000-59c2eb2b9000 rw-p 00000000 00:00 0          [heap]
+7ed908800000-7ed908828000 r--p 00000000 103:04 688600    /usr/lib/x86_64-linux-gnu/libc.so.6
+7ed908828000-7ed9089b0000 r-xp 00028000 103:04 688600    /usr/lib/x86_64-linux-gnu/libc.so.6
+7ed9089b0000-7ed9089ff000 r--p 001b0000 103:04 688600    /usr/lib/x86_64-linux-gnu/libc.so.6
+7ed9089ff000-7ed908a03000 r--p 001fe000 103:04 688600    /usr/lib/x86_64-linux-gnu/libc.so.6
+7ed908a03000-7ed908a05000 rw-p 00202000 103:04 688600    /usr/lib/x86_64-linux-gnu/libc.so.6
+7ed908a05000-7ed908a12000 rw-p 00000000 00:00 0 
+7ed908bfd000-7ed908c00000 rw-p 00000000 00:00 0 
+7ed908c19000-7ed908c1a000 rw-s 00000000 00:01 98333      /SYSV00000000 (deleted)
+7ed908c1a000-7ed908c1c000 rw-p 00000000 00:00 0 
+7ed908c1c000-7ed908c1e000 r--p 00000000 00:00 0          [vvar]
+7ed908c1e000-7ed908c20000 r--p 00000000 00:00 0          [vvar_vclock]
+7ed908c20000-7ed908c22000 r-xp 00000000 00:00 0          [vdso]
+7ed908c22000-7ed908c23000 r--p 00000000 103:04 688597    /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7ed908c23000-7ed908c4e000 r-xp 00001000 103:04 688597    /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7ed908c4e000-7ed908c58000 r--p 0002c000 103:04 688597    /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7ed908c58000-7ed908c5a000 r--p 00036000 103:04 688597    /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+7ed908c5a000-7ed908c5c000 rw-p 00038000 103:04 688597    /usr/lib/x86_64-linux-gnu/ld-l
+7ffe4f02e000-7ffe4f050000 rw-p 00000000 00:00 0          [stack]
+ffffffffff600000-ffffffffff601000 --xp 00000000 00:00 0  [vsyscall]
+
+</code></pre>
+<p>Dove ritroviamo il segmento a noi di interesse:</p>
+<pre><code class="language-bash">7ed908c19000-7ed908c1a000 rw-s 00000000 00:01 98333   /SYSV00000000 (deleted)
+</code></pre>
+<p>Notiamo che il primo indirizzo coincide con l’indirizzo del puntatore alla shared memory.</p>
+<p>Inoltre nonostante la <code>size</code> specificata per la shared memory fosse di soli <code>4 byte</code> (dimensione di un intero sulla mia architettura), ritroviamo un’area di memoria dedicata alla shared memory di dimensione <code>4KB</code>. <code>7ed908c1a000 - 7ed908c19000 = 4096</code>.</p>
+<p>Questo per il motivo specificato prima quando si è parlato della chiamata <code>get</code>.</p>
+<h3 id="shared-memory-con-exec"><a class="header" href="#shared-memory-con-exec">Shared memory con <code>exec()</code></a></h3>
+<p>Il processo padre crea un figlio che esegue una <code>exec()</code>, quindi non possiede piú la stessa immagine del padre ma è un processo del tutto diverso, anche nel testo (codice). In questi casi l’unica soluzione per ottenere una risorsa condivida è l’utilizzo della chiamata <code>ftok()</code>.</p>
+<p>NON possiamo utilizzare <code>IPC_PRIVATE</code>.</p>
+<pre><code class="language-c">#include &lt;sys/shm.h&gt;
+#include &lt;sys/ipc.h&gt;
+#include &lt;sys/wait.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+
+int main(){
+    //obiettivi
+    // creare una chiave 
+    // ottenere il descrittore
+    // utilizzare la shm
+
+    // creiamo/otteniamo il descrittore della risorsa
+    int *p = NULL;
+    //key_t shm_key = IPC_PRIVATE;
+    key_t shm_key = ftok(".shared_memory_exec&amp;ftok.c",'p');
+    int ds_shm = shmget(shm_key, sizeof(int), IPC_CREAT | 0664);
+    if (ds_shm &lt; 0){
+        printf("errore nella creazione della shm");
+        exit(-1);
+    }
+
+    // colleghiamoci alla risorsa
+
+    p = (int *) shmat(ds_shm,NULL,0); 
+    // avenfo inserto NULL al secondo parametro do il compito di trovare un buffer di memoria disponibile da utilizzare per la shared memory
+    // al posto di 0 avrei potuto inserire dei flag.
+    if(p == NULL){
+        printf("errore nella shmat()\n");
+        exit(-1);
+    }
+
+    printf("dettagli della shm\n");
+    printf("chiave IPC: %d\n", shm_key);
+    printf("descrittore IPC: %d\n",ds_shm);
+    printf("indirizzo della shm dopo l'attach: %p\n",p);
+
+    // creiamo un processo figlio per provare la shared memory appena creata.
+    pid_t pid = fork();
+    if ( pid == 0 ) {// FIGLIO
+        execl("./altro_prog","./altro_prog", (char *) 0);
+        printf("errore\n");
+        exit(-5);
+    }else if ( pid &gt; 0 ){// PADRE
+        wait(NULL);
+        printf("[PADRE %d] contenuto della shm: %d\n",getpid(),*p);
+    }
+
+
+   
+
+    // macro la shm come da eliminare per il kernel
+    shmctl(ds_shm, IPC_RMID,NULL); // non sará eliminata fin tanto che esiste un processo attached
+
+
+    return 0;
+}
+</code></pre>
+<p>Risultato ottenuto:</p>
+<pre><code class="language-bash">dettagli della shm
+chiave IPC: -1
+descrittore IPC: 98336
+indirizzo della shm dopo l`attach: 0x76e4e8c28000
+dettagli della shm
+chiave IPC: -1
+descrittore IPC: 98336
+indirizzo della shm dopo l`attach: 0x78f6872c7000
+[FIGLIO 73759] il contenuto della shm: 0
+[PADRE 73758] contenuto della shm: 123
+</code></pre>
+<p>Da notare che l’indirizzo per la shared memory è cambiato. Appunto perché il processo figlio non è piú una copia <strong>dell’immagine</strong> del processo padre una volta utilizzato la chiamata <code>exec()</code>.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="semaphore"><a class="header" href="#semaphore">Semaphore</a></h1>
+<p>I semafori sono delle risorse IPC, ma il loro valore interno si comporta come una variabile condivisa gestita dal kernel.</p>
+<p>Vengono utilizzati per la <strong>cooperazione</strong> e la <strong>competizione</strong> tra processi. Due o più processi possono cooperare o competere nell’esecuzione di una <strong>sezione critica</strong> attraverso l’uso dei semafori affinché non ci siano problemi di <em>sincronizzazione</em> o <em>interferenze</em>.</p>
+<p>I processi condividono tra loro una <strong>istanza di semaforo</strong> <code>s</code>. Tramite questa variabile i processi possono sincronizzarsi sull’utilizzo di una <strong>risorsa critica</strong>, ovvero una risorsa condivisa.</p>
+<p>Un processo più fare generalmente due operazioni su un semaforo <code>s</code>:</p>
+<ul>
+<li><code>signal(s)</code>: può inviare un segnale al semaforo e in certe condizioni risvegliare i processi in attesa.</li>
+<li><code>wait(s)</code>: primitiva che permette ad un processo di assicurarsi la risorsa. Nel caso la risorsa non sia disponibile perché il processo che la possiede non ha ancora inviato un segnale <code>signal(s)</code>, il processo che la richiede si sospende fino a che non riceverà il segnale <code>signal(s)</code>.</li>
+</ul>
+<h4 id="modello-concettuale-semaforico"><a class="header" href="#modello-concettuale-semaforico">MODELLO CONCETTUALE SEMAFORICO:</a></h4>
+<p><img src="images/modello_concettuale_semaforico.png" alt="alt text"></p>
+<p>L’uso classico di un semaforo è per implementare un meccanismo di <strong>locking</strong> che grantisca la <strong>mutua esclusione</strong> tra processi.</p>
+<p>Possiamo implementare la <code>wait()</code> e la <code>signal()</code> sfruttando quelle che sono le primitive offerte offerte dalla libreria <code>sys/sem.h</code>.</p>
+<p>Queste due procedure ci serviranno per delimitare la sezione critica.</p>
+<h2 id="strutture-semaforiche-nel-kernel"><a class="header" href="#strutture-semaforiche-nel-kernel">Strutture semaforiche nel kernel</a></h2>
+<p>Il kernel Linux mantiene due strutture per implementare un semaforo: <code>sem</code> e <code>semid_ds</code>.</p>
+<p>In particolare ogni volta che cerchiamo di istanziare un semaforo in realtà stiamo istanziando un <em>array</em> di semafori; puntatore a tale <em>array</em> è contenuto nella struttura <code>semid_ds</code>. Ogni elemento di questo array è una struttura <code>sem</code> che descrive il singolo semaforo.</p>
+<p>La struttura <code>sem</code> è definita in <code>linux/sem.h</code>:</p>
+<pre><code class="language-c">struct sem {
+	short   sempid;         /* pid of last operation */
+   	ushort  semval;         /* current value */
+   	ushort  semncnt;        /* num procs awaiting increase in semval */
+   	ushort  semzcnt;        /* num procs awaiting semval = 0 */
+};
+</code></pre>
+<p>dove:</p>
+<ul>
+<li>
+<p><code>sempid</code> è il PID del processo che ha eseguito l’ultima operazione su <code>s</code>;</p>
+</li>
+<li>
+<p><code>semval</code> è il valore corrente del semaforo;</p>
+</li>
+<li>
+<p><code>semncnt</code> è il numero di processi che sono in attesa che una data risorsa diventi disponibile;</p>
+<p>(numero di processi che attendono l’incremento del semaforo)</p>
+</li>
+<li>
+<p><code>semzcnt</code> è il numero di processi che sono in attesa che il valore del semaforo sia pari a <code>0</code></p>
+</li>
+</ul>
+<p>Invece la struttura che contiene l’array di semafori all’interno del sistema è <code>semid_ds</code>.</p>
+<pre><code class="language-c">/* One semid data structure for each set of semaphores in the system. */
+struct semid_ds {
+	struct ipc_perm sem_perm;       /* permissions .. see ipc.h */
+   	time_t          sem_otime;      /* last semop time */
+   	time_t          sem_ctime;      /* last change time */
+   	struct sem      *sem_base;      /* ptr to first semaphore in array */
+   	struct wait_queue *eventn;
+   	struct wait_queue *eventz;
+   	struct sem_undo  *undo;         /* undo requests on this array */
+   	ushort          sem_nsems;      /* no. of semaphores in array */
+};
+</code></pre>
+<p>dove:</p>
+<ul>
+<li>
+<p><code>sem_perm</code> è un’istanza della struttura <code>ipc_perm</code> che è definita in <code>linux/ipc.h</code>.</p>
+<p>Questa struttura mantiene le informazioni sui permessi impostati per il semaforo.</p>
+</li>
+<li>
+<p><code>sem_otime</code> è il tempo dell’ultima operazione <code>semop()</code>;</p>
+</li>
+<li>
+<p><code>sem_ctime</code> è il tempo dell’ultima modifica fatta alla struttura in esame;</p>
+</li>
+<li>
+<p><code>sem_base</code> è il puntatore al primo semaforo nell’array;</p>
+</li>
+<li>
+<p><code>sem_undo</code> è il puntatore ad un lista di strutture, una per ogni processo che ha richiesto una <em>undo</em> durante una <code>semop()</code> sul set di semafori <code>sem_base</code>;</p>
+<p>Ovvero il numero di richieste al kernel di sistemare le situazioni in cui un processo muore prima di effettuare una <code>signal()</code> e quindi riportare il valore di <code>sem_val</code> a quello iniziale.</p>
+<p>Quindi il kernel, nel caso in cui un processo muore prima di poter effettuare la <code>signal()</code> e l’operazione che ha fatto utilizza il flag <code>SEM_UNDO</code>, annulla automaticamente tale operazione sul semaforo, riportandolo al valore iniziale;</p>
+<p>Evita situazioni di <em>deadlock</em></p>
+</li>
+<li>
+<p><code>sem_nsems</code> è il numero di semafori nell’array di semafori (<em>semaphore set</em>).</p>
+</li>
+</ul>
+<h2 id="semaphores-workflow"><a class="header" href="#semaphores-workflow">Semaphores’ workflow</a></h2>
+<p>Per implementare un semaforo mediante i meccanismi offerti dallo <strong>standard systemV</strong> è necessario l’utilizzo di alcune primitive implementate in:</p>
+<pre><code class="language-c">#include &lt;sys/types.h&gt;
+#include &lt;sys/ipc.h&gt;
+#include &lt;sys/sem.h&gt;
+</code></pre>
+<h3 id="creazione-semget"><a class="header" href="#creazione-semget">Creazione: <code>semget()</code></a></h3>
+<p>La primitiva che permette di creare un nuovo set di semafori è la system call <code>semget()</code>:</p>
+<pre><code class="language-c">int semget(key_t key, int nsems, int semflg);
+</code></pre>
+<p>Tale funzione restituisce il <strong>descrittore</strong> del <em>semaphore set</em> associato alla chiave specificata in <code>key</code>.</p>
+<p>Il valore della chiave è ottenibile cablando un valore, con <code>IPC_PRIVATE</code>, o con <code>ftok()</code> a seconda degli utilizzi sul semaphore set.</p>
+<p>I flag inseribili in <code>semflg</code> sono:</p>
+<ul>
+<li><code>IPC_CREAT</code>;</li>
+<li><code>IPC_EXCL</code>;</li>
+<li>Permessi di accesso in ottale.</li>
+</ul>
+<p>Si possono inserire più di uno per un singolo semaphore set utilizzando l’operatore or logico <code>|</code>.</p>
+<p>In caso di successo, la <code>semget()</code>, restituisce il descrittore del semaphore set; in caso di fallimento viene restituito <code>-1</code>.</p>
+<p>Il numero massimo di semafori in un singolo semaphore set è definito in <code>linux/sem.h</code> come:</p>
+<pre><code class="language-c">#define SEMMSL  250
+</code></pre>
+<p>Questo valore dipende dalla propria architettura, per ottenere tali informazioni è necessario utilizzare il comando <code>ipcs -l</code> che restituisce diverse informazioni anche per le altre IPC.</p>
+<p>Per creare un array semaforico di 2 semafori <strong>con chiave</strong> nulla (quindi i semafori saranno accessibili unicamente al processo padre e agli eventualli figli):</p>
+<pre><code class="language-c">key_t sem_key = IPC_PRIVATE;
+int sem_ds = semget(key, 2, IPC_CREATE | 0644);
+</code></pre>
+<p><img src="images/creazione_semaforo.svg" alt="alt text"></p>
+<h3 id="inizializzazione-e-rimozione-semctl"><a class="header" href="#inizializzazione-e-rimozione-semctl">Inizializzazione e rimozione: <code>semctl()</code></a></h3>
+<p>Per poter inizializzare e rimuovere un semafor si utilizza la system call <code>semctl()</code>.</p>
+<pre><code class="language-c">int semctl(int semid, int semnum, int cmd, ...);
+</code></pre>
+<p>La system call esegue l’operazione specificata in <code>cmd</code> sul <em>semaphore set</em> indentificato da <code>semid</code> e sull’<code>semnum</code>-esimo semaforo dell’array.</p>
+<p>Alcuni possibili valori da usare per <code>cmd</code> sono:</p>
+<ul>
+<li><code>SETVAL</code>: imposta il valore, specificato come quarto parametro, di uno specifico semaforo indentificato da <code>semnum</code> all’interno del <em>semaphore set</em> <code>semid</code>;</li>
+<li><code>IPC_RMID</code>: rimuove il <em>semaphore set</em> <code>semid</code> dal kernel. In realtà il <em>semaphore set</em> viene <strong>marcato come eliminabile</strong>, non eliminato direttamente. Viene effettivamente eliminato dal kernel nel momento in cui nessun processo lo sta ancora utilizzando.</li>
+</ul>
+<p>In definitiva per poter un array semaforico, a due valori <code>val1</code> e <code>val2</code>:</p>
+<pre><code class="language-c">semctl(semid, 0, SETVAL, val1);
+semctl(semid, 1, SETVAL, val2);
+</code></pre>
+<p>Per poter rimuovere un array semaforico (in questo caso la variabile <code>semnum</code> viene ignorata):</p>
+<pre><code class="language-c">semctl(semid, semnum, IPC_RMID);
+</code></pre>
+<h3 id="semaphore-operations-semop"><a class="header" href="#semaphore-operations-semop">semaphore operations: <code>semop()</code></a></h3>
+<p>Per eseguire operazioni sulla struttura identificativa di un semaforo (<code>sem</code>) è necessario utilizzare la system call <code>semop()</code>:</p>
+<pre><code class="language-c">int semop(int semid, struct sembuf *sops, size_t nsops);
+</code></pre>
+<p>In particolare <code>semop()</code> esegue operazioni sui semafori nell’array identificato da <code>semid</code>. <code>sops</code> è un array di operazioni definite da un struttura <code>sembuf</code>, mentre <code>nsops</code> è il numero di elementi all’interno dell’array <code>sops</code>.</p>
+<p>Ogni singola operazione è descritta da <code>sembuf</code>, una struttura contenente i seguenti campo:</p>
+<pre><code class="language-c">struct sembuf{
+	unsigned short sem_num;  /* semaphore number */
+   	short          sem_op;   /* semaphore operation */
+   	short          sem_flg;  /* operation flags */
+}
+</code></pre>
+<p>Due sono i valori che può assumere <code>sem_flg</code>: <code>IPC_NOWAIT</code> e <code>IPC_UNDO</code>.</p>
+<p>Se si specifica <code>IPC_UNDO</code>, l’operazione sará annullata nel momento in cui il processo termina inaspettatamente o volontariamente.</p>
+<p>L’insieme delle operazioni specificate da <code>sops</code>, array di <code>sembuf</code> passato per parametro alla chiamata di sistema <code>semop()</code>, sono eseguite in maniera <strong>atomica</strong>, ossia tutte le operazioni indicate devono poter essere effettuate simultaneamente, altrimenti la <code>semop()</code> si blocca o ritorna immediatamente.</p>
+<p>Si blocca nel caso default, ovvero un’operazione dell’array non può esser effettuata in maniera atomica e nessuna operazione ha specificato il flag <code>IPC_NOWAIT</code>. Quando avviene ciò il processo che vuole effettuare queste operazioni viene <strong>sospeso</strong> finché le condizioni per eseguire tutte le operazioni sui semafori non diventano soddisfatte.</p>
+<p>Invece ritorna immediatamente un errore nel caso in <strong>c’è una operazione non atomica</strong>, e almeno una operazione dell’array ha specificato il flag <code>IPC_NOWAIT</code>. Questo perché prevale la <strong>proprietá di atomicitá della <code>semop()</code></strong></p>
+<p>Ogni operazione è eseguita sul semaforo individuato da <code>sem_num</code> (in <code>sembuf</code>). In altre parole <code>sem_num</code> indica su quale semaforo, tra quelli presenti nel <em>semaphore set</em>, dovrá esser eseguita l’operazione.</p>
+<p>Ovviamente specificando un valore di <code>sem_num</code> con un indice non valido, la chiamata <code>semop()</code> fallisce e ritorna <code>-1</code>, impostando <code>errno</code> a <code>EINVAL</code>.</p>
+<p><code>errno</code> è una <strong>variabile globale</strong> usata dalle funzioni di sistema in C per indicare il tipo di errore avvenuto. Quando una chiamata di sistema fallisce (ritorna <code>-1</code>), imposta <code>errno</code> a un <strong>codice numerico</strong> che rappresenta la causa dell’errore.</p>
+<p>Nel caso analizzato: <code>EINVAL</code> è una costante simbolica (definita in <code>&lt;errno.h&gt;</code>) che significa “invalid argument”, cioè <strong>argomento non valido</strong>.</p>
+<h3 id="implementazione-delle-primitive-wait-e-signal-tramite-la-struttura-semaforica"><a class="header" href="#implementazione-delle-primitive-wait-e-signal-tramite-la-struttura-semaforica">Implementazione delle primitive <code>wait()</code> e <code>signal()</code> tramite la struttura semaforica</a></h3>
+<p>Prendendo in considerazione la system call <code>semop()</code>:</p>
+<pre><code class="language-c">int semop(int semid, struct sembuf *sops, size_t nsops);
+</code></pre>
+<p>I valori che può assumere il campo <code>sem_op</code> specificano tre possibili tipologie di operazioni che si possono compiere sul semaforo.</p>
+<p>Utilizzando queste tre tipi di operazioni, è possibile implementare le primitive <em>wait</em> (<code>sem_op &lt; 0</code>), <em>wait for zero</em> (<code>sem_op == 0</code>) e <em>signal</em> (<code>sem_op &gt; 0</code>).</p>
+<h4 id="implementazione-di-signal-sem_op--0"><a class="header" href="#implementazione-di-signal-sem_op--0">Implementazione di <code>signal()</code>: <code>sem_op &gt; 0</code></a></h4>
+<p>Se <code>sem_op &gt; 0</code>, l’operazione consisterá nell’addizionare il valore di <code>sem_op</code> al valore <code>semval</code> del semaforo.</p>
+<pre><code class="language-c">semval += sem_op;
+</code></pre>
+<p>Per implementare l’operazione di <code>signal()</code> è necessario che il processo chiamante dovrá avere i permessi per modificare i valori del semaforo.</p>
+<p>Questa operazione <strong>non</strong> causa in alcun caso il blocco del processo.</p>
+<p>Nel caso in cui sia specificato il flag <code>SEM_UNDO</code>, il kernel sottrae il valore <code>sem_op</code> dal valore del <em>semaphore adjustment</em> (<code>semadj</code>), il quale identifica un contatore delle operazioni <em>undo</em>.</p>
+<p>Tale contatore <code>semadj</code> è mantenuto all’interno di una struttura dati chiamata <strong>semaphore undo list</strong> che il kernel mantiene per <strong>processo</strong>.</p>
+<p>Il campo <code>semadj</code> indica <strong>quanto bisogna correggere</strong> il valore del semaforo se il processo muore prima di “bilanciare” le sue operazioni.</p>
+<p>Quindi per implementere l’operazione di <code>signal()</code> dobbiamo prima costruire e modificare i campo della struttura <code>sembuf</code> (definisce il tipo di operazione), impostando <code>sem_op</code> maggiore di zero.</p>
+<pre><code class="language-c">void Signal_Sem (int id_sem,int numsem){
+	struct sembuf sem_buf;
+	sem_buf.sem_num = numsem;
+	sem_buf.sem_flg = 0;
+	sem_buf.sem_op = 1;
+	semop(id_sem, &amp;sem_buf, 1);   //semaforo verde
+}
+</code></pre>
+<h4 id="implementazione-di-wait"><a class="header" href="#implementazione-di-wait">Implementazione di <code>wait()</code></a></h4>
+<p>Il comportamento della primitiva <code>semop()</code> nel momento in cui <code>sem_op &lt; 0</code> dipende dal valore corrente di <code>semval</code>.</p>
+<ul>
+<li>
+<p>Se <code>semval &gt;= |sem_op|</code> l’operazione procede immediatamente e il valore assoluto di <code>sem_op</code> è sottratto a <code>semval</code>.</p>
+<p>Se specificato il flag <code>SEM_UNDO</code> il kernel addiziona il valore <code>sem_op</code> al valore del <em>semaphore adjustmnt</em> (<code>semadj</code>) corrispondente, il quale identifica un contatore delle operazioni <em>undo</em>.</p>
+</li>
+<li>
+<p>Se <code>semval &lt; |sem_op|</code>, se specificato il flag <code>IPC_NOWAIT</code> la system call fallisce (<code>errno = EAGAIN</code>);</p>
+<p>altrimenti il valore del campo <code>semncnt</code> (il contatore dei processi sospesi nell’attesa che il <strong>valore del semaforo venga incrementato</strong>) viene incrementato di <code>1</code> e il processo chiamante si sospende finché una delle seguenti condizioni si avveri:</p>
+<ul>
+<li><code>semval &gt;= |sem_op|</code>, quando questa condizione sará verificata (significa che altri processi non sospesi avranno incrementato il valore di <code>semval</code>) il valore di <code>semncnt</code> sará decrementato e il valore corrente del semaforo sará:
+<pre><code class="language-c">semval -= |sem_op|
+</code></pre>
+Se specificato <code>SEM_UNDO</code> il sistema aggiornerá il contatore <code>semadj</code> del processo associato al semaforo in questione.</li>
+<li>Il semaforo viene rimosso. In questo caso la system call fallisce (<code>errno = EIDRM</code>).</li>
+</ul>
+</li>
+</ul>
+<p>Quindi conoscendo tali comportamenti della primitiva <code>semop()</code> nel momento in cui <code>sem_op &lt; 0</code>, è possibile implementare una primitiva di <code>wait()</code> su un semaforo:</p>
+<pre><code class="language-c">void Wait_Sem (int id_sem, int numsem){
+	struct sembuf sem_buf;
+	sem_buf.sem_num = numsem;
+	sem_buf.sem_flg = 0;
+	sem_buf.sem_op = -1;
+	semop(id_sem, &amp;sem_buf, 1);   //semaforo rosso
+}
+</code></pre>
+<h4 id="implementazione-della-wait-for-zero"><a class="header" href="#implementazione-della-wait-for-zero">Implementazione della <code>wait-for-zero()</code></a></h4>
+<p>Infine abbiamo il caso in cui <code>sem_op = 0</code>, il comportamento della primitiva <code>semop()</code> è il seguente:</p>
+<ul>
+<li>se l valore <code>semval</code> è zero, l’operazione procede immediatamente (il processo non si sospende);</li>
+<li>altrimenti se <code>semval ≠ 0</code> ci sono due casi:
+<ul>
+<li>se è specificato il flag <code>IPC_NOWAIT</code> in <code>sem_flg</code>, la system call fallisce restituendo un codice di errore <code>EAGAIN</code> a mezzo della variabile globale <code>errno</code>;</li>
+<li>altrimenti la variabile <code>semzcnt</code> (indica il numero di processi sospesi nell’attesa che il <strong>valore del semaforo</strong> <strong>diventi nullo</strong>)  è incrementato di <code>1</code>, forzando il processo a sospendersi finché una delle seguenti condizioni si verificherá:
+<ul>
+<li><code>semval</code> diventa <code>0</code> (di conseguenza viene decrementato il valore di <code>semzcnt</code>);</li>
+<li>il semaforo è rimosso: la system call fallisce (<code>errno = EIDRM</code>)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Conoscendo questo comportamento possiamo implementare la funzione <code>wait-for-zero()</code>:</p>
+<pre><code class="language-c">void Wait_for_Zero_Sem (int id_sem, int numsem){
+	struct sembuf sem_buf;
+	sem_buf.sem_num = numsem;
+	sem_buf.sem_flg = 0;
+	sem_buf.sem_op = 0;
+	semop(id_sem, &amp;sem_buf, 1);   //semaforo rosso
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="problema-dei-lettoriscrittori"><a class="header" href="#problema-dei-lettoriscrittori">Problema dei lettori/scrittori</a></h1>
+<p>Come per il problema produttori/consumatori sono presenti due categorie di processi:</p>
+<ul>
+<li><strong>Lettori</strong>: leggono un messaggio su di una risorsa condivisa(<em>shm</em>);</li>
+<li><strong>Scrittori</strong>: scrivono il messaggio sulla risorsa condivisa</li>
+</ul>
+<p>Ciò che differenzia effettivamente il problema lettori/scrittori da consumatori/produttori sono i <strong>vincoli</strong> da rispettare riguardanti la <em>cooperazione</em> e <em>competizione</em> tra i processi.</p>
+<p><strong>Vincoli</strong>:</p>
+<ol>
+<li>i processi <em>lettori</em> possono accedere <strong>contemporaneamente</strong> alla risorsa;</li>
+<li>i processi <em>scrittori</em>, tra loro, hanno <strong>accesso esclusivo</strong> alla risorsa;</li>
+<li>i <em>lettori</em> e <em>scrittori</em> si <strong>escludono mutuamente</strong> dall’uso della risorsa</li>
+</ol>
+<p>Non è presente un vincolo di ordinamento (un lettore non deve leggere solo dopo una scrittura) tra i processi lettori e scrittori, ma un vincolo di <strong>mutua esclusione</strong> (tra scrittori) e <strong>cooperazione</strong> (tra lettore e scrittore) sull’utilizzo della <code>shm</code>.</p>
+<p>In realtà si vede che è necessario gestire anche la mutua esclusione tra processi scrittori che però non riguarda la <code>shm</code> ma una variabile necessaria all’implementazione di questo paradigma: variabile che tiene conto del numero corrente di lettori sulla <code>shm</code>.</p>
+<p>I processi lettori inoltre non consumano la risorsa nel momento in cui la leggono/usufruiscono, come accadeva per i consumatori → non notificano allo scrittore l’avvenuta lettura perchè non c’è il concetto di spazio libero (come avveniva per consumatore/produttore).</p>
+<p>Un <em>side effect</em> dei lettori/scrittori è la starvation che può mostrarsi in due casi:</p>
+<ol>
+<li><strong>starvation degli scrittori</strong></li>
+<li><strong>starvation di entrambi</strong></li>
+</ol>
+<p>Essendo le operazioni di lettura e scrittura delle <strong>sezioni critiche</strong> vanno protette entrambe, con l’accortezza che l’operazione di lettura in realtà è protetta solo da processi scrittori: i processi lettori possono operare <strong>simultaneamente</strong> sulla risorsa.</p>
+<p>Quindi avremo procedure per “proteggere”: operazioni di lettura che saranno <code>Inizio_Lettura()</code> e <code>Fine_Lettura()</code>, e per operazioni di scrittura che saranno <code>Inizio_Scrittura()</code> e <code>Fine_Scrittura()</code></p>
+<p>Un processo <strong>lettore attende</strong> solo se la risorsa è <strong>occupata</strong> da un processo <strong>scrittore</strong> e non da altri lettori.</p>
+<p>Mentre un processo <strong>scrittore</strong> può accedere alla risorsa solo se questa è <strong>libera</strong>.</p>
+<p>Ed è proprio questo vincolo dovuto alla sincronizzazione che può provocare condizione di <strong>attesa indefinita (starvation)</strong> per i processi <strong>scrittori</strong>.</p>
+<p align="center">
+  <img src="images/Starvation_scrittore.gif" width="250" alt="Animazione dimostrativa">
+</p>
+
+<ul>
+<li>Uno <strong>Scrittore</strong> ogni qual volta inserisce un dato nella <code>shm</code> <strong>sovrascrive il dato preesistente</strong>.</li>
+<li>La lettura non distrugge il dato contenuto</li>
+<li>I lettori di <strong>sospendo</strong> se uno scrittore è sulla <code>shm</code>, mentre ciò non accade se sulla <code>shm</code> sono presenti altri lettori</li>
+<li>Uno scrittore si <strong>sospende</strong> se vi è qualcun altro processo sulla <code>shm</code> che sia un altro scrittore o qualsiasi lettore.</li>
+</ul>
+<p>Quindi la presenza di un lettore permette solo ad altri lettori di entrare, ma non permette l’ingresso agli scrittori.</p>
+<p>Finché nel sistema vi è almeno un lettore attivo lo scrittore subisce la <strong>starvation</strong>.</p>
+<h2 id="implementazione-con-starvation-degli-scrittori"><a class="header" href="#implementazione-con-starvation-degli-scrittori">Implementazione con starvation degli scrittori</a></h2>
+<p>Dobbiamo quindi creare vari processi scrittori e vari processi lettori che condividono un area di memoria comune e che interagiscano con questa secondo i vincoli che abbiamo determinato.</p>
+<p>Per tener conto del numero di lettori che contemporaneamente accedono alla <code>shm</code> si utilizza una variabile anche essa condivisa che chiamiamo <code>NUM_LETTORI</code>.</p>
+<p>Solo nel momento in cui <code>NUM_LETTORI = 0</code>, gli scrittori possono accedere (uno alla volta) alla risorsa.</p>
+<p>Si utilizzano quindi <strong>due semafori</strong>:</p>
+<ul>
+<li>
+<p><code>MUTEXL</code> per gestire l’accesso alla variabile <code>NUM_LETTORI</code> in mutua esclusione, da parte dei lettori (tale semaforo viene inizializzato ad 1);</p>
+</li>
+<li>
+<p><code>SYNCH</code> per gestire la mutua esclusione tra i processi <strong>lettori e scrittori</strong> e anche <strong>tra i processi scrittori stessi</strong> (tale semaforo viene inizializzato ad 1).</p>
+<p>Gestisce la <strong>cooperazione</strong> tra scrittore/lettore e la competizione tra gli scrittori.</p>
+</li>
+</ul>
+<p>Quindi il processo lettore esegue la funzione <code>Lettura()</code> in cui vengono chiamate rispettivamente le funzioni <code>Inizio_Lettura()</code> e <code>Fine_Lettura()</code>.</p>
+<pre><code class="language-c">void Lettura(int sem){
+    Inizio_Lettura(sem);
+
+    // la lettura
+    // ...
+
+    Fine_Lettura(sem);
+}
+</code></pre>
+<p>Di seguito l’implementazione delle funzioni <code>Inizio_Lettura()</code> e <code>Fine_Lettura()</code>.</p>
+<pre><code class="language-c">void Inizio_Lettura(int sem){
+    wait_sem(sem, MUTEXL);
+    Num_Lettori++;
+    if (Num_Lettori == 1) wait_sem(sem, SYNCH);
+    signal_sem(sem,MUTEXL);
+}
+</code></pre>
+<pre><code class="language-c">void Fine_Lettura(int sem){
+    wait_sem(sem, MUTEXL);
+    Num_Lettori--;
+    if (Num_Lettori == 0) signal_sem(sem, SYNCH);
+    signal_sem(sem, MUTEXL);
+}
+</code></pre>
+<p>Supponendo non vi siano scrittori attivi, tutti i lettori eseguono <code>Inizio_Lettura()</code> senza sospendersi.</p>
+<p>Solo il primo lettore farà la <code>wait_sem()</code> sul semaforo <code>SYNCH</code> in modo da bloccare eventuali scrittori.</p>
+<p>Invece supponendo che il buffer sia già occupato da un processo scrittore, allora il primo lettore si sospenderà sul semaforo <code>SYNCH</code> e tutti gli altri lettori si sospenderanno sul semaforo <code>MUTEXL</code> (perché il processo che possiede la risorsa <code>Num_Lettori</code> è sospeso e non ha rilasciato la risorsa).</p>
+<p>Infine la funzione <code>Fine_Lettura()</code> fa in modo che solo l’ultimo lettore possa riattivare un eventuale scrittore (esso può accedere solo in maniera esclusiva alla risorsa).</p>
+<p>Gli scrittori come detto devono accedere in maniera esclusiva alla risorsa <code>shm</code> → l’acceso è gestito dalle funzioni <code>Inizio_Scrittura()</code> e <code>Fine_Scrittura()</code>.</p>
+<pre><code class="language-c">void Inizio_Scrittura(int sem){
+    wait_sem(sem,SYNCH);
+}
+</code></pre>
+<pre><code class="language-c">void Fine_Scrittura(int sem){
+    signal_sem(sem,SYNCH);
+}
+</code></pre>
+<p>In questo caso il semaforo <code>SYNCH</code> gestisce sia la <strong>mutua esclusione tra lettori e scrittori</strong> che la <strong>mutua esclusione tra gli scrittori stessi</strong>.</p>
+<h2 id="implementazione-con-starvation-di-entrambi"><a class="header" href="#implementazione-con-starvation-di-entrambi">Implementazione con starvation di entrambi</a></h2>
+<p>Inseriamo un comportamento analogo dei lettori anche agli scrittori, introducendo la variabile condivisa <code>NUM_LETTORI</code>.</p>
+<p>In questo caso occorrono <code>4</code> semafori, tutti inizializzati ad <code>1</code>.</p>
+<ul>
+<li>
+<p><code>MUTEXL</code> per gestire l’accesso alla variabile <code>NUM_LETTORI</code> in mutua esclusione, da parte dei lettori;</p>
+</li>
+<li>
+<p><code>MUTEXS</code> per gestire l’accesso alla variabile <code>NUM_SCRITTORI</code> in mutua esclusione, da parte degli scrittori;</p>
+</li>
+<li>
+<p><code>MUTEX</code> per gestire l’accesso alla <code>shm</code> in mutua esclusione, da parte degli scrittori</p>
+</li>
+<li>
+<p><code>SYNCH</code> per garantire la mutua esclusione tra i processi lettori e scrittori</p>
+<p>In questa implementazione tale semaforo non è più utilizzato per gestire sia la mutua esclusione tra scrittori e lettori che la mutua esclusione tra gli scrittori,</p>
+<p>ma gestisce unicamente la <strong>mutua esclusione</strong> tra <strong>lettori</strong> e <strong>scrittori</strong>.</p>
+</li>
+</ul>
+<p>L’implementazione di <code>Inizio_Lettura()</code> e <code>Fine_Lettura()</code> in questo caso non varia; a variare è l’implementazione di <code>Inizio_Scrittura()</code> e <code>Fine_Scrittura()</code>.</p>
+<pre><code class="language-c">void Inizio_Scrittura(int sem){
+    wait_sem(sem, MUTEXS);
+    Num_Scrittori++;
+    if (Num_Scrittori == 1) wait_sem(sem, SYNCH);
+    signal_sem(sem, MUTEXS);
+
+    wait_sem(sem, MUTEX);
+}
+</code></pre>
+<ul>
+<li>Effettua una <code>wait_sem()</code> su <code>MUTEXS</code> per modificare <code>Num_Scrittori</code> in mutua esclusione;</li>
+<li>Se il processo è il primo scrittore allora esegue la <code>wait_sem()</code> su <code>SYNCH</code> per bloccare l’accesso ai lettori;</li>
+<li>Rilascio della variabile <code>Num_Scrittori</code> con una <code>signal_sem()</code> su <code>MUTEXS</code> così che altri scrittori possano accedervi;</li>
+<li>Infine il processo fa una <code>wait_sem()</code> su <code>MUTEX</code> affinchè altri scrittori non possano accedere alla <code>shm</code>.</li>
+</ul>
+<pre><code class="language-c">void Fine_Scrittura(int sem){
+    signal_sem(sem, MUTEX);
+    
+    wait_sem(sem, MUTEXS);
+    Num_Scrittori--;
+    if (Num_Scrittori == 0) signal_sem(sem, SYNCH);
+    signal_sem(sem, MUTEXS);
+}
+</code></pre>
+<ul>
+<li>Con <code>signal_sem()</code> su <code>MUTEX</code> permetto ad un altro scrittore sospeso sulla <code>shm</code> di accedervi;</li>
+<li>successivamente con un <code>wait_sem()</code> su <code>MUTEXS</code> il processo accede alla variabile <code>Num_Scrittori</code> in mutua esclusione;</li>
+<li>Se tale variabile è pari a <code>0</code> allota il processo è l’ultimo scrittore, quindi effettua una <code>signal_sem()</code> su <code>SYNCH</code> in modo da permettere l’accesso ai lettori;</li>
+<li>infine il processo rilascial la variabile <code>Num_Scrittori</code> attraverso una <code>signal_sem()</code> su <code>MUTEXS</code> affinchè altri scrittori possano accedervi.</li>
+</ul>
+<p>Da notare che l’implementazione di queste due funzioni è l’analogo delle funzioni per inizio e fine lettura per i lettori. L’unica differenza sta nel fatto che per gli scrittori è da gestire la loro mutua esclusione sulla <code>shm</code> che non è necessario per i lettori.</p>
+<p>A questo proposito infatti è impiegato il semaforo identificato all’interno del <em>semaphor set</em> dalla costante <code>MUTEX</code>.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="monitor"><a class="header" href="#monitor">Monitor</a></h1>
+<p>Il <strong>monitor</strong> è una struttura sintattica che opera su una risorsa condivisa (shm) gestendone l’accesso e la sincronizzazione tra processi/thread concorrenti.</p>
+<p>Un monitor abbina un insieme di <strong>operazioni</strong> ad una struttura dati (risorsa) condivisa tra processi.</p>
+<p>Il costrutto monitor è <strong>sintatticamente</strong> simile al costrutto <em>class</em> ma è utilizzato per la gestione delle risorse condivise tra processi. Quindi non possiede risorse locali, come avviene per le classi, ma delle risorse condivise.</p>
+<p>Il monitor stesso sarà una risorsa condivisa.</p>
+<p>Lo scopo di un monitor è quello di facilitare la programmazione condivisa. Infatti permette di creare <strong>politiche di accesso</strong> alle risorse condivise tramite delle condizioni che implementeremo (<strong>variabili di condizione</strong>).</p>
+<p align="center">
+  <img src="images/politiche_accesso.png" width="300">
+</p>
+
+<p>Un monitor lo possiamo vedere quindi come <strong>tipo di dato astratto</strong> contenente variabili di condizione e procedure che implementano le politiche di accesso ad una risorsa condivisa (<code>shm</code>).</p>
+<p>In <code>c</code> implementiamo un TDA proprio con una <code>struct</code> che porta con se il concetto di classe dove ogni membro è pubblico.</p>
+<p align="center">
+  <img src="images/MonitorTDA.png" width="300">
+</p>
+
+<ul>
+<li>
+<p><strong>Risorsa</strong>: consiste nella risorsa condivisa tra i vari processi che la competono;</p>
+</li>
+<li>
+<p><strong>Stato della risorsa</strong>: consiste in altri variabili membro utili per la gestione come:</p>
+<ul>
+<li>puntatore di testa/coda;</li>
+<li>pid dell’ultimo processo ad aver effettuato un modifica sulla <code>shm</code>;</li>
+<li>…</li>
+</ul>
+</li>
+<li>
+<p><strong>Funzioni membro (pubbliche)</strong>: per accesso alla risorsa da parte dei processi, quindi procedure pubbliche;</p>
+</li>
+<li>
+<p><strong>Funzioni membro (private)</strong>: per uso interno al monitor.</p>
+</li>
+</ul>
+<h2 id="strategie-di-controllo"><a class="header" href="#strategie-di-controllo">Strategie di controllo</a></h2>
+<p>La politica di accesso impone che:</p>
+<ul>
+<li><strong>un solo processo alla volta</strong> può avere accesso alla risorsa condivisa (<strong>competizione</strong>);</li>
+<li>i processi devono seguire un determinato <strong>ordine di accesso alla risorsa</strong> (<strong>cooperazione</strong>).</li>
+</ul>
+<h3 id="competizione"><a class="header" href="#competizione">Competizione</a></h3>
+<p>Quindi per il primo punto: le <strong>funzioni pubbliche</strong> del monitor sono esegute in modo <strong>mutuamente esclusivo</strong>.</p>
+<p>Appunto perché queste funzioni operano sulla risorsa critica che viene condivisa tra i processi. Significa che per eseguire una qualsiasi operazione definita nel monitor un processo, a monte, deve chiedere l’accesso a quest’ultimo.</p>
+<p align="center">
+  <img src="images/accesso_monitor.png" width="300">
+</p>
+
+<p><code>m</code> è l’istanza di un monitor che gestisce l’accesso ad un risorsa critica. Quindi i processi per poter operare sulla <code>shm</code> chiamano una procedura di accesso definita dal monitor.</p>
+<p>Nel caso il monitor sia già assegnato ad un altro processo, il processo che tenta di accedervi viene sospeso fin tanto che la risorsa monitor non viene rilasciata dal processo detentore.</p>
+<p>Quindi in questo modo solo un processo per volta può avere accesso alla risorsa condivisa poiché l’accesso viene gestito dai metodi pubblici del monitor.</p>
+<p><strong>Come implementare i metodi pubblici</strong> di un monitor?</p>
+<p>Attraverso:</p>
+<ul>
+<li>
+<p><strong>librerie di funzioni</strong> del linguaggio di programmazione</p>
+<p>Dobbiamo implementare delle librerie ad <em>hoc</em> per complementare quello che ci offre il linguaggio di programmazione; per gestire poi la competizione e cooperazione.</p>
+<p>In <code>c</code> implementiamo metoti come <code>enter()</code> e <code>leave_monitor()</code> per permettere l’operazione mutuamente esclusiva sulla risorsa;</p>
+</li>
+<li>
+<p><strong>parole chiave</strong> del linguaggio di programmazione</p>
+<p>Esempio chiave è <strong>JAVA</strong>, che utilizza un monitor implicito che attraverso la parola chiave <strong>Synchronize</strong> permette a metodi di esser eseguiti in maniera mutuamente esclusiva.</p>
+</li>
+</ul>
+<pre><code class="language-c">Monitor M {
+    void metodo1(){
+        enter_monitor();
+        // operazioni su risorsa
+        leave_monitor();
+    }
+}
+</code></pre>
+<p>Per la competizione il monitor fa uso di semafori <strong>lock</strong> per gestire la mutua esclusione: per l’entrata sul monitor e l’uscita sul monitor.</p>
+<h3 id="cooperazione"><a class="header" href="#cooperazione">Cooperazione</a></h3>
+<p>Nella gestione della cooperazione, i processi si sospendono se <strong>non è verificata</strong> una “<strong>condizione logica</strong>” di accesso.</p>
+<p>Per la gestione della cooperazione si introduce un tipo di variabile detta <strong>variabile condition</strong>, che determina la sospensione di un processo nel momento in cui una condizione non è verificata.</p>
+<pre><code class="language-c">var_cond x;
+</code></pre>
+<p>Tale variabile condition definisce due metodi:</p>
+<ul>
+<li><code>x.wait_cond()</code> sospende il processo chiamante…</li>
+<li>… fino a che un altro processo esegue <code>x.signal_cond()</code>.</li>
+</ul>
+<p>Simile ai semafori ma le operazioni <strong>hanno un comportamento diverso</strong>.</p>
+<p>Avremo tante variabili condition quante sono le condizioni per cui un processo deve esser sospeso per cooperazione</p>
+<p>→ ogni variabile condition è associata ad una condizione logica.</p>
+<pre><code class="language-c">Monitor M {
+    var_cond x;
+    var_cond y;
+
+    void metodo1(){
+        enter_monitor();
+
+        if/while(!condizione_logica) //tale condizione è legata a x
+            x.wait_cond();
+        // operazione su risorsa
+        y.signal_cond();
+        leave_monitor();
+    }
+}
+</code></pre>
+<p>Questo esempio potrebbe benissimo implementare il paradigma produttori/consumatori se associassimo ad <code>x</code> la condizione che riguarda lo spazio disponibile ed a <code>y</code> la condizione di messaggio disponibile.</p>
+<p>Ovviamente nel momento in cui un processo viene sospeso, questo rilascia il monitor per permettere ad altri processi di entrare.</p>
+<p>Nell’esempio è presente <code>if/while</code> perché ci sono diverse implementazioni possibili per l’operazione di <code>signal_cond()</code> che devono essere gestite in modo diverso.</p>
+<p>Quindi per ottenere una corretta cooperazione tra processi e quindi un <strong>ordine di accesso</strong>:</p>
+<ul>
+<li>in ogni metodo del monitor, il processo chiamante controlla se è soddisfatta una <strong>condizione logica</strong>;</li>
+<li>se la condizione non è soddisfatta, il processo chiamante viene <strong>sospeso</strong>;</li>
+<li>nel momento in cui viene sospeso rilascia anche la risorsa monitor, in modo che un altro processo possa entrare ed eseguire operazioni che potrebbero portare alla sua sospensione oppure all’<strong>attivazione</strong> dei processi <strong>sospesi su una condizione</strong>.</li>
+</ul>
+<h2 id="monitor---paronamica"><a class="header" href="#monitor---paronamica">Monitor - paronamica</a></h2>
+<p>Possiamo schematizzare un monitor in questo modo:</p>
+<p align="center">
+  <img src="images/panoramica_monitor.png" width="300">
+</p>
+
+<ul>
+<li>Sono presenti diverse <strong>code</strong> in cui sono contenuti i processi che si sono sospesi e attendono si essere riattivati.</li>
+<li>Procedure che un processo piò effettuare sulla <code>shm</code> in modo esclusivo.</li>
+<li><strong>local data</strong> in cui sono contenute le strutture condivise.</li>
+<li><strong>condition variables</strong> sono la sezione in cui sono dichiarate le variabili condition.</li>
+</ul>
+<p align="center">
+  <img src="images/p1.png" width="300">
+</p>
+
+<p>Il processo entra nel monitor chiedendo di eseguire una procedura in mutua esclusione. Quindi dopo la chiamata alla procedura di interesse viene chiamata una <code>enter_monitor()</code>.</p>
+<p>All’interno della procedura potrebbe esserci una condizione che potrebbe portare il processo a sospendersi nel caso in cui non sia verificata; condizioni associate a variabili condition.</p>
+<p>→ Per ogni variabile condition oltre ad una condizione logica è associata una <strong>coda</strong> in cui saranno memorizzati tutti i processi che si sono sospesi per il mancato soddisfacimento della condizione logica.</p>
+<p>Quindi nel momento in cui è da gestire una cooperazione le procedure controllano, tramite le variabili locali, se la <strong>condizione di sincronizzazione</strong> è valida (es. buffer vuoto, buffer occupato).</p>
+<p>Se la <strong>condizione di sincronizzazione</strong> è valida, il processo completa l’esecuzione e libera il monitor con una chiamata <code>leave_monitor()</code>.</p>
+<p>Condizione <strong>non</strong> valida:</p>
+<p align="center">
+  <img src="images/p2.png" width="300">
+</p>
+
+<p>Se al momento del controllo la <strong>condizione di sincronizzazione non è valida</strong>, il processo si sospende volontariamente usando la <strong>condition</strong> <strong>variables</strong> associata alla condizione che non è stata soddisfatta.</p>
+<p>Mentre è in attesa, il monitor diventa libero, poiché il processo che si è sospeso deve aver rilasciato il monitor prima della sospensione con una <code>leave_monitor()</code>, e quindi è accessibile ad altri processi che attendono di entrare.</p>
+<h2 id="note-su-condition-variables"><a class="header" href="#note-su-condition-variables">Note su condition variables</a></h2>
+<hr>
+<p style="font-size:1.3em; text-align:center;">
+<b>var. condition</b> ≠ <b>semafori</b><br>
+<b>wait_condition()</b> ≠ <b>wait_sem()</b><br>
+<b>signal_condition()</b> ≠ <b>signal_sem()</b>
+</p>
+
+<hr>
+<p>La <code>wait_cond()</code> <strong>sospende sempre il processo chiamante</strong>.</p>
+<p>→ Nei semafori, con <code>wait_sem()</code>, la sospensione era <strong>condizionata</strong> allo stato interno del semaforo</p>
+<p>La <code>signal_cond()</code> <strong>non ha alcun effetto</strong> se <strong>non vi è alcun processo in attesa</strong> sulla condition variables.</p>
+<p>→ Nei semafori invece <code>signal_sem()</code> aveva sempre un effetto, ovvero quello di incrementare lo stato del semaforo.</p>
+<h2 id="diverse-implementazioni-di-signal_cond-semantica"><a class="header" href="#diverse-implementazioni-di-signal_cond-semantica">Diverse implementazioni di <code>signal_cond()</code> (semantica)</a></h2>
+<p>A fronte di questa problematica abbiamo diverse implementazioni della procedura <code>signal_cond()</code>.</p>
+<p align="center">
+  <img src="images/problemaSignal_cond.png" width="300">
+</p>
+
+<p>Supponiamo che <code>P</code> acceda al monitor e debba eseguire una procedura in mutua esclusione, ma <strong>non soddisfa</strong> una condizione definita per la cooperazione.</p>
+<p>→ Il processo spontaneamente si sospense utilizzando <code>wait_cond()</code> sulla condition variables associata a tale condizione.</p>
+<p>Nel momento in cui <code>P</code> si sospende questo rilascia la risorsa monitor agli altri processi in attesa. Quindi il prossimo processo schedulato in attesa, <code>Q</code>, entra nel monitor ed esegue una procedura che potrebbe comportare <strong>l’aggiornamento dello stato della risorsa</strong>.</p>
+<p>→ La condizione di sincronizzazione che ha portato <code>P</code> a sospendersi viene soddisfatta, quindi tale processo può continuare la propria esecuzione</p>
+<p>Il processo <code>Q</code> dopo la modifica che ha portato la risorsa ad essere pronta per <code>P</code>, riattiva <code>P</code> che ritorna pronto.</p>
+<hr>
+<p><strong>PROBLEMA:</strong> <code>P</code> e <code>Q</code> non possono eseguire entrambi nel monitor, si violerebbe la <strong>mutua esclusione</strong>.</p>
+<hr>
+<p>A questo problema <strong>non</strong> esiste una soluzione <strong>unica</strong>.</p>
+<p>Diversi sistemi attribuiscono comportamenti (<strong>semantica</strong>) diversi alle primitive <code>wait_cond()</code>/<code>signal_cond()</code>.</p>
+<h3 id="prima-soluzione-signal-and-wait"><a class="header" href="#prima-soluzione-signal-and-wait">Prima soluzione: signal and wait</a></h3>
+<p><em><strong>signal_and_wait</strong></em> prevede:</p>
+<ul>
+<li>il processo segnalato <code>P</code> <strong>riprenda</strong> <strong>immediatamente</strong> l’esecuzione;</li>
+<li>il processo segnalante <code>Q</code> venga <strong>sospeso</strong>.</li>
+</ul>
+<p><code>Q</code> viene sospeso per evitare che possa modificare nuovamente la condizione di sincronizzazione per cui <code>P</code> si è sospeso.</p>
+<p>Utilizzo della primitiva <code>wait_cond()</code> in questa semantica di <code>signal_cond()</code>:</p>
+<ul>
+<li>il processo segnalato è il primo ad eseguire;</li>
+<li>al risveglio, il segnalato <strong>ha certezza di trovare verificata</strong> la condizione di sincronizzazione, quindi non è necessario che questo la verifichi nuovamente.</li>
+</ul>
+<p>Quindi lo schema di uso della <code>wait_cond()</code> sarà:</p>
+<pre><code class="language-c">if (!B) { // B = condizione di sincronizzazione
+    cv.wait_cond(); // cv = var.condition, abbinata a B
+}
+// accesso alla risorsa...
+</code></pre>
+<p>In questo modo quando <code>P</code> entra per primo nel monitor, <strong>prematuramente</strong> (la condizione di sincronizzazione non è ancora valida), per cui si <strong>sospende</strong>.</p>
+<p>Il processo <code>Q</code> <strong>opera sulla risorsa condivisa</strong> (es. buffer di stato) facendo in modo che venga soddisfatta la condizione di sincronizzazione, quindi effettua la <code>signal_cond()</code> sulla condition variable che comporta la sua sospensione.</p>
+<p>Quindi <code>Q</code> dovrà uscire dalla risorsa monitor con una <code>leave_monitor()</code>.</p>
+<p>→ <code>Q</code> attende l’uscira di <code>P</code> e <strong>compete</strong> con altri processi per rientrare nel monitor.</p>
+<p align="center">
+  <img src="images/signal_and_wait.png" width="300">
+</p>
+
+<hr>
+<h4 id="signal_and_wait-di-hoare"><a class="header" href="#signal_and_wait-di-hoare">signal_and_wait di Hoare</a></h4>
+<p>Una diversa soluzione di <strong>signal_and_wait</strong> potrebbe essere quella di <strong>Hoare</strong>.</p>
+<p>In questa soluzione, il processo <code>Q</code> ha la precedenza sugli altri processi in attesa di entrare nel monitor.</p>
+<p>Quindi <code>Q</code> non si sospende sulla coda in cui sono presenti tutti gli altri processi che sono in attesa, ma su una coda separata <strong>urgent_queue</strong>.</p>
+<p align="center">
+  <img src="images/wait_hoare.png" width="300">
+</p>
+
+<p>Tale soluzione di Hoare è un caso particolare di signal_and_wait, detta <strong>signal_and_urgent_wait</strong>.</p>
+<p>Prevede che il processo <code>Q</code> abbia la <strong>priorità</strong> su ogni altri processi che intendono entrare nel monitor.</p>
+<p>Questa soluzione si può ottenere sospendendo il processo <code>Q</code> dopo la <code>signal_wait()</code> su una cosa detta <em>urgent_queue</em>, separata dal mutex.</p>
+<p>mutex: meccanismo di mutua escluzione che permette l’accesso al monitor ad un solo processo per volta.</p>
+<h3 id="seconda-soluzione-signal-and-continue"><a class="header" href="#seconda-soluzione-signal-and-continue">Seconda soluzione: signal and continue</a></h3>
+<p><em><strong>signal_and_continue</strong></em>:</p>
+<ul>
+<li>privilegia il processo <strong>segnalatore</strong> rispetto al <strong>segnalante</strong>;</li>
+<li>il processo <code>Q</code> segnalatore prosegue la sua esecuzione, mantenendo l’accesso esclusivo al monitor.</li>
+</ul>
+<p>Quindi dopo il risvegli di <code>P</code> sospeso per il mancato soddisfacimento della condizione di sincronizzazione, questo viene nuovamente sospeso questa volta nella coda del mutex (insieme a tutti gli altri processi che in attesa di entrare nel monitor).</p>
+<p>Per semplicità di implementazione il monitor signal-and-continue non usa la coda <strong>urgent</strong>.</p>
+<p align="center">
+  <img src="images/wait-continue.png" width="400">
+</p>
+
+<p>Essendo che <code>P</code> compete con gli altri processi per accedere al monitor potrebbe verificarsi la situazione in cui ad esser schedulato prima di <code>P</code> è <code>K</code>, che entra nel monitor una volra che <code>Q</code> lo ha rilasciato.</p>
+<p>In qeusta sistuazione potrebbe accadere che <code>K</code> <strong>modifichi nuovamente la risorsa</strong> (le strutture contenute in <em>local data</em>) e quindi potrebbe far in modo che la condizione di sincronizzazione per <code>P</code> sia <strong>non più verificata</strong>.</p>
+<p>Quindi è necessario che una volta che <code>P</code> rientri all’interno del monitor verifichi nuovamente la condizione di sincronizzazione.</p>
+<p>→ Non abbiamo più la certezza che nel momento in cui <code>P</code> rientra nel monitor la condizione sia verificata.</p>
+<p>Questo si può tradurre anche in una condizione di <strong>attesa indefinita</strong> per <code>P</code> (<strong>starvation</strong>).</p>
+<p>Quindi in questo caso lo schema di uso della <code>wait_cond()</code> su una condition variable sarà:</p>
+<pre><code class="language-c">while (!B) { // B = condizione di sincronizzazione
+    cv.wait_cond(); // cv = condition variable associata a B
+}
+// in questo caso è possibili che wait_cond() venga chiamata più
+// volte prima che P possa accedere alla risorsa
+</code></pre>
+<p><code>P</code> non ha la certezza che la condizione sia verificata, quindi deve controllare ogni volta che riottiene l’accesso al monitor.</p>
+<h4 id="signal_all"><a class="header" href="#signal_all">signal_all</a></h4>
+<p><code>signal_cond()</code> riattiva al più un solo processo.</p>
+<p>Nel momento in cui si vuole risvegliare invece tutti i processi sospesi su una <strong>condition variable</strong> è possibili utilizzare la variante:</p>
+<pre><code class="language-c">signal_all();
+</code></pre>
+<p>Tutti i processi risvegliati vengono messi nella <em>entry_queue</em>, dalla quale uno alla volta potraà rientrare nel monitor.</p>
+<p align="center">
+  <img src="images/signal_all.png" width="400">
+</p>
+
+<h3 id="confronto-signal-and-wait-vs-signal-and-continue"><a class="header" href="#confronto-signal-and-wait-vs-signal-and-continue">Confronto: signal-and-wait vs signal-and-continue</a></h3>
+<p>La semantica di <em>signal-and-wait</em> richiede che venga chiamata <strong>precisamente quando il processo segnalato deve essere svegliato</strong>.</p>
+<p>→ ovvero nel momento in cui è soddisfatta la condizione di sincronizzazione.</p>
+<p>La semantica di <em>signal-and-continue</em> (e <em>signal-all</em>) è più <strong>robusta</strong>:</p>
+<ul>
+<li>il processo segnalante può chiamarla anche quando non è sicuro di se/quali processi risegliare;</li>
+<li>saranno i processi risvegliati a controllare se possono eseguire, oppure sospensersi.</li>
+</ul>
+<h3 id="granularità-semaforo-vs-monitor"><a class="header" href="#granularità-semaforo-vs-monitor">Granularità: semaforo vs monitor</a></h3>
+<p>Entrambi, sia monitor che semafori, sono dei concetti necessaria per la gestione di situazioni di cooperazione o competizione tra processi su una risorca condivisa.</p>
+<p>Sono simili nell’utilizzo ma hanno tante differenza sia rispetto alla robustezza che alla granularità.</p>
+<p>In particolar modo i semafori hanno una granularita <em>fine</em>, molto bassa, proprio perché gestiscono la mutua esclusione a <strong>livello di singole operazioni</strong>.</p>
+<p>Mentre i monitor hanno una granularità più alta: il controllo non è sulla singola operazione sulla risorsa condivisa, ma sull’intera risorsa condivisa.</p>
+<p>→ infatti nell’implementazione del problema produttori/consumatori con buffer di stato la modifica di questo a fine di un operazione (<code>IN_USO → OCCUPATO/LIBERO</code>), che sia di scrittura o lettura, deve essere eseguira all’interno del monitor (bloccando quindi gli altri processi che desiderano accedervi).</p>
+<p>Mentre con i semafori la modifica sul buffer di stato <code>IN_USO → OCCUPATO/LIBERO</code> non era inclusa nella sezione critica, non ostacolavamo gli altri processi ad operare sulla risorsa.</p>
+<p>Invece parlando di <strong>robustezza</strong> i monitor sono sicuramente molto più sicuri per via del loro <strong>livello di astrazione maggiore</strong>. Tutti le operazioni sulla memoria condivisa sono contenute all’interno del monitor. (possiamo dire che il monitor è un wrapper della <code>shm</code>)</p>
+<p>Mentre per i semafori la gestione è esplicita, quindi è più alto il rischio di eventuali <strong>deadlock</strong>.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="monitor-implementazione-in-c"><a class="header" href="#monitor-implementazione-in-c">Monitor Implementazione in C</a></h1>
+<p>Per sfruttare il concetto di monitor in <code>c</code> dobbiamo realizzare una libreria sfruttando il concetto di <strong>semaforo</strong> per implementare tutte le funzionalità di un <strong>monitor</strong>.</p>
+<p>La libreria in questione, che sia un monitor: signal-and-wait, signal-and-continue oppure signal-and-wait-Hoare;</p>
+<p>hanno tutte lo stesso scheletro, quello che cambia è l’implementazione di poche procedure.</p>
+<p>L’header della libreria che implementa i monitor sarà quindi:</p>
+<p><code>monitor.h</code></p>
+<pre><code class="language-c">typedef struct {
+    // id del semaforo per realizzare il mutex sul monitor, per gestire la mutua esclusione sul monitor
+    int mutex;
+
+    // nel caso in cui implementiamo il paradigma signal-and-wait-Hoaro
+    // abbiamo bisogno di un semaforo per la coda urgent
+    int urgent_sem
+
+    // numero di condition variable
+    int num_var_cond;
+
+    // id del semaphor set in cui sono contenuti i semafori associati ad ogni condition variable
+    int id_conds
+
+    // id della memoria condivisa per i contatori dei processi sospesi su ogni condition variable e della coda urgent
+    int id_shm;
+
+    // array delle variabili condition count
+    int *cond_counts;
+
+    // contatore del numero di processi sospesi sulla coda urgente
+    int *urgent_count;
+} Monitor;
+// inizializzare il monitor
+void init_monitor(Monitor*,int);
+// entrare nel monitor in mutua esclusione 
+void enter_monitor(Monitor*);
+// rilasciare il monitor per permettere ad altri processi di accedervi
+void leave_monitor(Monitor*);
+// eliminare il monitor, marcando come eliminabile le shm e sem in esso contenuti
+void remove_monitor(Monitor*);
+// procedura per sospendere un processo su una condition variable
+void wait_condition(Monitor*, int);
+// procedura per risvegliare un processo su una condition variable
+void signal_condition(Monitor*, int);
+// informa sul numero di processi sospesi su una particolare condition variable
+int queue_condition(Monitor*, int);
+</code></pre>
+<h2 id="workflow-delle-funzioni-wait_cond-e-signal_cond"><a class="header" href="#workflow-delle-funzioni-wait_cond-e-signal_cond">Workflow delle funzioni <code>wait_cond()</code> e <code>signal_cond()</code></a></h2>
+<h3 id="signal-and-wait"><a class="header" href="#signal-and-wait">signal-and-wait:</a></h3>
+<p><strong><code>wait_cond(Monitor* m, int id_var_cond)</code></strong>:</p>
+<ol>
+<li>Incremento il valore del contatore in <code>m-&gt;cond_counts[]</code> in posizione <code>id_var_cond</code> che identifica la posizione del contatore dei processi in attesa sulla <em>condition variable</em> <code>var_cond</code>;</li>
+<li><code>signal_sem(m-&gt;mutex, 0)</code>, rilascia il monitor in modo che altri processi possano entrarci;</li>
+<li><code>wait_sem(m-&gt;id_conds, id_var_cond)</code>, il processo si sospende sul semaforo associato alla <em>condition variable</em> identificata da <code>id_var_cond</code>;</li>
+<li>nel momento in cui il processo sospeso viene riattivato decrementa il valore del contatore <code>m-&gt;cond_counts[]</code> sempre associato alla <em>condition variable</em> <code>id_var_cond</code> su cui si era sospeso in precedenza.</li>
+</ol>
+<p><strong><code>signal_cond(Monitor* m, int id_var_cond)</code></strong>:</p>
+<ol>
+<li>Il processo verifica se ci sono processi sospesi su <code>id_var_cond</code> valutando il contatore associato a quella nell’array <code>m-&gt;cond_counts[]</code>;</li>
+<li>se la condizione è verificata fa una <code>signal_sem(m-&gt;id_conds, id_var_cond)</code> in modo da riattivare un processo sospeso su tale <em>condition variable</em>, ed esegue in seguito una <code>wait_sem(m-&gt;mutex, 0)</code> sospendendosi sul semaforo per l’accesso al mutex;</li>
+<li>altrimenti se la condizione non è verificata la procedura <code>signal_cond(&amp;m, id_var_cond)</code> è ininfluente e il processo segnalatore continua ad eseguire nel monitor.</li>
+</ol>
+<h3 id="signal-and-wait-hoare"><a class="header" href="#signal-and-wait-hoare">signal-and-wait-Hoare</a></h3>
+<p><strong><code>wait_cond(Monitor* m, int id_var_cond)</code></strong>:</p>
+<ol>
+<li>Incremento il valore del contatore in <code>m-&gt;cond_counts[]</code> in posizione <code>id_var_cond</code> che identifica la posizione del contatore dei processi in attesa sulla <em>condition variable</em> <code>var_cond</code>;</li>
+<li>verifica la presenza di un processo in attesa sulla coda <em>urgent</em> (<code>*(m-&gt;urgent_counts)</code>) e lo riattiva con una <code>signal_sem(m-&gt;urgent_sem, 0)</code> se la condizione è verificata;</li>
+<li>altrimenti se la condizione non sia verificata esegue una <code>signal_sem(m-&gt;mutex, 0)</code> in modo da permettere ai processi in attesa del monitor di accedere;</li>
+<li>il processo si sospende sulla condition variable <code>id_var_cond</code> eseguendo una <code>wait_sem(m-&gt;id_conds, id_var_cond)</code>;</li>
+<li>nel momento in cui verrà riattivato il processo decrementa il contatore dei processi che sono in attesa sulla condition variable <code>id_var_cond</code>.</li>
+</ol>
+<p><strong><code>signal_cond(Monitor* m, int id_var_cond)</code></strong>:</p>
+<ol>
+<li>Incrementa il contatore dei processi in attesa sulla coda urgente, <code>(*(m-&gt;urgent_count))++</code></li>
+<li>Il processo verifica se ci sono processi sospesi su <code>id_var_cond</code>, valutando il contatore associato a questa nell’array <code>m-&gt;cond_counts[]</code>;</li>
+<li>se la condizione è verificata fa una <code>signal_sem(m-&gt;id_conds, id_var_cond)</code> in modo da riattivare un processo sospeso su tale <em>condition variable</em> e successivamente esegue <code>wait_sem(m-&gt;urgent_sem, 0)</code> sospendendosi sulla coda urgente;</li>
+<li>altrimenti la procedura <code>signal_cond(&amp;m, id_var_cond)</code> è ininfluente, il contatore dei processi in attesa nella coda urgente viene decrementato <code>(*(m-&gt;urgent_count))--</code> e il processo continua ad eseguire all’interno del monitor.</li>
+</ol>
+<h3 id="signal-and-continue"><a class="header" href="#signal-and-continue">signal-and-continue</a></h3>
+<p>// @todo contiuna…</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="sincronizzazione-nel-modello-ad-ambiente-locale"><a class="header" href="#sincronizzazione-nel-modello-ad-ambiente-locale">Sincronizzazione nel modello ad ambiente locale</a></h1>
+<p>Il modello ad ambiente <strong>locale</strong> si riferisce ad una struttura in cui ogni processo opera nel proprio ambiente privato, <strong>senza alcuna memoria condivisa</strong> tra vari processi.</p>
+<p>In questo modello tutte le risorse sono privare a ciascun processo e non possono essere modificate direttamente da altri processi.</p>
+<p>Questo è un approccio tipico dei <strong>sistemi distribuiti</strong>.</p>
+<p>Quindi ogni processo evolve in un proprio ambiente:</p>
+<ul>
+<li>non esiste memoria condivisa;</li>
+<li>le <strong>risorse sono tutte private</strong>;</li>
+<li>Non possono esser modificate direttamente da altri processi.</li>
+</ul>
+<p>Il naturale supporto fisico a questo modello, come detto, sono i sistemi con architettura distribuita.</p>
+<p align="center">
+  <img src="images/modello_locale.png" width="400">
+</p>
+
+<hr>
+<p>Nota:</p>
+<p>Il <strong>middleware</strong> è un software intermedio che si trova “in mezzo” tra:</p>
+<ul>
+<li>
+<p>sistema operativo</p>
+<p>e</p>
+</li>
+<li>
+<p>le applicazioni che si trovano su macchine diverse.</p>
+</li>
+</ul>
+<p>Il suo compito è nascondere le differenze tra:</p>
+<ul>
+<li>sistema operativi diversi</li>
+<li>linguaggi di programmazione diversi</li>
+<li>reti e architetture hardware diverse</li>
+</ul>
+<p>Quindi serve a creare un ambiente uniforme di comunicazione, in modo che due programmi possano scambiarsi dati come se lavorassero nello stesso sistema.</p>
+<p>Noi faremo tutto in locale → con le mailbox System V permetteremo ai processi di comunicare su canali di comunicazione che saranno delle <em>shared memory</em>.</p>
+<hr>
+<p>La <strong>cooperazione</strong> si realizza mediante lo <strong>scambio diretto di messaggi</strong> per mezzo di primitive fornite dal S.O.</p>
+<p>In questo modello la mutua esclusione sulle risorse di un processo è <strong>garantita</strong>, appunto perché tutte le risorse sono private.</p>
+<h2 id="primitive"><a class="header" href="#primitive">Primitive</a></h2>
+<p>Per gestire quindi la cooperazione in un modello ad ambiente locale abbiamo la necessità di due tipologie di primitive:</p>
+<ul>
+<li><strong>send(destination, message)</strong></li>
+<li><strong>receive(source, message)</strong></li>
+</ul>
+<p>Variano fra i sistemi in base a due caratteristiche fondamentali:</p>
+<ul>
+<li><strong>tipo di sincronizzazione</strong> dei processi comunicanti;</li>
+<li><strong>indirizzamento</strong>: la modalità con cui si designano la provenienza e la destinazione.</li>
+</ul>
+<p>La semantica di un messaggio è composta:</p>
+<p align="center">
+  <img src="images/formato_messaggio.png" width="400">
+</p>
+
+<p>Operiamo sull’intestazione per gestire la comunicazione.</p>
+<ul>
+<li>Tipo di messaggio: discrimina il tipo di messaggio contenuto all’interno del corpo;</li>
+<li>informazioni di controllo: ci permettono di modificare la semantica dell’interazione tra i processi.</li>
+</ul>
+<p>L’<strong>intestazione</strong> è usata dal sistema operativo per gestire e instradare la comunicazione.</p>
+<p>Mentre il <strong>corpo</strong> contiene le informazioni scambiate tra i processi.</p>
+<h3 id="send"><a class="header" href="#send">Send</a></h3>
+<p>La primitiva <strong>send</strong> può avere diverse caratteristiche a seconda del sistema operativo. In particolare il comportamento della primitiva piò essere di due tipi:</p>
+<ul>
+<li><strong>sincrono</strong>: il processo che esegue la send <strong>rimane in attesa</strong> fin quando il messaggio non è stato ricevuto dal destinatario. Dopo la conferma di avvenuta ricezione il processo chiamante viene sbloccato;</li>
+<li><strong>asincrono</strong>: il processo che esegue la send continua la sua esecuzione, <strong>senza attendere</strong> l’avvenuta ricezione del messaggio.</li>
+</ul>
+<p align="center">
+  <img src="images/send_comportamento.png" width="400">
+</p>
+
+<p><strong>System V linux</strong> di default ci garantisce l’implementazione di una <strong>send</strong> asincrona.</p>
+<p>Quindi per implementare la send sincrona dobbiamo sfruttare la send asincrona e la receive.</p>
+<h3 id="receive"><a class="header" href="#receive">Receive</a></h3>
+<p>Analogamente alla primitiva send, la primitiva receive ha caratteristiche differenti a seconda del sistema operativo. In particolare può avere un comportamento di due tipi:</p>
+<ul>
+<li><strong>bloccante</strong>: se il messaggio non è stato ancora inviato, il processo <strong>rimane in attesa fino alla ricezione</strong>;</li>
+<li><strong>non bloccante</strong>: il processo continua la sua esecuzione <strong>senza attendere</strong> l’avvenuta consegna del messaggio.</li>
+</ul>
+<p>Ovviamente se il sender ha già inviato il messaggio, il processo lo riceve e continua l’esecuzione senza sospendersi.</p>
+<p align="center">
+  <img src="images/receive_comportamento.png" width="400">
+</p>
+
+<p><strong>System V linux</strong> di default ci garantisce l’implementazione di una receive <strong>bloccante</strong>.</p>
+<hr>
+<p>Quando si parla di blocco e sblocco ci si riferisce ai possibili stati di un processo.</p>
+<hr>
+<h2 id="tipi-di-sincronizzazione"><a class="header" href="#tipi-di-sincronizzazione">Tipi di <strong>sincronizzazione</strong></a></h2>
+<p>Quindi a seconda del comportamento delle primitive di send e receive tra il sender e il receiver possono avere <strong>tre</strong> diverse combinazioni che in genere vengono utilizzate.</p>
+<ul>
+<li>
+<p><strong>Send sincrona, receive bloccante</strong></p>
+<ul>
+<li>stretta sincronizzazione tra sender e receiver;</li>
+<li>entrambi in attesa della consegna del messaggio, entrambi si bloccano nella comunicazione;</li>
+<li>denominato anche “<strong>rendezvous</strong>”.</li>
+</ul>
+</li>
+<li>
+<p><strong>Send asincrona, receive bloccante</strong></p>
+<ul>
+<li>il sender continua a eseguire dopo l’invio;</li>
+<li>il receiver rimane in attesa fino a che non riceve il messaggio.</li>
+</ul>
+</li>
+<li>
+<p><strong>Send asincrona, receive asincrona</strong></p>
+<ul>
+<li>Nessuna delle due parti, sender e receiver, rimane in attesa della consegna;</li>
+<li>completo disaccoppiamento tra mittente e destinatario;</li>
+<li>tipo sincronizzazione è il più comune tra processi distribuiti, non conosciamo il momento in cui il destinatario o il sorgete è pronto.</li>
+</ul>
+</li>
+</ul>
+<p>Send asincrona e receive bloccante sono quelle che si trovano più spesso nei sistemi operativi e linguaggi di programmazione.</p>
+<h2 id="implementazione-di-una-send-sincrona-a-mezzo-di-send-asincrona"><a class="header" href="#implementazione-di-una-send-sincrona-a-mezzo-di-send-asincrona">Implementazione di una send sincrona a mezzo di send asincrona</a></h2>
+<p>Siamo in grado di implementare una <strong>send sincrona</strong> utilizzando send asincrona + receive bloccante (default di <strong>System V linux</strong>).</p>
+<p>La send sincrona è utile quando il mittende deve conoscere se il destinatario ha ricevuto o meno il messaggio.</p>
+<p>→ il sender deve determinare se il messaggio è stato ricevuto e lo fa inviando dei messaggi aggiuntivi al messaggio contenente l’informazione da scambiare.</p>
+<p align="center">
+  <img src="images/send_sincrona_SVL.png" width="300">
+</p>
+
+<p>Quindi, tra mittente e destinatario, per la cominicazione sincrona è necessario che questi si scambino una serie di messaggi prima di inviare il messaggio contenente l’informazione.</p>
+<ul>
+<li>
+<p>Il sender dopo aver inviato una richiesta <em>request-to-send</em> si mette in attesa di una risposta da parte del destinatario.</p>
+</li>
+<li>
+<p>Nel momento in cui il destinatario è pronto per la comunicazione invia una richiesta di <em>OK-to-send</em> al sender e a sua volta si mette in attesa per il messaggio.</p>
+</li>
+<li>
+<p>Il sender una volta sbloccato invia la il messaggio effettivo.</p>
+</li>
+</ul>
+<p>Implementado questo scambio di messaggi tra sender e receiver è quindi possibile implementare quella che è una <strong>send sincrona</strong>.</p>
+<p>Ovviamente questo procedura è da visualizzare in maniera <strong>atomica</strong>.</p>
+<p>Implementazione tipo:</p>
+<p><strong>send</strong></p>
+<pre><code>procedure sendSincrona(dest, mess){
+    sendAsincrona(dest, messRTS)
+  
+    // messRTS è un messaggio di "pronto ad inviare"
+  
+    receiveBloccante(dest, messOTS)
+  
+    // messOTS è un messaggio di "pronto a ricevere"
+  
+    sendAsincrona(dest, mess)
+}
+</code></pre>
+<p><strong>receive</strong></p>
+<pre><code>procedure receive(source, mess){
+  receiveBloccante(source, messRTS)
+
+  // il ricevente si blocca sulla ricezione di un messaggio
+  // di richiesta di invio
+  
+  sendAsincrona(source, messOTR)
+  
+  // una volta ricevuto invia un messaggio inivia un messaggio
+  // che sintetizza l'accettazione da parte del destinatario
+  // di ricevere il messaggio
+  
+  receiveBloccante(source, mess);
+}
+</code></pre>
+<p>Utilizzando procedure per il sender e per il receiver aventi tale workflow possiamo implementare una <strong>send</strong> avente un comportamento <strong>sincrono</strong>.</p>
+<p align="center">
+  <img src="images/send_synch.png" width="400">
+</p>
+
+<p>Ovviamente il r<strong>icevente potrebbe essere già pronto</strong> per la ricezione di un messaggio RTS ancor prima che questo venga inviato;</p>
+<p>in questa situazione il <strong>receiver è già sospeso</strong> e alla ricezione del messaggio si sblocca e invia il messaggio di risposta.</p>
+<h2 id="indirizzamento"><a class="header" href="#indirizzamento"><strong>Indirizzamento</strong></a></h2>
+<p>Mi peremtte di specificare la destinazione e la provenienza della gestione del messaggio.</p>
+<p>In che modo posso specificare mittente e destinatario?</p>
+<p>Esistono più modi:</p>
+<ul>
+<li>
+<p><strong>comunicazione diretta simmetrica</strong></p>
+<p>sia il mittente che il destinatario specificano l’identificativo dell’altro.</p>
+<ul>
+<li>mittente specifica il <strong>PID</strong> del destinatario nella send();</li>
+<li>destinatario specifica il <strong>PID</strong> del mittente nella receive().</li>
+</ul>
+</li>
+<li>
+<p><strong>comunicazione diretta asimmetrica</strong></p>
+<ul>
+<li>il mittente esplicita il <strong>PID</strong> del destinatario nella send();</li>
+<li>il destinatario non indica un <strong>PID</strong>, viene a <strong>conoscenza</strong> del PID del mittente <strong>alla ricezione del messaggio</strong>, tramite parametro di uscita (specificato all’interno dell’intestazione del messaggio).</li>
+</ul>
+</li>
+<li>
+<p><strong>comunicazione indiretta</strong></p>
+<ul>
+<li>il mittente fa riferimento ad una <strong>mailbox</strong> nella send();</li>
+<li>il destinatario fa riferimento alla stessa <strong>mailbox</strong>, da cui preleva il messaggio tramite receive().</li>
+</ul>
+</li>
+</ul>
+<p>Questa ultima comunicazione <strong>indiretta</strong> fa riferimento a ciò che viene implementato e fornito da Linux che sfruttano le <strong>mailbox System V</strong></p>
+<p>Mittente e destinatario fanno riferiemento ad un <strong>nodo intermendio</strong>.</p>
+<hr>
+<p><strong>ESEMPI:</strong></p>
+<p><strong>COMUNICAZIONE DIRETTA</strong></p>
+<p>comunicazione diretta simmetrica: <strong>schema a pipeline</strong></p>
+<p align="center">
+  <img src="images/pipeline.png" width="400">
+</p>
+
+<p>comunicazione diretta asimmetrica: <strong>schema client-server</strong></p>
+<p align="center">
+  <img src="images/client_server.png" width="400">
+</p>
+
+<p><strong>COMUNICAZIONE INDIRETTA</strong></p>
+<p>I messaggi vengono inviati ad una struttura dati condivisa (detta <strong>coda</strong> o <strong>mailbox</strong>)</p>
+<p>Il vantaggio di questo tipo di comunicazione è che sender e receiver sono <strong>indipendenti</strong>, per la presenza della mailbox.</p>
+<p>Possibili schemi di implementazione:</p>
+<ul>
+<li>one-to-one</li>
+<li>one-to-many</li>
+<li>many-to-one</li>
+<li>many-to-many</li>
+</ul>
+<p align="center">
+  <img src="images/mailbox.png" width="400">
+</p>
+
+<p>Infine possiamo quindi avere diversi modelli di comunicazione ad ambiente locale che sono determinati dalla combinazione tra le tipologie di sincronizzazione che possiamo ottenere e i possibili indirizzamenti utilizzabili.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+
+    </div>
+    </body>
+</html>

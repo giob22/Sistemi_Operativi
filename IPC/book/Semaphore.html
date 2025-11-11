@@ -1,0 +1,457 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Semaphore - IPC</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-cc69e1fb.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-56612340.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-c2b90f7e.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-18d1fdea.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">IPC</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="semaphore"><a class="header" href="#semaphore">Semaphore</a></h1>
+<p>I semafori sono delle risorse IPC, ma il loro valore interno si comporta come una variabile condivisa gestita dal kernel.</p>
+<p>Vengono utilizzati per la <strong>cooperazione</strong> e la <strong>competizione</strong> tra processi. Due o più processi possono cooperare o competere nell’esecuzione di una <strong>sezione critica</strong> attraverso l’uso dei semafori affinché non ci siano problemi di <em>sincronizzazione</em> o <em>interferenze</em>.</p>
+<p>I processi condividono tra loro una <strong>istanza di semaforo</strong> <code>s</code>. Tramite questa variabile i processi possono sincronizzarsi sull’utilizzo di una <strong>risorsa critica</strong>, ovvero una risorsa condivisa.</p>
+<p>Un processo più fare generalmente due operazioni su un semaforo <code>s</code>:</p>
+<ul>
+<li><code>signal(s)</code>: può inviare un segnale al semaforo e in certe condizioni risvegliare i processi in attesa.</li>
+<li><code>wait(s)</code>: primitiva che permette ad un processo di assicurarsi la risorsa. Nel caso la risorsa non sia disponibile perché il processo che la possiede non ha ancora inviato un segnale <code>signal(s)</code>, il processo che la richiede si sospende fino a che non riceverà il segnale <code>signal(s)</code>.</li>
+</ul>
+<h4 id="modello-concettuale-semaforico"><a class="header" href="#modello-concettuale-semaforico">MODELLO CONCETTUALE SEMAFORICO:</a></h4>
+<p><img src="images/modello_concettuale_semaforico.png" alt="alt text"></p>
+<p>L’uso classico di un semaforo è per implementare un meccanismo di <strong>locking</strong> che grantisca la <strong>mutua esclusione</strong> tra processi.</p>
+<p>Possiamo implementare la <code>wait()</code> e la <code>signal()</code> sfruttando quelle che sono le primitive offerte offerte dalla libreria <code>sys/sem.h</code>.</p>
+<p>Queste due procedure ci serviranno per delimitare la sezione critica.</p>
+<h2 id="strutture-semaforiche-nel-kernel"><a class="header" href="#strutture-semaforiche-nel-kernel">Strutture semaforiche nel kernel</a></h2>
+<p>Il kernel Linux mantiene due strutture per implementare un semaforo: <code>sem</code> e <code>semid_ds</code>.</p>
+<p>In particolare ogni volta che cerchiamo di istanziare un semaforo in realtà stiamo istanziando un <em>array</em> di semafori; puntatore a tale <em>array</em> è contenuto nella struttura <code>semid_ds</code>. Ogni elemento di questo array è una struttura <code>sem</code> che descrive il singolo semaforo.</p>
+<p>La struttura <code>sem</code> è definita in <code>linux/sem.h</code>:</p>
+<pre><code class="language-c">struct sem {
+	short   sempid;         /* pid of last operation */
+   	ushort  semval;         /* current value */
+   	ushort  semncnt;        /* num procs awaiting increase in semval */
+   	ushort  semzcnt;        /* num procs awaiting semval = 0 */
+};
+</code></pre>
+<p>dove:</p>
+<ul>
+<li>
+<p><code>sempid</code> è il PID del processo che ha eseguito l’ultima operazione su <code>s</code>;</p>
+</li>
+<li>
+<p><code>semval</code> è il valore corrente del semaforo;</p>
+</li>
+<li>
+<p><code>semncnt</code> è il numero di processi che sono in attesa che una data risorsa diventi disponibile;</p>
+<p>(numero di processi che attendono l’incremento del semaforo)</p>
+</li>
+<li>
+<p><code>semzcnt</code> è il numero di processi che sono in attesa che il valore del semaforo sia pari a <code>0</code></p>
+</li>
+</ul>
+<p>Invece la struttura che contiene l’array di semafori all’interno del sistema è <code>semid_ds</code>.</p>
+<pre><code class="language-c">/* One semid data structure for each set of semaphores in the system. */
+struct semid_ds {
+	struct ipc_perm sem_perm;       /* permissions .. see ipc.h */
+   	time_t          sem_otime;      /* last semop time */
+   	time_t          sem_ctime;      /* last change time */
+   	struct sem      *sem_base;      /* ptr to first semaphore in array */
+   	struct wait_queue *eventn;
+   	struct wait_queue *eventz;
+   	struct sem_undo  *undo;         /* undo requests on this array */
+   	ushort          sem_nsems;      /* no. of semaphores in array */
+};
+</code></pre>
+<p>dove:</p>
+<ul>
+<li>
+<p><code>sem_perm</code> è un’istanza della struttura <code>ipc_perm</code> che è definita in <code>linux/ipc.h</code>.</p>
+<p>Questa struttura mantiene le informazioni sui permessi impostati per il semaforo.</p>
+</li>
+<li>
+<p><code>sem_otime</code> è il tempo dell’ultima operazione <code>semop()</code>;</p>
+</li>
+<li>
+<p><code>sem_ctime</code> è il tempo dell’ultima modifica fatta alla struttura in esame;</p>
+</li>
+<li>
+<p><code>sem_base</code> è il puntatore al primo semaforo nell’array;</p>
+</li>
+<li>
+<p><code>sem_undo</code> è il puntatore ad un lista di strutture, una per ogni processo che ha richiesto una <em>undo</em> durante una <code>semop()</code> sul set di semafori <code>sem_base</code>;</p>
+<p>Ovvero il numero di richieste al kernel di sistemare le situazioni in cui un processo muore prima di effettuare una <code>signal()</code> e quindi riportare il valore di <code>sem_val</code> a quello iniziale.</p>
+<p>Quindi il kernel, nel caso in cui un processo muore prima di poter effettuare la <code>signal()</code> e l’operazione che ha fatto utilizza il flag <code>SEM_UNDO</code>, annulla automaticamente tale operazione sul semaforo, riportandolo al valore iniziale;</p>
+<p>Evita situazioni di <em>deadlock</em></p>
+</li>
+<li>
+<p><code>sem_nsems</code> è il numero di semafori nell’array di semafori (<em>semaphore set</em>).</p>
+</li>
+</ul>
+<h2 id="semaphores-workflow"><a class="header" href="#semaphores-workflow">Semaphores’ workflow</a></h2>
+<p>Per implementare un semaforo mediante i meccanismi offerti dallo <strong>standard systemV</strong> è necessario l’utilizzo di alcune primitive implementate in:</p>
+<pre><code class="language-c">#include &lt;sys/types.h&gt;
+#include &lt;sys/ipc.h&gt;
+#include &lt;sys/sem.h&gt;
+</code></pre>
+<h3 id="creazione-semget"><a class="header" href="#creazione-semget">Creazione: <code>semget()</code></a></h3>
+<p>La primitiva che permette di creare un nuovo set di semafori è la system call <code>semget()</code>:</p>
+<pre><code class="language-c">int semget(key_t key, int nsems, int semflg);
+</code></pre>
+<p>Tale funzione restituisce il <strong>descrittore</strong> del <em>semaphore set</em> associato alla chiave specificata in <code>key</code>.</p>
+<p>Il valore della chiave è ottenibile cablando un valore, con <code>IPC_PRIVATE</code>, o con <code>ftok()</code> a seconda degli utilizzi sul semaphore set.</p>
+<p>I flag inseribili in <code>semflg</code> sono:</p>
+<ul>
+<li><code>IPC_CREAT</code>;</li>
+<li><code>IPC_EXCL</code>;</li>
+<li>Permessi di accesso in ottale.</li>
+</ul>
+<p>Si possono inserire più di uno per un singolo semaphore set utilizzando l’operatore or logico <code>|</code>.</p>
+<p>In caso di successo, la <code>semget()</code>, restituisce il descrittore del semaphore set; in caso di fallimento viene restituito <code>-1</code>.</p>
+<p>Il numero massimo di semafori in un singolo semaphore set è definito in <code>linux/sem.h</code> come:</p>
+<pre><code class="language-c">#define SEMMSL  250
+</code></pre>
+<p>Questo valore dipende dalla propria architettura, per ottenere tali informazioni è necessario utilizzare il comando <code>ipcs -l</code> che restituisce diverse informazioni anche per le altre IPC.</p>
+<p>Per creare un array semaforico di 2 semafori <strong>con chiave</strong> nulla (quindi i semafori saranno accessibili unicamente al processo padre e agli eventualli figli):</p>
+<pre><code class="language-c">key_t sem_key = IPC_PRIVATE;
+int sem_ds = semget(key, 2, IPC_CREATE | 0644);
+</code></pre>
+<p><img src="images/creazione_semaforo.svg" alt="alt text"></p>
+<h3 id="inizializzazione-e-rimozione-semctl"><a class="header" href="#inizializzazione-e-rimozione-semctl">Inizializzazione e rimozione: <code>semctl()</code></a></h3>
+<p>Per poter inizializzare e rimuovere un semafor si utilizza la system call <code>semctl()</code>.</p>
+<pre><code class="language-c">int semctl(int semid, int semnum, int cmd, ...);
+</code></pre>
+<p>La system call esegue l’operazione specificata in <code>cmd</code> sul <em>semaphore set</em> indentificato da <code>semid</code> e sull’<code>semnum</code>-esimo semaforo dell’array.</p>
+<p>Alcuni possibili valori da usare per <code>cmd</code> sono:</p>
+<ul>
+<li><code>SETVAL</code>: imposta il valore, specificato come quarto parametro, di uno specifico semaforo indentificato da <code>semnum</code> all’interno del <em>semaphore set</em> <code>semid</code>;</li>
+<li><code>IPC_RMID</code>: rimuove il <em>semaphore set</em> <code>semid</code> dal kernel. In realtà il <em>semaphore set</em> viene <strong>marcato come eliminabile</strong>, non eliminato direttamente. Viene effettivamente eliminato dal kernel nel momento in cui nessun processo lo sta ancora utilizzando.</li>
+</ul>
+<p>In definitiva per poter un array semaforico, a due valori <code>val1</code> e <code>val2</code>:</p>
+<pre><code class="language-c">semctl(semid, 0, SETVAL, val1);
+semctl(semid, 1, SETVAL, val2);
+</code></pre>
+<p>Per poter rimuovere un array semaforico (in questo caso la variabile <code>semnum</code> viene ignorata):</p>
+<pre><code class="language-c">semctl(semid, semnum, IPC_RMID);
+</code></pre>
+<h3 id="semaphore-operations-semop"><a class="header" href="#semaphore-operations-semop">semaphore operations: <code>semop()</code></a></h3>
+<p>Per eseguire operazioni sulla struttura identificativa di un semaforo (<code>sem</code>) è necessario utilizzare la system call <code>semop()</code>:</p>
+<pre><code class="language-c">int semop(int semid, struct sembuf *sops, size_t nsops);
+</code></pre>
+<p>In particolare <code>semop()</code> esegue operazioni sui semafori nell’array identificato da <code>semid</code>. <code>sops</code> è un array di operazioni definite da un struttura <code>sembuf</code>, mentre <code>nsops</code> è il numero di elementi all’interno dell’array <code>sops</code>.</p>
+<p>Ogni singola operazione è descritta da <code>sembuf</code>, una struttura contenente i seguenti campo:</p>
+<pre><code class="language-c">struct sembuf{
+	unsigned short sem_num;  /* semaphore number */
+   	short          sem_op;   /* semaphore operation */
+   	short          sem_flg;  /* operation flags */
+}
+</code></pre>
+<p>Due sono i valori che può assumere <code>sem_flg</code>: <code>IPC_NOWAIT</code> e <code>IPC_UNDO</code>.</p>
+<p>Se si specifica <code>IPC_UNDO</code>, l’operazione sará annullata nel momento in cui il processo termina inaspettatamente o volontariamente.</p>
+<p>L’insieme delle operazioni specificate da <code>sops</code>, array di <code>sembuf</code> passato per parametro alla chiamata di sistema <code>semop()</code>, sono eseguite in maniera <strong>atomica</strong>, ossia tutte le operazioni indicate devono poter essere effettuate simultaneamente, altrimenti la <code>semop()</code> si blocca o ritorna immediatamente.</p>
+<p>Si blocca nel caso default, ovvero un’operazione dell’array non può esser effettuata in maniera atomica e nessuna operazione ha specificato il flag <code>IPC_NOWAIT</code>. Quando avviene ciò il processo che vuole effettuare queste operazioni viene <strong>sospeso</strong> finché le condizioni per eseguire tutte le operazioni sui semafori non diventano soddisfatte.</p>
+<p>Invece ritorna immediatamente un errore nel caso in <strong>c’è una operazione non atomica</strong>, e almeno una operazione dell’array ha specificato il flag <code>IPC_NOWAIT</code>. Questo perché prevale la <strong>proprietá di atomicitá della <code>semop()</code></strong></p>
+<p>Ogni operazione è eseguita sul semaforo individuato da <code>sem_num</code> (in <code>sembuf</code>). In altre parole <code>sem_num</code> indica su quale semaforo, tra quelli presenti nel <em>semaphore set</em>, dovrá esser eseguita l’operazione.</p>
+<p>Ovviamente specificando un valore di <code>sem_num</code> con un indice non valido, la chiamata <code>semop()</code> fallisce e ritorna <code>-1</code>, impostando <code>errno</code> a <code>EINVAL</code>.</p>
+<p><code>errno</code> è una <strong>variabile globale</strong> usata dalle funzioni di sistema in C per indicare il tipo di errore avvenuto. Quando una chiamata di sistema fallisce (ritorna <code>-1</code>), imposta <code>errno</code> a un <strong>codice numerico</strong> che rappresenta la causa dell’errore.</p>
+<p>Nel caso analizzato: <code>EINVAL</code> è una costante simbolica (definita in <code>&lt;errno.h&gt;</code>) che significa “invalid argument”, cioè <strong>argomento non valido</strong>.</p>
+<h3 id="implementazione-delle-primitive-wait-e-signal-tramite-la-struttura-semaforica"><a class="header" href="#implementazione-delle-primitive-wait-e-signal-tramite-la-struttura-semaforica">Implementazione delle primitive <code>wait()</code> e <code>signal()</code> tramite la struttura semaforica</a></h3>
+<p>Prendendo in considerazione la system call <code>semop()</code>:</p>
+<pre><code class="language-c">int semop(int semid, struct sembuf *sops, size_t nsops);
+</code></pre>
+<p>I valori che può assumere il campo <code>sem_op</code> specificano tre possibili tipologie di operazioni che si possono compiere sul semaforo.</p>
+<p>Utilizzando queste tre tipi di operazioni, è possibile implementare le primitive <em>wait</em> (<code>sem_op &lt; 0</code>), <em>wait for zero</em> (<code>sem_op == 0</code>) e <em>signal</em> (<code>sem_op &gt; 0</code>).</p>
+<h4 id="implementazione-di-signal-sem_op--0"><a class="header" href="#implementazione-di-signal-sem_op--0">Implementazione di <code>signal()</code>: <code>sem_op &gt; 0</code></a></h4>
+<p>Se <code>sem_op &gt; 0</code>, l’operazione consisterá nell’addizionare il valore di <code>sem_op</code> al valore <code>semval</code> del semaforo.</p>
+<pre><code class="language-c">semval += sem_op;
+</code></pre>
+<p>Per implementare l’operazione di <code>signal()</code> è necessario che il processo chiamante dovrá avere i permessi per modificare i valori del semaforo.</p>
+<p>Questa operazione <strong>non</strong> causa in alcun caso il blocco del processo.</p>
+<p>Nel caso in cui sia specificato il flag <code>SEM_UNDO</code>, il kernel sottrae il valore <code>sem_op</code> dal valore del <em>semaphore adjustment</em> (<code>semadj</code>), il quale identifica un contatore delle operazioni <em>undo</em>.</p>
+<p>Tale contatore <code>semadj</code> è mantenuto all’interno di una struttura dati chiamata <strong>semaphore undo list</strong> che il kernel mantiene per <strong>processo</strong>.</p>
+<p>Il campo <code>semadj</code> indica <strong>quanto bisogna correggere</strong> il valore del semaforo se il processo muore prima di “bilanciare” le sue operazioni.</p>
+<p>Quindi per implementere l’operazione di <code>signal()</code> dobbiamo prima costruire e modificare i campo della struttura <code>sembuf</code> (definisce il tipo di operazione), impostando <code>sem_op</code> maggiore di zero.</p>
+<pre><code class="language-c">void Signal_Sem (int id_sem,int numsem){
+	struct sembuf sem_buf;
+	sem_buf.sem_num = numsem;
+	sem_buf.sem_flg = 0;
+	sem_buf.sem_op = 1;
+	semop(id_sem, &amp;sem_buf, 1);   //semaforo verde
+}
+</code></pre>
+<h4 id="implementazione-di-wait"><a class="header" href="#implementazione-di-wait">Implementazione di <code>wait()</code></a></h4>
+<p>Il comportamento della primitiva <code>semop()</code> nel momento in cui <code>sem_op &lt; 0</code> dipende dal valore corrente di <code>semval</code>.</p>
+<ul>
+<li>
+<p>Se <code>semval &gt;= |sem_op|</code> l’operazione procede immediatamente e il valore assoluto di <code>sem_op</code> è sottratto a <code>semval</code>.</p>
+<p>Se specificato il flag <code>SEM_UNDO</code> il kernel addiziona il valore <code>sem_op</code> al valore del <em>semaphore adjustmnt</em> (<code>semadj</code>) corrispondente, il quale identifica un contatore delle operazioni <em>undo</em>.</p>
+</li>
+<li>
+<p>Se <code>semval &lt; |sem_op|</code>, se specificato il flag <code>IPC_NOWAIT</code> la system call fallisce (<code>errno = EAGAIN</code>);</p>
+<p>altrimenti il valore del campo <code>semncnt</code> (il contatore dei processi sospesi nell’attesa che il <strong>valore del semaforo venga incrementato</strong>) viene incrementato di <code>1</code> e il processo chiamante si sospende finché una delle seguenti condizioni si avveri:</p>
+<ul>
+<li><code>semval &gt;= |sem_op|</code>, quando questa condizione sará verificata (significa che altri processi non sospesi avranno incrementato il valore di <code>semval</code>) il valore di <code>semncnt</code> sará decrementato e il valore corrente del semaforo sará:
+<pre><code class="language-c">semval -= |sem_op|
+</code></pre>
+Se specificato <code>SEM_UNDO</code> il sistema aggiornerá il contatore <code>semadj</code> del processo associato al semaforo in questione.</li>
+<li>Il semaforo viene rimosso. In questo caso la system call fallisce (<code>errno = EIDRM</code>).</li>
+</ul>
+</li>
+</ul>
+<p>Quindi conoscendo tali comportamenti della primitiva <code>semop()</code> nel momento in cui <code>sem_op &lt; 0</code>, è possibile implementare una primitiva di <code>wait()</code> su un semaforo:</p>
+<pre><code class="language-c">void Wait_Sem (int id_sem, int numsem){
+	struct sembuf sem_buf;
+	sem_buf.sem_num = numsem;
+	sem_buf.sem_flg = 0;
+	sem_buf.sem_op = -1;
+	semop(id_sem, &amp;sem_buf, 1);   //semaforo rosso
+}
+</code></pre>
+<h4 id="implementazione-della-wait-for-zero"><a class="header" href="#implementazione-della-wait-for-zero">Implementazione della <code>wait-for-zero()</code></a></h4>
+<p>Infine abbiamo il caso in cui <code>sem_op = 0</code>, il comportamento della primitiva <code>semop()</code> è il seguente:</p>
+<ul>
+<li>se l valore <code>semval</code> è zero, l’operazione procede immediatamente (il processo non si sospende);</li>
+<li>altrimenti se <code>semval ≠ 0</code> ci sono due casi:
+<ul>
+<li>se è specificato il flag <code>IPC_NOWAIT</code> in <code>sem_flg</code>, la system call fallisce restituendo un codice di errore <code>EAGAIN</code> a mezzo della variabile globale <code>errno</code>;</li>
+<li>altrimenti la variabile <code>semzcnt</code> (indica il numero di processi sospesi nell’attesa che il <strong>valore del semaforo</strong> <strong>diventi nullo</strong>)  è incrementato di <code>1</code>, forzando il processo a sospendersi finché una delle seguenti condizioni si verificherá:
+<ul>
+<li><code>semval</code> diventa <code>0</code> (di conseguenza viene decrementato il valore di <code>semzcnt</code>);</li>
+<li>il semaforo è rimosso: la system call fallisce (<code>errno = EIDRM</code>)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Conoscendo questo comportamento possiamo implementare la funzione <code>wait-for-zero()</code>:</p>
+<pre><code class="language-c">void Wait_for_Zero_Sem (int id_sem, int numsem){
+	struct sembuf sem_buf;
+	sem_buf.sem_num = numsem;
+	sem_buf.sem_flg = 0;
+	sem_buf.sem_op = 0;
+	semop(id_sem, &amp;sem_buf, 1);   //semaforo rosso
+}
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="Shared_memory.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="Problema_lettori_scrittori.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="Shared_memory.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="Problema_lettori_scrittori.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>
