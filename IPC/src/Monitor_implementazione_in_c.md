@@ -87,4 +87,21 @@ int queue_condition(Monitor*, int);
 
 ### signal-and-continue
 
-// @todo contiuna...
+**`wait_condition(Monitor* m, int id_var_cond)`**
+
+1) il processo incrementa il contatore di processi in attesa sulla *condition variable* eseguendo `m->cond_counts[id_var_cond]++`;
+2) il processo esegue una `signal_sem(m->mutex, 0)` in modo da permettere ad altri processi di accedere al monitor;
+3) successivamente si sospende volontariamente sulla *condition variable*, il cui identificatore è passata per parametro, mediante una `signal_sem(m->var_conds, id_var_cond)`;
+4) nel momento in cui viene riattivato da un processo segnalatore che effettua una `signal_sem()` sulla stessa *condition variable* riprende l'esecuzione facendo una `wait_sem(m->mutex, 0)` per sospendersi sulla coda dei processi in attesa del monitor.
+   
+   Questo perché  ci troviamo in un monitor **signal-and-continue** quindi nel momento in cui un processo sospeso una una variabile condition viene sbloccato questo deve ritornare nella coda dei processi che attendono di ottenere il monitor. Altrimenti ci saranno due processi che operano all'interno del monitor.
+
+**`signal_cond(Monitor* m, int id_var_cond)`**
+
+1) verifica se sono presenti dei processi in attesa sulla *condition variable* verificando il contatore in `m->cond_counts[id_var_cond]`;
+2) se sono presenti dei processi in attesa allora esegue una `signal_sem(m->var_conds, id_var_cond)` e decrementa il numero di processi in attesa sulla variabile condition `m->cond_counts[id_var_cond]--`;
+3) altrimenti la chiamata è ininfluente.
+
+In entrambi i casi, sia che la verifica sia vero oppure falsa, il processo segnalatore continua la sua esecuzione all'interno del monitor.
+
+<!--todo aggiungi il codice sorgente per ogni workflow   -->
