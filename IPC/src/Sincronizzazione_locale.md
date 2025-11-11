@@ -218,7 +218,7 @@ Ovviamente il r**icevente potrebbe essere già pronto** per la ricezione di un m
 - **comunicazione diretta asimmetrica**
   
   - il mittente esplicita il **PID** del destinatario nella send();
-  - il destinatario non indica un **PID**, viene a **conoscenza** del PID del mittente **alla ricezione del messaggio**, tramite parametro di uscita (che si troverà all'interno del payload).
+  - il destinatario non indica un **PID**, viene a **conoscenza** del PID del mittente **alla ricezione del messaggio**, tramite parametro di uscita (che si troverà all'interno del **payload**).
 - **comunicazione indiretta**
   
   - il mittente fa riferimento ad una **mailbox** nella send();
