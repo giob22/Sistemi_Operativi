@@ -267,8 +267,7 @@ Possibili schemi di implementazione:
 
 Infine possiamo quindi avere diversi modi di sincronizzazione per modelli ambiente locale che sono determinati dalla combinazione tra le tipologie di sincronizzazione che possiamo ottenere e i possibili indirizzamenti utilizzabili.
 
-vnlfjvndljvdngit
-
+ckjdsbkvjbskv
 
 
 
