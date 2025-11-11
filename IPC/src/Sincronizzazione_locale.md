@@ -265,8 +265,9 @@ Possibili schemi di implementazione:
 </p>
 
 
-Infine possiamo quindi avere diversi modelli di comunicazione ad ambiente locale che sono determinati dalla combinazione tra le tipologie di sincronizzazione che possiamo ottenere e i possibili indirizzamenti utilizzabili.
+Infine possiamo quindi avere diversi modi di sincronizzazione per modelli ambiente locale che sono determinati dalla combinazione tra le tipologie di sincronizzazione che possiamo ottenere e i possibili indirizzamenti utilizzabili.
 
+vnlfjvndljvdngit
 
 
 
