@@ -267,7 +267,17 @@ Possibili schemi di implementazione:
 
 Infine possiamo quindi avere diversi modi di sincronizzazione per modelli ambiente locale che sono determinati dalla combinazione tra le tipologie di sincronizzazione che possiamo ottenere e i possibili indirizzamenti utilizzabili.
 
-**Esempio di comunicazione **
+**Esempio di comunicazione di RENDEZVOUS con mailbox**
+
+**Rendezvous**: send sincrona, receive  bloccante
+
+<p align="center">
+  <img src="images/esempio_mailbox.png" width="400" >
+</p>
+
+Possiamo quindi capire da questa immagine quali sono le informazioni di interesse per una mailbox.
+
+Il ruolo della mailbox è da intermediario.
 
 
 
