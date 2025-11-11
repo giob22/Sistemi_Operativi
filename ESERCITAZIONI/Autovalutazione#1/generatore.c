@@ -20,9 +20,15 @@ void fine_scrittura(int id_sem){
 int main(){
     // accedo alla shm creta dal processo master
     key_t k_shm = ftok("./AUTOVALUTAZIONE#1/main.c", 'g');
-
+    
+    
+    
+    
+    
+    
+    
     // ottengo il descrittore verificando prima che la shm sia stata effettivamente creata
-
+    
     int id_shm = shmget(k_shm, sizeof(Buffer), IPC_CREAT | IPC_EXCL | 0664);
     if (id_shm < 0)
     {
@@ -35,11 +41,12 @@ int main(){
         printf("[GENERATORE: %d] la shm non è stata creata dal master\n", getpid());
         exit(1);
     }
-
-    // attach alla shm
-
-    Buffer* buf = (Buffer*) shmat(id_shm, NULL, 0);
     
+   
+   // attach alla shm
+   
+   Buffer* buf = (Buffer*) shmat(id_shm, NULL, 0);
+   
     // una volta ottenuta la shm comincia la periodica generazione di stringhe
     srand(time(NULL) * getpid());
     
