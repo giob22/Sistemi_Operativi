@@ -261,7 +261,7 @@ Possibili schemi di implementazione:
 - many-to-many
 
 <p align="center">
-  <img src="images/mailbox.png" width="400" >
+  <img src="images/mailbox.png" width="300" >
 </p>
 
 
@@ -272,7 +272,7 @@ Infine possiamo quindi avere diversi modi di sincronizzazione per modelli ambien
 **Rendezvous**: send sincrona, receive  bloccante
 
 <p align="center">
-  <img src="images/esempio_mailbox.png" width="400" >
+  <img src="images/esempio_mailbox.png" width="500" >
 </p>
 
 Possiamo quindi capire da questa immagine quali sono le informazioni di interesse per una mailbox.
