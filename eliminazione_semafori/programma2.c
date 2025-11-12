@@ -9,23 +9,24 @@
 
 int main(){
 	// inizzializzo un semaforo che verrá condiviso tra due processi
-	key_t k_sem = ftok("./programma1.c", 'b');
+	key_t k_sem = ftok("./programma1_exe", 'b');
 	printf("chiave: %d\n", (int)k_sem);
 
 	// dopo aver ottenuto la chiave dell'array semaforico ottengo il costruttore
 	// che dovrebbe già esser creato dal programma1
 	
-	int ds_sem = semget(k_sem, 1,0);
+	int ds_sem = semget(k_sem, 1, IPC_CREAT | IPC_EXCL | 0664);
 	printf("valore di ds_sem: %d\n", ds_sem);
 	if (ds_sem < 0){
 		printf("il semaforo é stato creato correttamente dal programma1.c\n");
 		ds_sem = semget(k_sem, 1, 0);
 		printf("ho ottenuto il semaforo esistente\n");
+		printf("[PROGRAMMA 2] il descrittore del semaforo é: %d\n", ds_sem);
 	}else{
-		printf("il semaforo non é stato creato, ERRORE");
+		semctl(ds_sem, 0, IPC_RMID),
+		printf("il semaforo non é stato creato, ERRORE\n");
 		exit(1);
 	}
-	printf("[PROGRAMMA 2] il descrittore del semaforo é: %d\n", ds_sem);
 
 
 	// potrei utilizzare il semaforo, ma non lo faccio, attendo 10 secondi per vedere cosa accade
@@ -38,23 +39,36 @@ int main(){
 	// op.sem_num = 0;
 	// op.sem_op = 1;
 	// op.sem_flg = 0;
-	Signal_sem(ds_sem, 0);
-	printf("ho segnalato il programma1 bloccato sul semaforo\n");
-
+	
 	// semop(ds_sem, &op, 1);
-
 	
+	
+	Signal_sem(ds_sem, 0);
 	sleep(10);
+
+	// faccio eseguire una exec ad un processo figlio per verificare se il semaforo esiste ancora
+	printf("[PROGRAMMA 2]eseguo una ipcs per verificare a terminale se è presente un semaforo\n");
+	pid_t pid = fork();
+	if (pid == 0)
+	{
+		execl("/usr/bin/ipcs", "ipcs","-s", (char* )NULL);
+		printf("ERRORE EXEC");
+		exit(0); // nel caso di errore dell'exec
+	}
+	wait(NULL);
+	
+
+
 	// controllo ipcs
+	// controllando ipcs dopo che il programma1 è stato sbloccato notiamo che il semaforo non esiste più
+	// questo significa che il programma 2 se avesse fatto qualche altra operazione sul semaforo questa avrebbe
+	// restituito un essore, proprio perché il semaforo è stato cancellato
 
-
-	// questi sono i passi che dovrá fare anche il secondo programma per 
-	// ottenere il descrittore del semaforo.
-
+	// facciamo una prova, tentiamo di ottenere informazioni sul semaforo come sem_val
+	// mediante l'utilizzo di semctl
+	int valore_sem = semctl(ds_sem, 0, GETVAL);
+	printf("[PROGRAMMA 2]Ottengo il valore di sem_val per il semaforo con id_sem = %d (-1 indica che il semaforo non esiste): %d\n", ds_sem,valore_sem);
+	printf("FINE 2\n");
 	
-	
-
-
-
 	return 0;
 }
