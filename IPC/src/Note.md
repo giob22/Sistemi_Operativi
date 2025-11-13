@@ -14,13 +14,14 @@ due potrebbero essere le soluzioni:
 
 1) il padre fa una `shmget + shmat` e `semget` (utilizzando una chiave generata con `ftok`) creando le risorse IPC e in tutte le applicazioni generate con `fork + exec` si ripete `shmget + shmat` e `semget;
 2) il padre fa una `shmget + shmat` e `semget` creando le risorse IPC, ma mettendo nella struttura dati che descrive la risorsa condivisa da proteggere anche l'identificativo dell'array semaforico.
-   
+
    ```c
     struct SharedData{
         int semid;
         // ...
     }
    ```
+
    Quindi nelle applicazioni create con `fork + exec` si eseguirà solo `shmget + shmat` (utilizzando la stessa chiave generata con `ftok`) ottenendo il descrittore dell'array semaforico accedendo alla struttura dati condivisa.
 
 La seconda soluzione, seppur valida e funzionante pone un rischio dal punto di vista della **validità del descrittore** se qualche processo prova a cancellare l'array semaforico. Perché essendo che la rimozione fisica dell'array semaforico legata alla `semop()`, questo potrebbe essere eliminato definitivamente se nessun processo è in attesa su un semaforo. 
