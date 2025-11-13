@@ -102,7 +102,7 @@ Ovviamente se il sender ha già inviato il messaggio, il processo lo riceve e co
   <img src="images/receive_comportamento.png" width="400" >
 </p>
 
-**System V linux** di default ci garantisce l'implementazione di una receive **bloccante**.
+**System V linux** di default ci garantisce l'implementazione sia di una receive **bloccante** sia di una receive **non bloccante** mendiante il meccanismo dei FLAG.
 
 ---
 
@@ -198,7 +198,7 @@ Utilizzando procedure per il sender e per il receiver aventi tale workflow possi
   <img src="images/send_synch.png" width="400" >
 </p>
 
-Ovviamente il r**icevente potrebbe essere già pronto** per la ricezione di un messaggio RTS ancor prima che questo venga inviato;
+Ovviamente il **ricevente potrebbe essere già pronto** per la ricezione di un messaggio RTS ancor prima che questo venga inviato;
 
  in questa situazione il **receiver è già sospeso** e alla ricezione del messaggio si sblocca e invia il messaggio di risposta.
 
