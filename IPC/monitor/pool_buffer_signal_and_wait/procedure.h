@@ -1,4 +1,9 @@
-#include "monitor_hoare.h"
+#include "monitor_signal_continue.h"
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdio.h>
+
+
 
 // definiamo due identificatori, uno per ogni variabile condition
 
