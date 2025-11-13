@@ -16,6 +16,8 @@ int main(){
     int sem_id,shm_id, numlettori, numscrittori;
     key_t k_sem = IPC_PRIVATE;
     key_t k_shm = IPC_PRIVATE;
+    int st;
+
 
     pid_t pid;
 
@@ -54,10 +56,10 @@ int main(){
             }
             exit(0);
         }
-        // TODO: inserisci anche la verifica dello stato di terminazione di ogni figlio
         for (int k = 0; k < numprocessi; k++)
         {
-            wait(NULL);
+            wait(&st);
+            printf("[PADRE] il figlio %d ha terminato l'esecuzione con stato: %d", k + 1, WEXITSTATUS(st));
         }
 
         // marchiamo come eliminabili i semafori e la shm
