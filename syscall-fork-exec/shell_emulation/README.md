@@ -1,7 +1,9 @@
 # Simulare una shell
+
 In `shell.c` abbiamo creato una simulazione di una shell reale funzionante per comandi base. <br>
 
 Necessaria è la conoscenza di:
+
 - Processi **backgound** e **foreground**;
 - Come vengono passato gli argomenti attraverso la **command line**;
 - `fork()` per la creazione di processi e la famigli `exec()` per sostituire la *text-structure* e per deallocare e rimpiazzare i dati globali e statici, lo stack utente e l'heap (il processo mantiene tutte le altre strutture e caratteristiche dopo la `exec()`, come il **PID** e **PPID**);
@@ -10,7 +12,9 @@ Necessaria è la conoscenza di:
 - *stream standard*: stdin (0), stdout, stderr.
 
 ## Librerie
+
 Cominciamo quindi alla spiegazione del programma, la prima parte riguarda le librerie include:
+
 ```c
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -21,12 +25,16 @@ Cominciamo quindi alla spiegazione del programma, la prima parte riguarda le lib
 ```
 
 Vediamo a cosa ci sono servite:
+
  - ```c
     #include <sys/types.h>
     ```
+
     Contiene la dichiarazione di **tipi di dati fondamentali** usati nelle system call UNIX:
     - `pid_t` → tipo usato per i process ID (PID)
+
     - `off_t`,`size_t`,`mode_t`, ecc.
+
 - ```c
     #include <sys/wait.h>
     ```
