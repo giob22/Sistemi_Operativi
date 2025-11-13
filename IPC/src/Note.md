@@ -65,4 +65,4 @@ FINE 2
 FINE 1
 ```
 
-<!-- @todo inserisci qui tutte le note importanti sulla lofica -->
+<!-- @todo inserisci qui tutte le note importanti sulla logica -->
