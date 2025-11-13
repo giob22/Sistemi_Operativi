@@ -47,7 +47,7 @@ struct shmid_ds {
 ![alt text](images/struct_shm.png)
 
 
-### Creazione:
+## Creazione:
 ```c
 int shmget(key_t key, int size, int flag);
 ```
