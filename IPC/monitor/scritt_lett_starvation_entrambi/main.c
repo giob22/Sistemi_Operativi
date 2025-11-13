@@ -21,27 +21,12 @@ int main(){
     // inizializziamo la tutto il monitor
     buf->num_lettori = 0;
     // inizializziamo il monitor con 2 condition variable
-    init_monitor(&(buf->m), 1);
+    init_monitor(&(buf->m), 2);
 
     int num_lettori = 3;
     int num_scrittori = 3;
     pid_t pid = 0;
     
-    for (int i = 0; i < num_scrittori; i++)
-    {
-        pid = fork();
-        if (pid == 0)
-        {
-            srand(time(NULL)*getpid());
-            printf("[SCRITTORE] avvaito\n");
-            for (int j = 0; j < 10; j++)
-            {
-                sleep(1);
-                scrittura(buf, rand()% 10);
-            }
-            exit(0);
-        }
-    }
     for (int i = 0; i < num_lettori; i++)
     {
         pid = fork();
@@ -59,8 +44,23 @@ int main(){
     }
     
     
-
-
+    for (int i = 0; i < num_scrittori; i++)
+    {
+        pid = fork();
+        if (pid == 0)
+        {
+            srand(time(NULL)*getpid());
+            printf("[SCRITTORE] avvaito\n");
+            for (int j = 0; j < 10; j++)
+            {
+                sleep(1);
+                scrittura(buf, rand()% 10);
+            }
+            exit(0);
+        }
+    }
+    
+    
     for (int i = 0; i < num_lettori + num_scrittori; i++)
     {
         wait(NULL);
