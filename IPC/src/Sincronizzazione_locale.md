@@ -224,7 +224,7 @@ Ovviamente il r**icevente potrebbe essere già pronto** per la ricezione di un m
   - il mittente fa riferimento ad una **mailbox** nella send();
   - il destinatario fa riferimento alla stessa **mailbox**, da cui preleva il messaggio tramite receive().
 
-Questa ultima comunicazione **indiretta** fa riferimento a ciò che viene implementato e fornito da Linux che sfruttano le **mailbox System V**
+Questa ultima comunicazione **indiretta** fa riferimento a ciò che viene implementato e fornito da Linux che sfruttano le **mailbox System V**.
 
 Mittente e destinatario fanno riferiemento ad un **nodo intermendio**.
 
