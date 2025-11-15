@@ -172,5 +172,5 @@ A questo proposito infatti è impiegato il semaforo identificato all'interno del
 
 ## Implementazione con MONITOR
 
-<!-- todo: fai l'implementazione di inizio e fine scrittura e lettura sfruttando un monitor signal-and-wait ed uno signal-and-continue-->
+<!-- @todo fai l'implementazione di inizio e fine scrittura e lettura sfruttando un monitor signal-and-wait ed uno signal-and-continue-->
 

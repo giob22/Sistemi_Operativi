@@ -184,3 +184,10 @@ Quando la `exit()` viene invocata, uno stato di uscita con valore **intero** **v
 Tale valore è disponibile al processo padre attraverso la system call `wait()`.
 
 Un processo che termina normalmente restituisce uno stato di attesa pari a `0`.
+
+In particolare, lo stato di terminazione di un processo è un intero di **16 bit**.  Nel bit meno significativo (LSB) vengono indicate le informazioni relative a come il figlio è terminato, e più precisamente:
+
+- `0`: volontariamente;
+- `≠0`: involontariamente (il valore esprime il segnale ricevuto).
+
+Nel caso in cui il figlio termini volontariamente, il byte più significativo contiene  lo stato di terminazione (ovvero il valore del parametro attuale passato alla `exit()`, ovvero `0`).
