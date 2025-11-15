@@ -1,6 +1,6 @@
 # Monitor
 
-Il **monitor** è una struttura sintattica che opera su una risorsa condivisa (shm) gestendone l'accesso e la sincronizzazione tra processi/thread concorrenti.
+Il **monitor** è una struttura sintattica (modello concettuale) che opera su una risorsa condivisa (shm) gestendone l'accesso e la sincronizzazione tra processi/thread concorrenti.
 
 Un monitor abbina un insieme di **operazioni** ad una struttura dati (risorsa) condivisa tra processi.
 
@@ -8,7 +8,7 @@ Il costrutto monitor è **sintatticamente** simile al costrutto *class* ma è ut
 
 Il monitor stesso sarà una risorsa condivisa.
 
-Lo scopo di un monitor è quello di facilitare la programmazione condivisa. Infatti permette di creare **politiche di accesso** alle risorse condivise tramite delle condizioni che implementeremo (**variabili di condizione**).
+Lo scopo di un monitor è quello di facilitare la programmazione concorrente. Infatti permette di creare **politiche di accesso** alle risorse condivise tramite delle condizioni che implementeremo (**variabili di condizione**).
 
 <p align="center">
   <img src="images/politiche_accesso.png" width="300" >
