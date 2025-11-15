@@ -261,7 +261,7 @@ Possibili schemi di implementazione:
 - many-to-many
 
 <p align="center">
-  <img src="images/mailbox.png" width="300" >
+  <img src="images/mailbox.png" width="300">
 </p>
 
 ---
