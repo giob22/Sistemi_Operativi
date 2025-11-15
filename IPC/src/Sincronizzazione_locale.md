@@ -12,7 +12,7 @@ Quindi ogni processo evolve in un proprio ambiente:
 - le **risorse sono tutte private**;
 - Non possono esser modificate direttamente da altri processi.
 
-Il naturale supporto fisico a questo modello, come detto, sono i sistemi con architettura distribuita.
+Il naturale supporto fisico a questo modello, come detto, sono i sistemi con **architettura distribuita**.
 
 <p align="center">
   <img src="images/modello_locale.png" width="400" >
@@ -42,7 +42,7 @@ Noi faremo tutto in locale → con le mailbox System V permetteremo ai processi 
 
 ---
 
-La **cooperazione** si realizza mediante lo **scambio diretto di messaggi** per mezzo di primitive fornite dal S.O.
+La **cooperazione** si realizza mediante lo **scambio diretto di messaggi** per mezzo di primitive fornite dal sistema operativo.
 
 In questo modello la mutua esclusione sulle risorse di un processo è **garantita**, appunto perché tutte le risorse sono private.
 
@@ -86,7 +86,7 @@ La primitiva **send** può avere diverse caratteristiche a seconda del sistema o
 
 **System V linux** di default ci garantisce l'implementazione di una **send** asincrona.
 
-Quindi per implementare la send sincrona dobbiamo sfruttare la send asincrona e la receive.
+Quindi per implementare la send sincrona dobbiamo sfruttare la send asincrona e la receive (bloccante).
 
 ### Receive
 
@@ -127,7 +127,7 @@ Quindi a seconda del comportamento delle primitive di send e receive tra il send
   
   - Nessuna delle due parti, sender e receiver, rimane in attesa della consegna;
   - completo disaccoppiamento tra mittente e destinatario;
-  - tipo sincronizzazione è il più comune tra processi distribuiti, non conosciamo il momento in cui il destinatario o il sorgete è pronto.
+  - tipo sincronizzazione che è il più comune tra processi distribuiti, non conosciamo il momento in cui il destinatario o il sorgete è pronto.
 
 Send asincrona e receive bloccante sono quelle che si trovano più spesso nei sistemi operativi e linguaggi di programmazione.
 
@@ -137,7 +137,7 @@ Siamo in grado di implementare una **send sincrona** utilizzando send asincrona 
 
 La send sincrona è utile quando il mittende deve conoscere se il destinatario ha ricevuto o meno il messaggio.
 
-→ il sender deve determinare se il messaggio è stato ricevuto e lo fa inviando dei messaggi aggiuntivi al messaggio contenente l'informazione da scambiare.
+→ il sender deve determinare se il messaggio è stato ricevuto e lo fa inviando prima dei messaggi aggiuntivi al messaggio contenente l'informazione da scambiare.
 
 <p align="center">
   <img src="images/send_sincrona_SVL.png" width="300" >
@@ -147,9 +147,9 @@ Quindi, tra mittente e destinatario, per la cominicazione sincrona è necessario
 
 - Il sender dopo aver inviato una richiesta *request-to-send* si mette in attesa di una risposta da parte del destinatario.
 
-- Nel momento in cui il destinatario è pronto per la comunicazione invia una richiesta di *OK-to-send* al sender e a sua volta si mette in attesa per il messaggio.
+- Nel momento in cui il destinatario ha ricevuto il primo messaggio dal sender ed è pronto per la comunicazione invia una richiesta di *OK-to-send* al sender e a sua volta si mette in attesa per il messaggio.
 
-- Il sender una volta sbloccato invia la il messaggio effettivo. 
+- Il sender una volta sbloccato invia la il messaggio effettivo.
 
 Implementado questo scambio di messaggi tra sender e receiver è quindi possibile implementare quella che è una **send sincrona**.
 
@@ -204,7 +204,7 @@ Ovviamente il **ricevente potrebbe essere già pronto** per la ricezione di un m
 
  ## **Indirizzamento**
 
- Mi peremtte di specificare la destinazione e la provenienza della gestione del messaggio.
+ Permette di specificare la destinazione e la provenienza della gestione del messaggio.
 
  In che modo posso specificare mittente e destinatario? 
  
@@ -218,7 +218,7 @@ Ovviamente il **ricevente potrebbe essere già pronto** per la ricezione di un m
 - **comunicazione diretta asimmetrica**
   
   - il mittente esplicita il **PID** del destinatario nella send();
-  - il destinatario non indica un **PID**, viene a **conoscenza** del PID del mittente **alla ricezione del messaggio**, tramite parametro di uscita (che si troverà all'interno del **payload**).
+  - il destinatario non indica un **PID**, viene a **conoscenza** del PID del mittente **alla ricezione del messaggio**, tramite un parametro di uscita (che si troverà all'interno del **payload**).
 - **comunicazione indiretta**
   
   - il mittente fa riferimento ad una **mailbox** nella send();
@@ -264,8 +264,9 @@ Possibili schemi di implementazione:
   <img src="images/mailbox.png" width="300" >
 </p>
 
+---
 
-Infine possiamo quindi avere diversi modi di sincronizzazione per modelli ambiente locale che sono determinati dalla combinazione tra le tipologie di sincronizzazione che possiamo ottenere e i possibili indirizzamenti utilizzabili.
+In conclusione possiamo avere diversi modi di **gestire la cooperazione** per modelli ambiente locale che sono determinati dalla combinazione tra le **tipologie di sincronizzazione** che possiamo ottenere e i possibili **indirizzamenti** utilizzabili.
 
 **Esempio di comunicazione di RENDEZVOUS con mailbox**
 
@@ -277,7 +278,7 @@ Infine possiamo quindi avere diversi modi di sincronizzazione per modelli ambien
 
 Possiamo quindi capire da questa immagine quali sono le informazioni di interesse per una mailbox.
 
-Il ruolo della mailbox è da intermediario.
+Il ruolo della mailbox è da **intermediario** nella comunicazione.
 
 
 

@@ -11,7 +11,8 @@ L'header della libreria che implementa i monitor sarà quindi:
 `monitor.h`
 ```c
 typedef struct {
-    // id del semaforo per realizzare il mutex sul monitor, per gestire la mutua esclusione sul monitor
+    // id del semaforo per realizzare il mutex sul monitor, 
+    // per gestire la mutua esclusione sul monitor
     int mutex;
 
     // nel caso in cui implementiamo il paradigma signal-and-wait-Hoaro
@@ -21,10 +22,12 @@ typedef struct {
     // numero di condition variable
     int num_var_cond;
 
-    // id del semaphor set in cui sono contenuti i semafori associati ad ogni condition variable
+    // id del semaphor set in cui sono contenuti i semafori 
+    // associati ad ogni condition variable
     int id_conds
 
-    // id della memoria condivisa per i contatori dei processi sospesi su ogni condition variable e della coda urgent
+    // id della memoria condivisa per i contatori dei processi sospesi 
+    // su ogni condition variable e della coda urgent
     int id_shm;
 
     // array delle variabili condition count
