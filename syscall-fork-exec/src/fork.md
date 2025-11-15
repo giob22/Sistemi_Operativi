@@ -171,9 +171,11 @@ Quindi possiamo distinguere **due** situazioni tra processo padre e figlio, tene
 
 In questa situazione, essendo che nessun processo può non avere un processo padre, il kernel assegna al PPID il valore `1`. Il proceso è diventato figlio del processo `init`.
 
+---
+
 ## `exit()`
 
-Un processo termina con la chiamata di sistema `exit()`.
+Un processo termina con la system call `exit()`.
 
 ```c
 void exit(int status);
@@ -185,9 +187,14 @@ Tale valore è disponibile al processo padre attraverso la system call `wait()`.
 
 Un processo che termina normalmente restituisce uno stato di attesa pari a `0`.
 
-In particolare, lo stato di terminazione di un processo è un intero di **16 bit**.  Nel bit meno significativo (LSB) vengono indicate le informazioni relative a come il figlio è terminato, e più precisamente:
+In particolare, lo stato di terminazione di un processo è un intero di **16 bit**.  Nel **byte** meno significativo (**LSB**) vengono indicate le informazioni relative a come il figlio è terminato, e più precisamente:
 
 - `0`: volontariamente;
-- `≠0`: involontariamente (il valore esprime il segnale ricevuto).
+- `≠0`: involontariamente (il valore esprime il **segnale** ricevuto ed eventuali **flag**).
 
-Nel caso in cui il figlio termini volontariamente, il byte più significativo contiene  lo stato di terminazione (ovvero il valore del parametro attuale passato alla `exit()`, ovvero `0`).
+Nel caso in cui il figlio termini volontariamente, il **byte** più significativo (MSB) contiene  lo stato di terminazione (ovvero il valore del parametro attuale passato alla `exit()` o il valore di `return`, troncato a **8 bit**).
+
+<p align="center">
+  <img src="images/wait_and_exit.png" width="200" >
+  <img src="images/fork_wait_exit.png" width="200" >
+</p>
