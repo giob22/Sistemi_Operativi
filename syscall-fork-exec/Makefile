@@ -1,10 +1,14 @@
-fork: main_fork_ex
-	./main_fork_ex
-getpid: main_getpid_ex
-	./main_getpid_ex
-main_fork_ex: main_fork.c
-	gcc -o main_fork_ex main_fork.c
-main_getpid_ex: main_getpid.c
-	gcc -o main_getpid_ex main_getpid.c
-clean:
-	rm -r *_ex
+all: publish
+
+publish:
+	cd ../ &&\
+	git add .
+	git commit -m "update" &&\
+	git push &&\
+	mdbook build &&\
+	cp -r ./book/* /home/giovanni/Desktop/uni_ubuntu/SistemiOperativi/IPC_appunti &&\
+	cd /home/giovanni/Desktop/uni_ubuntu/SistemiOperativi/IPC_appunti &&\
+	git add . &&\
+	git commit -m "aggiornamento automatico" &&\
+	git push &&\
+	cd ~/Desktop/SO/Sistemi_Operativi/IPC
