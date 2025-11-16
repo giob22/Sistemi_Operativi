@@ -21,7 +21,7 @@ Dopo la chiamata a `exec`, il processo:
   - stack,
   - heap;
 - riferisce una **nuova text structure**;
-- mantiene la **u-area** (ad eccezione del program counter, che puntava al nuovo main, e delle informazioni legate al codice come registri generali, SP, ...) e lo **stack del kernel**.
+- mantiene la **u-area** (ad eccezione del program counter, che punterà al nuovo main, e delle informazioni legate al codice come registri generali, SP, ...) e lo **stack del kernel**.
 
 ---
 
@@ -35,6 +35,10 @@ Esistono **diverse versioni** della system call `exec`, che differiscono per com
 | `execlp()` | Nome dell’eseguibile (cercato nelle directory di sistema secondo il `PATH`); parametri tramite lista | `int execlp(char *nomefile, char *arg0, ..., char *argn, (char *)0);` |
 | `execv()` | Percorso completo dell’eseguibile; parametri tramite array | `int execv(const char *path, char *const argv[]);` |
 | `execvp()` | Nome dell’eseguibile (ricerca nel `PATH`); parametri tramite array | `int execvp(const char *nomefile, char *const argv[]);` |
+
+Esistono anche ulteriori varianti come: `execvpe()`, `execle()`.
+
+In queste varianti è specificato trami un array il nuovo **enviroment**: `envp` sarà l'array contenente coppie chiave valore che indicano quali saranno le variabili di ambiente a cui si riferirà il processo.
 
 ---
 
