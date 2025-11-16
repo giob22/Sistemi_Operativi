@@ -243,7 +243,9 @@ Ogni segnale è associato ad un **numero** che può variare tra diversi sistemi,
   - Il figlio condivide inizialmente la memoria del padre in modalità **read-only**.  
   - Solo al primo tentativo di modifica, il kernel copia le pagine di memoria.
  <br>
-  <img width="910" height="540" alt="image" src="images/exec.png" />
+  <p align="center">
+    <img src="images/exec.png" width="250" alt="Animazione dimostrativa">
+  </p>
 
 
 ---
