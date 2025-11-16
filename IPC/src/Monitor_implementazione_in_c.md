@@ -9,7 +9,6 @@ hanno tutte lo stesso scheletro, quello che cambia è l'implementazione di poche
 L'header della libreria che implementa i monitor sarà quindi: 
 
 `monitor.h`
-
 ```c
 typedef struct {
     // id del semaforo per realizzare il mutex sul monitor, 
