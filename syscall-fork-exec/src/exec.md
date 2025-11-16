@@ -30,7 +30,7 @@ Dopo la chiamata a `exec`, il processo:
 Esistono **diverse versioni** della system call `exec`, che differiscono per come specificano il programma da eseguire e i suoi argomenti:
 
 | Versione | Descrizione | Parametri |
-|-----------|--------------|-----------|
+|----------|-------------|-----------|
 | `execl()` | Percorso completo dell’eseguibile; parametri tramite lista | `int execl(char *path, char *arg0, ..., char *argn, (char *)0);` |
 | `execlp()` | Nome dell’eseguibile (cercato nelle directory di sistema secondo il `PATH`); parametri tramite lista | `int execlp(char *nomefile, char *arg0, ..., char *argn, (char *)0);` |
 | `execv()` | Percorso completo dell’eseguibile; parametri tramite array | `int execv(const char *path, char *const argv[]);` |
