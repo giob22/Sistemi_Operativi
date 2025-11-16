@@ -75,7 +75,11 @@ La `exec` è anche nota come **“sostituzione di codice”**.
 1. **Sovrascrittura** del segmento di memoria corrente con i nuovi valori (`exec()`).  
 2. **Allocazione** di nuovi segmenti di memoria (codice, dati, stack, heap, ...) e **deallocazione** dei vecchi segmenti (`fork()` + `exec()`).
 
-Durante la `exec`, vengono aggiornate le strutture di processo (`PCB` – Process Control Block), ma l’identità del processo (PID, file aperti, risorse kernel) resta invariata.
+Durante la `exec`, vengono aggiornate le strutture di processo (`PCB` – Process Control Block), ma l’identità del processo (PID, file aperti e in generale *file descriptor*, risorse kernel) resta invariata.
+
+I *file descriptor* si salvano dalla `exec` perché sono memorizzati in un struttura contenuta nello spazio **kernel** (non toccato dalla `exec`).
+
+→ Vedi implementazione di una shell su <code>GitHub</code>, la redirezione dello stram di input, output o error non vengono modificati dopo l'esecuzione dell'`exec`.
 
 ---
 
