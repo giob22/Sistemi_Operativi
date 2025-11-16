@@ -66,7 +66,7 @@ La `exec` è anche nota come **“sostituzione di codice”**.
 
 > È **lo stesso processo**, ma **esegue un programma differente**.
 
-### Possibili implementazioni
+## Possibili implementazioni
 
 1. **Sovrascrittura** del segmento di memoria corrente con i nuovi valori (`fork()`).  
 2. **Allocazione** di nuovi segmenti di memoria (codice, dati, stack) e **deallocazione** dei vecchi segmenti (`fork()` + `exec()`).
