@@ -109,6 +109,7 @@ void Inizio_Scrittura(int sem){
     wait_sem(sem,SYNCH);
 }
 ```
+
 ```c
 void Fine_Scrittura(int sem){
     signal_sem(sem,SYNCH);

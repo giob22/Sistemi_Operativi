@@ -123,7 +123,9 @@ int main(void) {
 - `commandname` conterrà il nome del comando estratto;
 - `pid` conterrà il valore ritornato da `fork()`.
 
-Successivamente è presente una _sys-call_ del linguaggio C, `write()`, che permette di scrivere dati su un **file descriptor**. Un file descriptor è un numero intero che il sistema operativo assegna a ogni file o risorsa aperta da un processo.<br>
+Successivamente è presente una _sys-call_ del linguaggio C, `write()`, che permette di scrivere dati su un **file descriptor**. 
+
+Un file descriptor è un numero intero che il sistema operativo assegna a ogni file o risorsa aperta da un processo.<br>
 Ogni volta che un processo viene eseguito per la prima volta gli vengono assegnati automaticamente **3 file descriptor**:
 
 | File descriptor | Risorsa standard |
@@ -134,7 +136,7 @@ Ogni volta che un processo viene eseguito per la prima volta gli vengono assegna
 
 Una volta scritto legge da tastiera mediante una `read()` il comando scritto dall'utente e sostituisce l'ultimo elemento per terminare la stringa con un `\n` o `\0`.
 
-`sscanf(buf, "%s", commandname)` copia dal buffer il nome del comando nella variabile `commandname`. Funziona come `fscanf()` ma invece che lavorare su file, lavora su una stringa salvata in memoria; ovvimente nel momento in cui incontra uno spazio ferma le lettura dalla stringa.
+`sscanf(buf, "%s", commandname)` copia dal buffer il nome del comando nella variabile `commandname`. Funziona come `fscanf()` ma invece che lavorare su file, lavora su una stringa salvata in memoria; ovvimente nel momento in cui incontra uno spazio si ferma la lettura dalla stringa.
 
 
 
