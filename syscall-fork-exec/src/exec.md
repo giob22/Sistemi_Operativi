@@ -72,7 +72,7 @@ La `exec` è anche nota come **“sostituzione di codice”**.
 
 ## Possibili implementazioni
 
-1. **Sovrascrittura** del segmento di memoria corrente con i nuovi valori (`fork()`).  
+1. **Sovrascrittura** del segmento di memoria corrente con i nuovi valori (`exec()`).  
 2. **Allocazione** di nuovi segmenti di memoria (codice, dati, stack) e **deallocazione** dei vecchi segmenti (`fork()` + `exec()`).
 
 Durante la `exec`, vengono aggiornate le strutture di processo (`PCB` – Process Control Block), ma l’identità del processo (PID, file aperti, risorse kernel) resta invariata.
