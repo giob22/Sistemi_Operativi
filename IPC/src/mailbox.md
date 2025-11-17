@@ -54,7 +54,7 @@ Infatti tale funzione restituisce il **descrittore** della coda di messaggi iden
 
 Come per le altre risorse IPC, `msgflg` può valere vari FLAG come `IPC_CREAT` in *or logico* con i permessi, se il processo chiamante deve creare la coda di messaggi, oppure `0` nel caso in cui si vuole ottenere il descrittore di una coda già istanziata.
 
-> NOTA: La dimensione della coda e il numero massimo di messaggi sono decisi automaticamente dal **kernel**
+> NOTA: la dimensione della coda e il numero massimo di messaggi sono decisi automaticamente dal **kernel**
 >
 > Per modificare la dimensione o il numero massimo di messaggi è necessatio **ricompilare** il kernel per modificare un parametro apposito.
 
