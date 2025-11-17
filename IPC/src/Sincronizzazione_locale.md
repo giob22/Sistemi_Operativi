@@ -1,6 +1,6 @@
 # Sincronizzazione nel modello ad ambiente locale
 
-Il modello ad ambiente **locale** si riferisce ad una struttura in cui ogni processo opera nel proprio ambiente privato, **senza alcuna memoria condivisa** tra vari processi.
+Il modello ad ambiente **locale** si riferisce a una struttura in cui ogni processo opera nel proprio ambiente privato, **senza alcuna memoria condivisa** tra vari processi.
 
 In questo modello tutte le risorse sono privare a ciascun processo e non possono essere modificate direttamente da altri processi.
 
@@ -75,7 +75,7 @@ Mentre il **corpo** contiene le informazioni scambiate tra i processi.
 
 ### Send
 
-La primitiva **send** può avere diverse caratteristiche a seconda del sistema operativo. In particolare il comportamento della primitiva piò essere di due tipi:
+La primitiva **send** può avere diverse caratteristiche a seconda del sistema operativo. In particolare il comportamento della primitiva può essere di due tipi:
 
 - **sincrono**: il processo che esegue la send **rimane in attesa** fin quando il messaggio non è stato ricevuto dal destinatario. Dopo la conferma di avvenuta ricezione il processo chiamante viene sbloccato;
 - **asincrono**: il processo che esegue la send continua la sua esecuzione, **senza attendere** l'avvenuta ricezione del messaggio.
@@ -135,7 +135,7 @@ Send asincrona e receive bloccante sono quelle che si trovano più spesso nei si
 
 Siamo in grado di implementare una **send sincrona** utilizzando send asincrona + receive bloccante (default di **System V linux**).
 
-La send sincrona è utile quando il mittende deve conoscere se il destinatario ha ricevuto o meno il messaggio.
+La send sincrona è utile quando il mittente deve conoscere se il destinatario ha ricevuto o meno il messaggio.
 
 → il sender deve determinare se il messaggio è stato ricevuto e lo fa inviando prima dei messaggi aggiuntivi al messaggio contenente l'informazione da scambiare.
 
@@ -143,7 +143,7 @@ La send sincrona è utile quando il mittende deve conoscere se il destinatario h
   <img src="images/send_sincrona_SVL.png" width="300" >
 </p>
 
-Quindi, tra mittente e destinatario, per la cominicazione sincrona è necessario che questi si scambino una serie di messaggi prima di inviare il messaggio contenente l'informazione.
+Quindi, tra mittente e destinatario, per la comunicazione sincrona è necessario che questi si scambino una serie di messaggi prima di inviare il messaggio contenente l'informazione.
 
 - Il sender dopo aver inviato una richiesta *request-to-send* si mette in attesa di una risposta da parte del destinatario.
 
@@ -151,7 +151,7 @@ Quindi, tra mittente e destinatario, per la cominicazione sincrona è necessario
 
 - Il sender una volta sbloccato invia la il messaggio effettivo.
 
-Implementado questo scambio di messaggi tra sender e receiver è quindi possibile implementare quella che è una **send sincrona**.
+Implementando questo scambio di messaggi tra sender e receiver è quindi possibile implementare quella che è una **send sincrona**.
 
 Ovviamente questo procedura è da visualizzare in maniera **atomica**.
 
@@ -270,7 +270,7 @@ In conclusione possiamo avere diversi modi di **gestire la cooperazione** per mo
 
 **Esempio di comunicazione di RENDEZVOUS con mailbox**
 
-**Rendezvous**: send sincrona, receive  bloccante
+**Rendezvous**: send sincrona, receive bloccante
 
 <p align="center">
   <img src="images/esempio_mailbox.png" width="500" >

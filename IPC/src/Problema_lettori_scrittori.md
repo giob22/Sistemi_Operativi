@@ -17,7 +17,7 @@ Non è presente un vincolo di ordinamento (un lettore non deve leggere solo dopo
 
 In realtà si vede che è necessario gestire anche la mutua esclusione tra processi scrittori che però non riguarda la `shm` ma una variabile necessaria all'implementazione di questo paradigma: variabile che tiene conto del numero corrente di lettori sulla `shm`.
 
-I processi lettori inoltre non consumano la risorsa nel momento in cui la leggono/usufruiscono, come accadeva per i consumatori → non notificano allo scrittore l'avvenuta lettura perchè non c'è il concetto di spazio libero (come avveniva per consumatore/produttore).
+I processi lettori inoltre non consumano la risorsa nel momento in cui la leggono/usufruiscono, come accadeva per i consumatori → non notificano allo scrittore l'avvenuta lettura perché non c'è il concetto di spazio libero (come avveniva per consumatore/produttore).
 
 Un *side effect* dei lettori/scrittori è la starvation che può mostrarsi in due casi:
 1) **starvation degli scrittori**
@@ -161,10 +161,10 @@ void Fine_Scrittura(int sem){
 }
 ```
 
-- Con `signal_sem()` su `MUTEX` permetto ad un altro scrittore sospeso sulla `shm` di accedervi;
+- Con `signal_sem()` su `MUTEX` permetto a un altro scrittore sospeso sulla `shm` di accedervi;
 - successivamente con un `wait_sem()` su `MUTEXS` il processo accede alla variabile `Num_Scrittori` in mutua esclusione;
-- Se tale variabile è pari a `0` allota il processo è l'ultimo scrittore, quindi effettua una `signal_sem()` su `SYNCH` in modo da permettere l'accesso ai lettori;
-- infine il processo rilascial la variabile `Num_Scrittori` attraverso una `signal_sem()` su `MUTEXS` affinchè altri scrittori possano accedervi.
+- Se tale variabile è pari a `0` allora il processo è l'ultimo scrittore, quindi effettua una `signal_sem()` su `SYNCH` in modo da permettere l'accesso ai lettori;
+- infine il processo rilascia la variabile `Num_Scrittori` attraverso una `signal_sem()` su `MUTEXS` affinché altri scrittori possano accedervi.
 
 Da notare che l'implementazione di queste due funzioni è l'analogo delle funzioni per inizio e fine lettura per i lettori. L'unica differenza sta nel fatto che per gli scrittori è da gestire la loro mutua esclusione sulla `shm` che non è necessario per i lettori.
 

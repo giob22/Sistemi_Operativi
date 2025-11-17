@@ -24,9 +24,9 @@ due potrebbero essere le soluzioni:
 
    Quindi nelle applicazioni create con `fork + exec` si eseguirà solo `shmget + shmat` (utilizzando la stessa chiave generata con `ftok`) ottenendo il descrittore dell'array semaforico accedendo alla struttura dati condivisa.
 
-La seconda soluzione, seppur valida e funzionante pone un rischio dal punto di vista della **validità del descrittore** se qualche processo prova a cancellare l'array semaforico. Perché essendo che la rimozione fisica dell'array semaforico legata alla `semop()`, questo potrebbe essere eliminato definitivamente se nessun processo è in attesa su un semaforo. 
+La seconda soluzione, seppur valida e funzionante pone un rischio dal punto di vista della **validità del descrittore** se qualche processo prova a cancellare l'array semaforico. Perché essendo che la rimozione fisica dell'array semaforico legata alla `semop()`, questo potrebbe essere eliminato definitivamente se nessun processo è in attesa su un semaforo.
 
-Questo quindi vuol dire che nel momento in cui un'altro processo che ha ottenuto direttamente il costruttore (tramite la `shm`) prova ad utilizzare il semaforo potrebbe ottenere un comportamento inaspettato.
+Questo quindi vuol dire che nel momento in cui un altro processo che ha ottenuto direttamente il costruttore (tramite la `shm`) prova a utilizzare il semaforo potrebbe ottenere un comportamento inaspettato.
 
 Ovviamente questo problema può presentarsi anche nel caso in cui il processo figlio, creato con `fork + exec`, tenti di utilizzare un semaforo che inizialmente esiste e di cui ottiene il descrittore tramite `semget()`, usando la stessa chiave del processo padre. Tuttavia, prima che il semaforo non sia più necessario all’esecuzione del figlio, il padre potrebbe marcarlo come **eliminabile**.
 
