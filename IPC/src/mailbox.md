@@ -8,7 +8,7 @@ La comunicazione è indiretta perché lo scambio di messaggi non avviene diretta
 
 > Tali **Message queue** sono anche dette **mailbox**.
 
-Questo tipo di comunicazione che sfrutta le mailbox è quella **più flessibile** possibile per implementare uno scambio di messaggi. Infatti ci permette di implementare una comunicazione: 
+Questo tipo di comunicazione che sfrutta le mailbox è quella **più flessibile** possibile per implementare uno scambio di messaggi. Infatti ci permette d'implementare una comunicazione: 
 
 - one-to-one
 - one-to-many
@@ -19,7 +19,7 @@ Questo tipo di comunicazione che sfrutta le mailbox è quella **più flessibile*
 
 UNIX System V mette a disposizione unicamente le primitive di **send asincrona**, di **receive bloccante** e **receive non bloccante**.
 
-In ingresso/uscita dalla mailbox avramo un messaggio che non è altro che un vettore di byte.
+In ingresso/uscita dalla mailbox avremo un messaggio che non è altro che un vettore di byte.
 
 Una mailbox può essere vista come una *coda di messaggi*.
 
@@ -42,7 +42,7 @@ Le librerie che ci permettono di lavorare con *code di messaggi* sono:
 
 ### Creazione di una coda di messaggi: `msgget`
 
-Per creare una nuova coda di messaggi, o accedere ad una esistente, bisogna invocare la system call `msgget()`.
+Per creare una nuova coda di messaggi, o accedere a una esistente, bisogna invocare la system call `msgget()`.
 
 ```c
 int msgget(key_t key, int msgflg);
@@ -56,7 +56,7 @@ Come per le altre risorse IPC, `msgflg` può valere vari FLAG come `IPC_CREAT` i
 
 > NOTA: la dimensione della coda e il numero massimo di messaggi sono decisi automaticamente dal **kernel**
 >
-> Per modificare la dimensione o il numero massimo di messaggi è necessatio **ricompilare** il kernel per modificare un parametro apposito.
+> Per modificare la dimensione o il numero massimo di messaggi è necessario **ricompilare** il kernel per modificare un parametro apposito.
 
 ESEMPIO: 
 
@@ -97,7 +97,7 @@ In particolare, per `cmd` possiamo utilizzare:
 |-------|-------------------------|
 | `IPC_STAT` | viene effettuata una copia della **struttura dati del kernel** (che mantiene informazioni sulla *Message Queue*) associata alla coda di messaggi identificata da `msqid` alla struttura dati `msqid_ds` puntata da `buf`. |
 | `IPC_SET` | permette di modificare le caratteristiche della coda. |
-| `IPC_RMID` | permette di rimuovere **immediantamente** la coda di messaggi identificata da `msqid`.|
+| `IPC_RMID` | permette di rimuovere **immediatamente** la coda di messaggi identificata da `msqid`.|
 
 L'eliminazione con il FLAG `IPC_RMID` non avviene come per le altre risorse IPC, ovvero la risorsa **non viene marcata come eliminabile** per il kernel e nel momento in cui si verifica una condizione questa viene eliminata, ma viene eliminata **istantaneamente**.
 
@@ -126,7 +126,7 @@ Per operare tramite `msgctl()`, il processo chiamante deve avere i permessi di l
 
 ### Invio di un messaggio: `msgsnd`
 
-Una volta ottenuto il descrittore di una *Message Queue* è possibile effettuare un operazione di invio (con accodamento) di un messaggo.
+Una volta ottenuto il descrittore di una *Message Queue* è possibile effettuare un operazione d'invio (con accodamento) di un messaggio.
 
 Per inviare un messaggio bisogna utilizzare la system call `msgsnd()`:
 
@@ -137,7 +137,7 @@ int msgsnd(int msqid, const void *msgp, size_t msgsz, int msgflg);
 - `msqid` è il descrittore della coda di messaggi ottenuto da `msgget()`
 - `const void *msgp` è il puntatore alla **struttura messaggio** che contiene il messaggio vero e proprio da inviare.
   
-  Tale struttura può avere un qualsiasi nome e deve seguire un pattern specifico (**convensione**):
+  Tale struttura può avere un qualsiasi nome e deve seguire un pattern specifico (**convenzione**):
 
   ```c
   typedef struct{
@@ -155,9 +155,9 @@ int msgsnd(int msqid, const void *msgp, size_t msgsz, int msgflg);
     
     → in realtà possiamo inserire qualsiasi campi dopo il primo, il vincolo sul pattern da seguire è rivolto solo a `message_type`.
 
-  il campo `message_type` diventa molto importante quando viene accoppiato con funzioni di `receive` **selettive**, che permettono di estrarre un particolare messaggio dalla coda della mailbox.
+  Il campo `message_type` diventa molto importante quando viene accoppiato con funzioni di `receive` **selettive**, che permettono di estrarre un particolare messaggio dalla coda della mailbox.
 
-  Infatti, è possibile estrarre dalla coda di messaggi il messaggio che il cui campo tipo è quello specificato in `message_type` nonstante non si trovi in cima alla coda.
+  Infatti, è possibile estrarre dalla coda di messaggi il messaggio che il cui campo tipo è quello specificato in `message_type` nonostante non si trovi in cima alla coda.
 
   Se `message_type` assume il valore del PID del processo mittente possiamo implementare una **comunicazione diretta asimmetrica** sfruttando una **comunicazione indiretta** offerta dalle mailbox (nel caso di **una sola coda**).
 
@@ -231,7 +231,7 @@ ssize_t msgrcv(int msqid, void*msgp, size_t msgsz, long msgtyp, int msgflg);
 
 Tale system call permette di consumare un messaggio dalla mailbox identificata da `msqid`.
 
-Il buffer contenente il messaggio sarà puntato da `msgp`, e il campo messaggio avrà dimensione pari a `msgsz` (che sarà sempre la dimesione della struttura messaggio tolta la dimensione del campo `message_type`).
+Il buffer contenente il messaggio sarà puntato da `msgp`, e il campo messaggio avrà dimensione pari a `msgsz` (che sarà sempre la dimensione della struttura messaggio tolta la dimensione del campo `message_type`).
 
 Il campo `msgtyp` svolge importanti funzioni, infatti definisce il comportamento della `msgrcv()`:
 
@@ -281,7 +281,7 @@ Specificare il tipo mi permette di implementare una **receive selettiva** che si
 
 <p align='center'><img src='images/receive_selettiva.png' width='300' ></p>
 
-Questo è un esempio di receive selettiva, dove `B` è un valore intero positivo e identifica un tipo di messagio
+Questo è un esempio di receive selettiva, dove `B` è un valore intero positivo e identifica un tipo di messaggio
 
 ---
 
