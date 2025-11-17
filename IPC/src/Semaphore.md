@@ -110,7 +110,7 @@ Il numero massimo di semafori in un singolo semaphore set è definito in `linux/
 ```
 Questo valore dipende dalla propria architettura, per ottenere tali informazioni è necessario utilizzare il comando `ipcs -l` che restituisce diverse informazioni anche per le altre IPC.
 
-Per creare un array semaforico di 2 semafori **con chiave** nulla (quindi i semafori saranno accessibili unicamente al processo padre e agli eventualli figli):
+Per creare un array semaforico di 2 semafori **con chiave** nulla (quindi i semafori saranno accessibili unicamente al processo padre e agli eventuali figli):
 ```c
 key_t sem_key = IPC_PRIVATE;
 int sem_ds = semget(key, 2, IPC_CREATE | 0644);
@@ -126,9 +126,10 @@ Per poter inizializzare e rimuovere un semafor si utilizza la system call `semct
 int semctl(int semid, int semnum, int cmd, ...);
 ```
 
-La system call esegue l'operazione specificata in `cmd` sul *semaphore set* indentificato da `semid` e sull'`semnum`-esimo semaforo dell'array.
+La system call esegue l'operazione specificata in `cmd` sul *semaphore set* identificato da `semid` e sull'`semnum`-esimo semaforo dell'array.
 
 Alcuni possibili valori da usare per `cmd` sono:
+
 - `SETVAL`: imposta il valore, specificato come quarto parametro, di uno specifico semaforo indentificato da `semnum` all'interno del *semaphore set* `semid`;
 - `IPC_RMID`: rimuove il *semaphore set* `semid` dal kernel. In realtà il *semaphore set* viene **marcato come eliminabile**, non eliminato direttamente. Viene effettivamente eliminato dal kernel nel momento in cui nessun processo lo sta ancora utilizzando.
 
@@ -140,6 +141,7 @@ semctl(semid, 1, SETVAL, val2);
 ```
 
 Per poter rimuovere un array semaforico (in questo caso la variabile `semnum` viene ignorata):
+
 ```c
 semctl(semid, semnum, IPC_RMID);
 ```
@@ -155,6 +157,7 @@ int semop(int semid, struct sembuf *sops, size_t nsops);
 In particolare `semop()` esegue operazioni sui semafori nell'array identificato da `semid`. `sops` è un array di operazioni definite da un struttura `sembuf`, mentre `nsops` è il numero di elementi all'interno dell'array `sops`.
 
 Ogni singola operazione è descritta da `sembuf`, una struttura contenente i seguenti campo:
+
 ```c
 struct sembuf{
 	unsigned short sem_num;  /* semaphore number */
@@ -212,13 +215,14 @@ Quindi per implementere l'operazione di `signal()` dobbiamo prima costruire e mo
 
 ```c
 void Signal_Sem (int id_sem,int numsem){
-	struct sembuf sem_buf;
-	sem_buf.sem_num = numsem;
-	sem_buf.sem_flg = 0;
-	sem_buf.sem_op = 1;
-	semop(id_sem, &sem_buf, 1);   //semaforo verde
+    struct sembuf sem_buf;
+    sem_buf.sem_num = numsem;
+    sem_buf.sem_flg = 0;
+    sem_buf.sem_op = 1;
+    semop(id_sem, &sem_buf, 1);   //semaforo verde
 }
 ```
+
 #### Implementazione di `wait()`
 
 Il comportamento della primitiva `semop()` nel momento in cui `sem_op < 0` dipende dal valore corrente di `semval`.
@@ -253,7 +257,7 @@ Infine abbiamo il caso in cui `sem_op = 0`, il comportamento della primitiva `se
 - se l valore `semval` è zero, l'operazione procede immediatamente (il processo non si sospende);
 - altrimenti se `semval ≠ 0` ci sono due casi:
   - se è specificato il flag `IPC_NOWAIT` in `sem_flg`, la system call fallisce restituendo un codice di errore `EAGAIN` a mezzo della variabile globale `errno`;
-  - altrimenti la variabile `semzcnt` (indica il numero di processi sospesi nell'attesa che il **valore del semaforo** **diventi nullo**)  è incrementato di `1`, forzando il processo a sospendersi finché una delle seguenti condizioni si verificherá:
+  - altrimenti la variabile `semzcnt` (indica il numero di processi sospesi nell'attesa che il **valore del semaforo** **diventi nullo**) è incrementato di `1`, forzando il processo a sospendersi finché una delle seguenti condizioni non si verifica:
 	- `semval` diventa `0` (di conseguenza viene decrementato il valore di `semzcnt`);
 	- il semaforo è rimosso: la system call fallisce (`errno = EIDRM`)
 

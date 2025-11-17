@@ -120,7 +120,7 @@ In quest'ultimo caso otteniamo il descrittore con una chiamata `get` senza flag 
 
 ---
 
-ESEMPIO: utilizzo `ftok()` per creare una key adatta ad una risorsa IPC
+ESEMPIO: utilizzo `ftok()` per creare una key adatta a una risorsa IPC
 ```c
 	key_t chiave = ftok("./eseguibile", 'k');
   	int ds_shm;
@@ -152,7 +152,7 @@ ESEMPIO: chiave privata con `IPC_PRIVATE`
   	... Utilizza la shared memory ...
 ```
 
-In questo esempio si crea una shared memory senza assegnare una chiave, dal momento che IPC_PRIVATE equivale ad una chiave IPC pari a `0`. 
+In questo esempio si crea una shared memory senza assegnare una chiave, dal momento che IPC_PRIVATE equivale a una chiave IPC pari a `0`. 
 
 Infatti, utilizzando il comando ipcs, la chiave apparirà con il valore pari a `0`. 
 
@@ -160,7 +160,7 @@ In questo caso, la shared memory è utilizzabile solo dal padre e i suoi figli, 
 
 ## Collegamento
 
-Per poter utilizzare una shared memory e necessario effettuare il cosidetto *attach* tramite la system call `shmat()`,
+Per poter utilizzare una shared memory e necessario effettuare il così detto *attach* tramite la system call `shmat()`,
 ```c
 void *shmat(int shmid, const void *shmaddr, int shmflg);
 ```
@@ -194,7 +194,7 @@ dove:
 Ha come valore di ritorno:
 
 - `0` se l'operazione è andata a buon fine;
-- `1` in caso di errore, impostando `errno` (variabile globale delle funzioni in C) ad un valore corrispondente al tipo di errore riscontrato.
+- `1` in caso di errore, impostando `errno` (variabile globale delle funzioni in C) a un valore corrispondente al tipo di errore riscontrato.
 
 ## Controllo
 La chiamata di sistema `shmctl()` permette di invocare un comando di controllo su una *shared memory* esistente.
@@ -272,7 +272,7 @@ indirizzo della shm dopo l'attach: 0x7948fda27000
  ```
 ----
 ### Shared memory tra processo padre e figlio
- Proviamo adesso ad utilizzare la shared memory tra processo padre e processo figio.
+ Proviamo adesso a utilizzare la shared memory tra processo padre e processo figlio.
 
  Prima utilizzando `IPC_PRIVATE` come chiave e successivamente utilizzarne una ricavata dalla chiamata di sistema `ftok()`.
 
@@ -338,6 +338,7 @@ int main(){
  ```
 
  Il risultato dell'esecuzione è:
+
  ```bash
 chiave IPC: 0
 descrittore IPC: 98333
@@ -385,7 +386,7 @@ ottengo:
 ffffffffff600000-ffffffffff601000 --xp 00000000 00:00 0  [vsyscall]
 
 ```
-Dove ritroviamo il segmento a noi di interesse:
+Dove ritroviamo il segmento a noi d'interesse:
 ```bash
 7ed908c19000-7ed908c1a000 rw-s 00000000 00:01 98333   /SYSV00000000 (deleted)
 ```
@@ -477,5 +478,5 @@ indirizzo della shm dopo l`attach: 0x78f6872c7000
 [PADRE 73758] contenuto della shm: 123
 ```
 
-Da notare che l'indirizzo per la shared memory è cambiato. Appunto perché il processo figlio non è piú una copia **dell'immagine** del processo padre una volta utilizzato la chiamata `exec()`.
+Da notare che l'indirizzo per la shared memory è cambiato. Appunto perché il processo figlio non è più una copia **dell'immagine** del processo padre una volta utilizzato la chiamata `exec()`.
 
