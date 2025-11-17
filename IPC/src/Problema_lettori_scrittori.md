@@ -125,8 +125,8 @@ In questo caso occorrono `4` semafori, tutti inizializzati ad `1`.
 
 - `MUTEXL` per gestire l'accesso alla variabile `NUM_LETTORI` in mutua esclusione, da parte dei lettori;
 - `MUTEXS` per gestire l'accesso alla variabile `NUM_SCRITTORI` in mutua esclusione, da parte degli scrittori;
-- `MUTEX` per gestire l'accesso alla `shm` in mutua esclusione, da parte degli scrittori
-- `SYNCH` per garantire la mutua esclusione tra i processi lettori e scrittori
+- `MUTEX` per gestire l'accesso alla `shm` in mutua esclusione, da parte degli scrittori;
+- `SYNCH` per garantire la mutua esclusione, tra i processi lettori e scrittori, sulla `shm`.
   
   In questa implementazione tale semaforo non è più utilizzato per gestire sia la mutua esclusione tra scrittori e lettori che la mutua esclusione tra gli scrittori,
   
