@@ -246,7 +246,9 @@ Infine per il campo `msgflg`:
 - se impostato a `0` indica una **ricezione bloccante**: se non ci sono messaggi da consumare nella mailbox aventi il tipo specificato, il processo si *sospende* sulla system call `msgrcv()` fino al giungere del messaggio;
   
   <p align='center'><img src='images/receive_bloccante.png' width='350' ></p>
+
 - se impostato a `IPC_NOWAIT`, si ha il comportamento di una **receive non bloccante**: se non ci sono messaggi del tipo specificato in `msgtyp` viene restituito `-1`.
+
   <p align='center'><img src='images/receive_non_bloccante.png' width='350' ></p>
 
 In generale la chiamata ritorna `0` se non si sono verificati errori.
