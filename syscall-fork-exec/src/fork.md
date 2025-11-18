@@ -195,6 +195,6 @@ In particolare, lo stato di terminazione di un processo è un intero di **16 bit
 Nel caso in cui il figlio termini volontariamente, il **byte** più significativo (MSB) contiene  lo stato di terminazione (ovvero il valore del parametro attuale passato alla `exit()` o il valore di `return`, troncato a **8 bit**).
 
 <p align="center">
-  <img src="images/wait_and_exit.png" width="200" >
-  <img src="images/fork_wait_exit.png" width="200" >
+  <img src="images/wait_and_exit.png" width="350" >
+  <img src="images/fork_wait_exit.png" width="250" >
 </p>
