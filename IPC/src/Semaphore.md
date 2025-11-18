@@ -83,6 +83,7 @@ dove:
 ## Semaphores' workflow
 
 Per implementare un semaforo mediante i meccanismi offerti dallo **standard systemV** è necessario l'utilizzo di alcune primitive implementate in: 
+
 ```c
 #include <sys/types.h>
 #include <sys/ipc.h>
@@ -92,14 +93,17 @@ Per implementare un semaforo mediante i meccanismi offerti dallo **standard syst
 ### Creazione: `semget()`
 
 La primitiva che permette di creare un nuovo set di semafori è la system call `semget()`: 
+
 ```c
 int semget(key_t key, int nsems, int semflg);
 ```
+
 Tale funzione restituisce il **descrittore** del *semaphore set* associato alla chiave specificata in `key`.
 
 Il valore della chiave è ottenibile cablando un valore, con `IPC_PRIVATE`, o con `ftok()` a seconda degli utilizzi sul semaphore set.
 
-I flag inseribili in `semflg` sono: 
+I flag inseribili in `semflg` sono:
+
 - `IPC_CREAT`;
 - `IPC_EXCL`;
 - Permessi di accesso in ottale.
@@ -109,18 +113,21 @@ Si possono inserire più di uno per un singolo semaphore set utilizzando l'opera
 In caso di successo, la `semget()`, restituisce il descrittore del semaphore set; in caso di fallimento viene restituito `-1`.
 
 Il numero massimo di semafori in un singolo semaphore set è definito in `linux/sem.h` come:
+
 ```c
 #define SEMMSL  250
 ```
+
 Questo valore dipende dalla propria architettura, per ottenere tali informazioni è necessario utilizzare il comando `ipcs -l` che restituisce diverse informazioni anche per le altre IPC.
 
 Per creare un array semaforico di 2 semafori **con chiave** nulla (quindi i semafori saranno accessibili unicamente al processo padre e agli eventuali figli):
+
 ```c
 key_t sem_key = IPC_PRIVATE;
 int sem_ds = semget(key, 2, IPC_CREATE | 0644);
 ```
 
-![alt text](images/creazione_semaforo.svg)
+<p align='center'><img src='images/creazione_semaforo.svg' width='700' ></p>
 
 ### Inizializzazione e rimozione: `semctl()`
 
@@ -191,9 +198,11 @@ Nel caso analizzato: `EINVAL` è una costante simbolica (definita in `<errno.h>`
 ### Implementazione delle primitive `wait()` e `signal()` tramite la struttura semaforica
 
 Prendendo in considerazione la system call `semop()`:
+
 ```c
 int semop(int semid, struct sembuf *sops, size_t nsops);
 ```
+
 I valori che può assumere il campo `sem_op` specificano tre possibili tipologie di operazioni che si possono compiere sul semaforo.
 
 Utilizzando queste tre tipi di operazioni, è possibile implementare le primitive *wait* (`sem_op < 0`), *wait for zero* (`sem_op == 0`) e *signal* (`sem_op > 0`).

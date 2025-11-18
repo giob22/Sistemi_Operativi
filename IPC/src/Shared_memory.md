@@ -44,19 +44,32 @@ struct shmid_ds {
 };
 ```
 
-![alt text](images/struct_shm.png)
+In particolare:
 
+- `shm_npages` è il numero di pagine totali per tutti i segmenti utilizzati che sono puntati dal campo successivo;
+- `shm_pages` è l'array di puntatori alle pagine fisiche del segmento shared memory;
+- `vm_area_struct` è una struttura fondamentale nel kernel Linux, usata per **rappresentare una regione contigua di memoria virtuale** in un processo. 
+  
+  In questo caso serve a tener **traccia della posizione** del segmento shared memory nello **spazio di indirizzi virtuali di ogni singolo processo** che esegue una `shmat()`.
+
+<p align='center'><img src='images/struct_shm.png' width='650' ></p>
+
+<!-- @fix ricordati di cambiare il nome da shm_segs in shm_pages -->
 
 ## Creazione:
+
 ```c
 int shmget(key_t key, int size, int flag);
 ```
-`size` è la dimensione in byte della memoria condivisa. Possiamo quindi specificare qualsiasi valore di dimensione; supponendo di scegliere `size = 4` stiamo chiedendo di avere una memoria condivisa di `4 byte` ma in realtá il kernel sta allocando uno spazio di memoria pari a `4KB` perché la memoria condivisa viene alocata in **unitá di pagina** del sistema, e la **dimensione di una pagina su linux** è pari a **`4 KB`**.
+
+`size` è la dimensione in byte della memoria condivisa. Possiamo quindi specificare qualsiasi valore di dimensione; supponendo di scegliere `size = 4` stiamo chiedendo di avere una memoria condivisa di `4 byte` ma in realtà il kernel sta allocando uno spazio di memoria pari a `4KB` perché la memoria condivisa viene alocata in **unitá di pagina** del sistema, e la **dimensione di una pagina su linux** è pari a **`4 KB`**.
 
 Restituisce `-1` in caso di fallimento. Invece se ha successo restituisce il **descrittore della risorsa**.
 
 ---
+
 ESEMPIO: con chiave cablata e senza flags
+
 ```c
 	...
 	key_t chiave = 40;
@@ -70,10 +83,12 @@ ESEMPIO: con chiave cablata e senza flags
   	}
   	... Utilizza la shared memory già esistente...
 ```
+
 Se la shared memory non è stata giá creata da un altro processo, la funzione `shmget()` restituisce `-1`.
 
 ---
 ESEMPIO: con chiave cablata e flag `IPC_CREAT`
+
 ```c
   	...
 	key_t chiave = 40;
@@ -87,12 +102,14 @@ ESEMPIO: con chiave cablata e flag `IPC_CREAT`
   	}
   	... Utilizza la shared memory (esistente o nuova)...
 ```
+
 In questo caso il flag `IPC_CREAT` impone di creare una nuova shared memory se non ne esiste una con la stessa `key`; la crea con le caratteristiche specificate di dimensione e permessi di accesso.
 
 Nel caso in cui esiste giá una shared memory vente tale valore di `key`,  la chiamata restituisce semplicemente il descrittore della risorsa senza tener conto di `size` e dei permessi di accesso specificati.
 
 ---
 ESEMPIO: chiave cablata e flag `IPC_CREAT` e `IPC_EXCL`
+
 ```c
 	key_t chiave = 40;
  	int ds_shm = shmget(chiave,1024,IPC_CREAT|IPC_EXCL|0664);
@@ -116,11 +133,12 @@ ESEMPIO: chiave cablata e flag `IPC_CREAT` e `IPC_EXCL`
 
 La shared memory viene creata dal primo `get` solamente se non ne esiste giá una con la stessa chiave, altrimenti restituisce `-1`.
 
-In quest'ultimo caso otteniamo il descrittore con una chiamata `get` senza flag poichè sappiamo esistere la risorse IPC.
+In quest'ultimo caso otteniamo il descrittore con una chiamata `get` senza flag poiché sappiamo esistere la risorse IPC.
 
 ---
 
 ESEMPIO: utilizzo `ftok()` per creare una key adatta a una risorsa IPC
+
 ```c
 	key_t chiave = ftok("./eseguibile", 'k');
   	int ds_shm;
@@ -141,6 +159,7 @@ Se due programmi differenti utilizzassero gli stessi parametri per la `ftok()` o
 ---
 
 ESEMPIO: chiave privata con `IPC_PRIVATE`
+
 ```c
 	int ds_shm = shmget(IPC_PRIVATE, 1024, IPC_CREAT|0664);
 
@@ -154,17 +173,20 @@ ESEMPIO: chiave privata con `IPC_PRIVATE`
 
 In questo esempio si crea una shared memory senza assegnare una chiave, dal momento che IPC_PRIVATE equivale a una chiave IPC pari a `0`. 
 
-Infatti, utilizzando il comando ipcs, la chiave apparirà con il valore pari a `0`. 
+Infatti, utilizzando il comando ipcs, la chiave apparirà con il valore pari a `0`.
 
 In questo caso, la shared memory è utilizzabile solo dal padre e i suoi figli, ovvero non è una soluzione corretta nel caso in cui avessimo più programmi eseguibili.
 
 ## Collegamento
 
 Per poter utilizzare una shared memory e necessario effettuare il così detto *attach* tramite la system call `shmat()`,
+
 ```c
 void *shmat(int shmid, const void *shmaddr, int shmflg);
 ```
+
 dove:
+
 - `shmid` e l'identificatore del segmento di memoria:
 - `shmaddr` è l'indirizzo dell'area di memoria del processo chiamante al quale collegare il segmento di memoria condivisa.
   
