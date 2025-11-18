@@ -161,7 +161,7 @@ int msgsnd(int msqid, const void *msgp, size_t msgsz, int msgflg);
 
   Se `message_type` assume il valore del PID del processo mittente possiamo implementare una **comunicazione diretta asimmetrica** sfruttando una **comunicazione indiretta** offerta dalle mailbox (nel caso di **una sola coda**).
 
-  In `sys/msg.h` fornisce una struttura messaggio che possiamo sfruttare (ma non è obbligatorio):
+  La libreria `sys/msg.h` fornisce una struttura messaggio che possiamo sfruttare (ma non è obbligatorio):
 
   ```c
   struct msgbuf
