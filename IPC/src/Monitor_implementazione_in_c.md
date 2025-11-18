@@ -108,4 +108,4 @@ int queue_condition(Monitor*, int);
 
 In entrambi i casi, sia che la verifica sia vero oppure falsa, il processo segnalatore continua la sua esecuzione all'interno del monitor.
 
-<!--todo aggiungi il codice sorgente per ogni workflow   -->
+<!-- @todo aggiungi il codice sorgente per ogni workflow   -->

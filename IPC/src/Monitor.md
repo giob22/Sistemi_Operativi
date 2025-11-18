@@ -89,6 +89,7 @@ var_cond x;
 ```
 
 Tale variabile condition definisce due metodi:
+
 - `x.wait_cond()` sospende il processo chiamante...
 - ... fino a che un altro processo esegue `x.signal_cond()`.
 
@@ -149,7 +150,7 @@ Il processo entra nel monitor chiedendo di eseguire una procedura in mutua esclu
 
 All'interno della procedura potrebbe esserci una condizione che potrebbe portare il processo a sospendersi nel caso in cui non sia verificata; condizioni associate a condition variables.
 
-→ Per ogni condition variable oltre ad una condizione logica è associata una **coda** in cui saranno memorizzati tutti i processi che si sono sospesi per il mancato soddisfacimento della condizione logica.
+→ Per ogni condition variable oltre a una condizione logica è associata una **coda** in cui saranno memorizzati tutti i processi che si sono sospesi per il mancato soddisfacimento della condizione logica.
 
 Quindi nel momento in cui è da gestire una cooperazione le procedure controllano, tramite le variabili locali, se la **condizione di sincronizzazione** è valida (es. buffer vuoto, buffer occupato).
 
@@ -196,13 +197,13 @@ A fronte di questa problematica abbiamo diverse implementazioni della procedura 
 
 Supponiamo che `P` acceda al monitor e debba eseguire una procedura in mutua esclusione, ma **non soddisfa** una condizione definita per la cooperazione.
 
-→ Il processo spontaneamente si sospense utilizzando `wait_cond()` sulla condition variables associata a tale condizione.
+→ Il processo spontaneamente si sospende utilizzando `wait_cond()` sulla condition variables associata a tale condizione.
 
 Nel momento in cui `P` si sospende questo rilascia la risorsa monitor agli altri processi in attesa. Quindi il prossimo processo schedulato in attesa, `Q`, entra nel monitor ed esegue una procedura che potrebbe comportare **l'aggiornamento dello stato della risorsa**.
 
 → La condizione di sincronizzazione che ha portato `P` a sospendersi viene soddisfatta, quindi tale processo può continuare la propria esecuzione
 
-Il processo `Q` dopo la modifica che ha portato la risorsa ad essere pronta per `P`, riattiva `P` che ritorna pronto, mediante l'esecuzione di una `signal_cond()` sulla condition variable su cui `P` è sospeso.
+Il processo `Q` dopo la modifica che ha portato la risorsa a essere pronta per `P`, riattiva `P` che ritorna pronto, mediante l'esecuzione di una `signal_cond()` sulla condition variable su cui `P` è sospeso.
 
 ---
 
@@ -225,7 +226,7 @@ Diversi sistemi attribuiscono comportamenti (**semantica**) diversi alle primiti
 
 Utilizzo della primitiva `wait_cond()` in questa semantica di `signal_cond()`:
 
-- il processo segnalato è il primo ad eseguire;
+- il processo segnalato è il primo a eseguire;
 - al risveglio, il segnalato **ha certezza di trovare verificata** la condizione di sincronizzazione, quindi non è necessario che questo la verifichi nuovamente.
 
 Quindi lo schema di uso della `wait_cond()` sarà:
@@ -268,7 +269,7 @@ Prevede che il processo `Q` abbia la **priorità** su ogni altro processo che in
 
 Questa soluzione si può ottenere sospendendo il processo `Q` dopo la `signal_wait()` su una coda detta *urgent_queue*, separata da quella del mutex (coda di processi in attesa per entrare nel monitor).
 
-mutex: meccanismo di mutua escluzione che permette l'accesso al monitor ad un solo processo per volta.
+mutex: meccanismo di mutua esclusione che permette l'accesso al monitor a un solo processo per volta.
 
 ### Seconda soluzione: signal and continue
 
@@ -287,7 +288,7 @@ Per semplicità di implementazione il monitor signal-and-continue non usa la cod
 
 Essendo che `P` compete con gli altri processi per accedere al monitor potrebbe verificarsi la situazione in cui ad esser schedulato prima di `P` è `K`, che entra nel monitor una volra che `Q` lo ha rilasciato.
 
-In questa sistuazione potrebbe accadere che `K` **modifichi nuovamente la risorsa** (le strutture contenute in *local data*) e quindi potrebbe far in modo che la condizione di sincronizzazione per `P` sia **non più verificata**.
+In questa situazione potrebbe accadere che `K` **modifichi nuovamente la risorsa** (le strutture contenute in *local data*) e quindi potrebbe far in modo che la condizione di sincronizzazione per `P` sia **non più verificata**.
 
 Quindi è necessario che una volta che `P` rientri all'interno del monitor verifichi nuovamente la condizione di sincronizzazione.
 
@@ -330,22 +331,22 @@ La semantica di *signal-and-wait* richiede che venga chiamata **precisamente qua
 
 La semantica di *signal-and-continue* (e *signal-all*) è più **robusta**:
 
-- il processo segnalante può chiamarla anche quando non è sicuro di se/quali processi risegliare;
-- saranno i processi risvegliati a controllare se possono eseguire, oppure sospensersi.
+- il processo segnalante può chiamarla anche quando non è sicuro di se/quali processi risvegliare;
+- saranno i processi risvegliati a controllare se possono eseguire, oppure sospendersi.
 
 ### Granularità: semaforo vs monitor
 
-Entrambi, sia monitor che semafori, sono dei concetti necessaria per la gestione di situazioni di cooperazione o competizione tra processi concorrenti su una risorca condivisa.
+Entrambi, sia monitor che semafori, sono dei concetti necessaria per la gestione di situazioni di cooperazione o competizione tra processi concorrenti su una risorsa condivisa.
 
 Sono simili nell'utilizzo ma hanno tante differenza sia rispetto alla robustezza che alla granularità.
 
-In particolar modo i semafori hanno una granularita *fine*, molto bassa, proprio perché gestiscono la mutua esclusione a **livello di singole operazioni**.
+In particolar modo i semafori hanno una granularità *fine*, molto bassa, proprio perché gestiscono la mutua esclusione a **livello di singole operazioni**.
 
 Mentre i monitor hanno una granularità più alta: il controllo non è sulla singola operazione sulla risorsa condivisa, ma sull'intera risorsa condivisa.
 
-→ infatti nell'implementazione del problema produttori/consumatori con buffer di stato la modifica di questo a fine di un'operazione (`IN_USO → OCCUPATO/LIBERO`), che sia di scrittura o lettura, deve essere eseguira all'interno del monitor (bloccando quindi gli altri processi che desiderano accedervi). <br> →devono esser modificate delle variabili di stato (es. `num_liberi`, `num_occupati`).
+→ infatti nell'implementazione del problema produttori/consumatori con buffer di stato la modifica di questo a fine di un'operazione (`IN_USO → OCCUPATO/LIBERO`), che sia di scrittura o lettura, deve essere eseguirà all'interno del monitor (bloccando quindi gli altri processi che desiderano accedervi). <br> →devono esser modificate delle variabili di stato (es. `num_liberi`, `num_occupati`).
 
-Mentre con i semafori la modifica sul buffer di stato `IN_USO → OCCUPATO/LIBERO` non era inclusa nella sezione critica, non ostacolavamo gli altri processi ad operare sulla risorsa.
+Mentre con i semafori la modifica sul buffer di stato `IN_USO → OCCUPATO/LIBERO` non era inclusa nella sezione critica, non ostacolavamo gli altri processi a operare sulla risorsa.
 
 Invece parlando di **robustezza** i monitor sono sicuramente molto più sicuri per via del loro **livello di astrazione maggiore**. Tutti le operazioni sulla memoria condivisa sono contenute all'interno del monitor. (possiamo dire che il monitor è un wrapper della `shm`)
 

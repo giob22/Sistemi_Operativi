@@ -20,6 +20,7 @@ In realtà si vede che è necessario gestire anche la mutua esclusione tra proce
 I processi lettori inoltre non consumano la risorsa nel momento in cui la leggono/usufruiscono, come accadeva per i consumatori → non notificano allo scrittore l'avvenuta lettura perché non c'è il concetto di spazio libero (come avveniva per consumatore/produttore).
 
 Un *side effect* dei lettori/scrittori è la starvation che può mostrarsi in due casi:
+
 1) **starvation degli scrittori**
 2) **starvation di entrambi**
    
@@ -77,6 +78,7 @@ void Lettura(int sem){
 ```
 
 Di seguito l'implementazione delle funzioni `Inizio_Lettura()` e `Fine_Lettura()`.
+
 ```c
 void Inizio_Lettura(int sem){
     wait_sem(sem, MUTEXL);
@@ -85,6 +87,7 @@ void Inizio_Lettura(int sem){
     signal_sem(sem,MUTEXL);
 }
 ```
+
 ```c
 void Fine_Lettura(int sem){
     wait_sem(sem, MUTEXL);
@@ -174,5 +177,4 @@ A questo proposito infatti è impiegato il semaforo identificato all'interno del
 
 ## Implementazione con MONITOR
 
-L'implementazione con monitor è presente nella repository Sistemi_Operativi/IPC/monitor su GitHub.
-
+L'implementazione con monitor è presente nella repository Sistemi_Operativi/IPC/monitor su GitHub con commenti annessi.
