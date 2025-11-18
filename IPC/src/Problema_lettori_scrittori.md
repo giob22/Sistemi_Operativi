@@ -117,6 +117,7 @@ void Fine_Scrittura(int sem){
 ```
 
 In questo caso il semaforo `SYNCH` gestisce sia la **mutua esclusione tra lettori e scrittori** che la **mutua esclusione tra gli scrittori stessi**.
+
 ## Implementazione con starvation di entrambi
 
 Inseriamo un comportamento analogo dei lettori anche agli scrittori, introducendo la variabile condivisa `NUM_LETTORI`.
@@ -148,7 +149,7 @@ void Inizio_Scrittura(int sem){
 - Effettua una `wait_sem()` su `MUTEXS` per modificare `Num_Scrittori` in mutua esclusione;
 - Se il processo è il primo scrittore allora esegue la `wait_sem()` su `SYNCH` per bloccare l'accesso ai lettori;
 - Rilascio della variabile `Num_Scrittori` con una `signal_sem()` su `MUTEXS` così che altri scrittori possano accedervi;
-- Infine il processo fa una `wait_sem()` su `MUTEX` affinchè altri scrittori non possano accedere alla `shm`.
+- Infine il processo fa una `wait_sem()` su `MUTEX` affinché altri scrittori non possano accedere alla `shm`.
 
 ```c
 void Fine_Scrittura(int sem){
@@ -173,5 +174,5 @@ A questo proposito infatti è impiegato il semaforo identificato all'interno del
 
 ## Implementazione con MONITOR
 
-<!-- @todo fai l'implementazione di inizio e fine scrittura e lettura sfruttando un monitor signal-and-wait ed uno signal-and-continue-->
+L'implementazione con monitor è presente nella repository Sistemi_Operativi/IPC/monitor su GitHub.
 
