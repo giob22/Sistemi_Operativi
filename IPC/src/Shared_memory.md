@@ -479,4 +479,3 @@ indirizzo della shm dopo l`attach: 0x78f6872c7000
 ```
 
 Da notare che l'indirizzo per la shared memory è cambiato. Appunto perché il processo figlio non è più una copia **dell'immagine** del processo padre una volta utilizzato la chiamata `exec()`.
-
