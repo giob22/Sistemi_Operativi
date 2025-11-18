@@ -300,6 +300,15 @@ Sfruttando il campo tipo di ogni messaggio e il PID dei processi che vogliono co
 
 A mediare la comunicazione è necessario un terzo processo che faccia da **server**, il quale smista i messaggi nella coda di entrata (aventi come tipo il PID del destinatario e nel payload il PID del mittente) nella coda di uscita modificando il tipo con il PID del mittente.
 
+---
+
+Un altro tipo di implementazione possibile sarebbe quella che sfrutta i tipi di messaggi interi negativi: `msgtyp < 0` nella system call `msgrcv()`.
+
+L'implementazione consiste in un server che risponde a diverse richieste ognuna identificata dal tipo del messaggio. A ciascun tipo è associata una diversa priorità, in modo che il tipo `1` abbia priorità massima e il tipo `n` abbia priorità minima.
+
+Nel momento in cui il server esegue una `msgrcv()` bloccante con argomento `msgtyp = n`, il risultato è il messaggio che ha il valore tipo **più piccolo tra tutti quelli con `message_type < |msgtyp|`** e quindi con priorità massima.
+
+Naturalmente, se sono presenti più messaggi con stesso tipo e tale tipo è il più piccolo tra quelli selezionabili, la politica FIFO implementata sulla coda fa sì che venga restituito il messaggio che è in attesa da più tempo.
 
 ## Errori
 

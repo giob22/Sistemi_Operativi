@@ -7,5 +7,5 @@
 - [Monitor](./Monitor.md)
 - [Monitor Implementazione in C](./Monitor_implementazione_in_c.md)
 - [Sincronizzazione nel modello ad ambiente locale](./Sincronizzazione_locale.md)
-- [Mailbox](./mailbox.md)
+- [Mailbox](./Mailbox.md)
 - [Note:](./Note.md)
