@@ -239,7 +239,7 @@ Il campo `msgtyp` svolge importanti funzioni, infatti definisce il comportamento
 |------|---------------|
 |`msgtyp == 0` | viene prelevato il primo messaggio della coda (ovvero quello inviato da più tempo). |
 | `msgtyp > 0` | viene prelevato il primo messaggio della coda il cui campo tipo sia pari al valore di `msgtyp`. |
-| `msgtyp < 0` | viene prelevato il primo messaggio dalla coda il cui campo tipo abbia un valore minore o uguale a `\|msgtyp\|`. |
+| `msgtyp < 0` | vengono considerati tutti i messaggi aventi `message_type <= \|msgtyp\|`, e tra questi viene prelevato il messaggio con tipo minore. |
 
 Infine per il campo `msgflg`:
 
