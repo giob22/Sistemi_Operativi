@@ -266,6 +266,7 @@ void Wait_Sem (int id_sem, int numsem){
 ```
 
 #### Implementazione della `wait-for-zero()`
+
 Infine abbiamo il caso in cui `sem_op = 0`, il comportamento della primitiva `semop()` è il seguente:
 
 - se l valore `semval` è zero, l'operazione procede immediatamente (il processo non si sospende);
