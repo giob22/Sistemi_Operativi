@@ -23,7 +23,7 @@ Un *side effect* dei lettori/scrittori è la starvation che può mostrarsi in du
 
 1) **starvation degli scrittori**
 2) **starvation di entrambi**
-   
+ 
 Essendo le operazioni di lettura e scrittura delle **sezioni critiche** vanno protette entrambe, con l'accortezza che l'operazione di lettura in realtà è protetta solo da processi scrittori: i processi lettori possono operare **simultaneamente** sulla risorsa.
 
 Quindi avremo procedure per "proteggere": operazioni di lettura che saranno `Inizio_Lettura()` e `Fine_Lettura()`, e per operazioni di scrittura che saranno `Inizio_Scrittura()` e `Fine_Scrittura()`
@@ -173,7 +173,6 @@ void Fine_Scrittura(int sem){
 Da notare che l'implementazione di queste due funzioni è l'analogo delle funzioni per inizio e fine lettura per i lettori. L'unica differenza sta nel fatto che per gli scrittori è da gestire la loro mutua esclusione sulla `shm` che non è necessario per i lettori.
 
 A questo proposito infatti è impiegato il semaforo identificato all'interno del *semaphor set* dalla costante `MUTEX`.
-
 
 ## Implementazione con MONITOR
 
