@@ -176,4 +176,4 @@ A questo proposito infatti è impiegato il semaforo identificato all'interno del
 
 ## Implementazione con MONITOR
 
-L'implementazione con monitor è presente nella repository Sistemi_Operativi/IPC/monitor su GitHub (con commenti annessi). prova
+L'implementazione con monitor è presente nella repository Sistemi_Operativi/IPC/monitor su GitHub (con commenti annessi).
