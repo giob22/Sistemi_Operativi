@@ -4,7 +4,7 @@ Deadlock è un fenomeno che può presentarsi nelle **applicazioni concorrenti** 
 
 → può portare a crash, situazioni di stallo, etc. (da evitare completamente)
 
-Nei sistemi operativi **general porpose**, si ammette l'esistenza di deadlock → non si implementano tecniche per evitare il problema ma si rileva nel momento in cui si presenta e si cerca di risolverlo.
+Nei sistemi operativi **general-porpose**, si ammette l'esistenza di deadlock → non si implementano tecniche per evitare il problema ma si rileva nel momento in cui si presenta e si cerca di risolverlo.
 
 ## Deadlock: definizione e generalità
 
@@ -14,7 +14,7 @@ Deadlock è un problema complesso e di rilievo, che può provocare gravi malfunz
 
 A seconda dello scopo per cui è progettato, un sistema operativo adotta una **gestione** diversa per controllare il deadlock.
 
-Ad esempio, per i sistemi **real-time** evitare il deadlock è fondamentale, quindi avranno una gestione più rigida che tende a prevenire tali fenomeni a differenza di altri tipi di sistemi operativi, come general porpose, che potranno tendere a non rilevarli e risolverli a posteriori.
+Ad esempio, per i sistemi **real-time** evitare il deadlock è fondamentale, quindi avranno una gestione più rigida che tende a prevenire tali fenomeni a differenza di altri tipi di sistemi operativi, come general-porpose, che potranno tendere a non rilevarli e risolverli a posteriori.
 
 ---
 
@@ -58,38 +58,43 @@ Quindi quando è presente la **mutua esclusione**.
 <div style="display:flex; gap:20px;">
 
   <!-- Colonna P1 -->
-<div style="border:2px solid #b7c0e3; background:#eef1ff; padding:15px; width:45%; border-radius:6px;"><b>P₁</b><br><br>
-wait (<span style="color:red;">mutex1</span>)<br>
-&lt;inizio uso disco 1&gt;<br>
-…<br><br>
-<div style="border:2px dashed red; padding:6px; border-radius:4px;">
-  wait (<span style="color:green;">mutex2</span>)
-</div>
-&lt;inizio uso disco 2&gt;<br>
-…<br><br>
-signal (<span style="color:green;">mutex2</span>)<br>
-…<br>
-signal (<span style="color:red;">mutex1</span>)<br>
+<div style="border:2px solid #b7c0e3; background:#eef1ff; padding:15px; width:45%; border-radius:6px; color:#2b2b2b;">
+  <b>P₁</b><br><br>
+  wait (<span style="color:red;">mutex1</span>)<br>
+  &lt;inizio uso disco 1&gt;<br>
+  …<br><br>
+
+  <div style="border:2px dashed red; padding:6px; border-radius:4px; color:#2b2b2b;">
+    wait (<span style="color:green;">mutex2</span>)
   </div>
+
+  &lt;inizio uso disco 2&gt;<br>
+  …<br><br>
+  signal (<span style="color:green;">mutex2</span>)<br>
+  …<br>
+  signal (<span style="color:red;">mutex1</span>)<br>
+</div>
 
   <!-- Colonna P2 -->
-<div style="border:2px solid #d0d0d0; background:#f5f5f5; padding:15px; width:45%; border-radius:6px;">
-<b>P₂</b><br><br>
-wait (<span style="color:green;">mutex2</span>)<br>
-&lt;inizio uso disco 2&gt;<br>
-…<br><br>
+<div style="border:2px solid #d0d0d0; background:#f5f5f5; padding:15px; width:45%; border-radius:6px; color:#2b2b2b;">
+  <b>P₂</b><br><br>
+  wait (<span style="color:green;">mutex2</span>)<br>
+  &lt;inizio uso disco 2&gt;<br>
+  …<br><br>
 
-<div style="border:2px dashed red; padding:6px; border-radius:4px;">
-  wait (<span style="color:red;">mutex1</span>)
-</div>
-&lt;inizio uso disco 1&gt;<br>
-…<br><br>
-signal (<span style="color:red;">mutex1</span>)<br>
-…<br>
-signal (<span style="color:green;">mutex2</span>)<br>
+  <div style="border:2px dashed red; padding:6px; border-radius:4px; color:#2b2b2b;">
+    wait (<span style="color:red;">mutex1</span>)
   </div>
 
+  &lt;inizio uso disco 1&gt;<br>
+  …<br><br>
+  signal (<span style="color:red;">mutex1</span>)<br>
+  …<br>
+  signal (<span style="color:green;">mutex2</span>)<br>
 </div>
+
+</div>
+
 
 I due processi potrebbero sospendersi entrambi su le `wait()` evidenziate.
 
