@@ -23,7 +23,7 @@
 struct msg_calc
 {
     // tipo messaggio
-    long type; // poò essere legato al PID del processo
+    long type; // può essere legato al PID del processo
     // possiamo assumere questo campo per identificare il PID
     // possiamo assumere che il numero massimo di pid che possono comunicare 
     // sulla message queue è il massimo numero di PID associabili a processi → il numero massimo di processi che concorrono per la CPU
