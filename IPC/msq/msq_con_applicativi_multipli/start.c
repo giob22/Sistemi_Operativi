@@ -23,6 +23,13 @@ int main()
     // def chiave e ottenere il descrittore
 
     key_t queue_key = ftok(".", 'a'); // perché P1, P2, P3 sono eseguibili separati
+
+    // ho avuto problemi con la ftok in classe perché evidentemente il file che andavo ad 
+    //indicare (che non esisteva) si trovava in una cartella in cui non avevo i permessi dell'utente.
+    // ftok per funzionare utilizza dei parametri del descrittore di un file, quindi crea 
+    // momentaneamente un descrittore per reperire tali informazioni e poi lo cacella
+    // il problema era che non riusciva a creare il file in questione.
+
     int id_queue = msgget(queue_key, IPC_CREAT | 0664);
 
     if (id_queue > 0)
