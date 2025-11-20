@@ -1,0 +1,54 @@
+PROCESSO P1 AVVIATO
+[P1] DESCRITTORE della coda: 23
+[P1] INVIO messaggio type: 1 e numero: 5.388391
+[P1] INVIO messaggio type: 1 e numero: 5.781859
+[P1] INVIO messaggio type: 1 e numero: 0.438235
+[P1] INVIO messaggio type: 1 e numero: 0.671195
+[P1] INVIO messaggio type: 1 e numero: 8.001060
+[P1] INVIO messaggio type: 1 e numero: 6.323448
+[P1] INVIO messaggio type: 1 e numero: 8.827947
+[P1] INVIO messaggio type: 1 e numero: 4.524410
+[P1] INVIO messaggio type: 1 e numero: 5.245667
+[P1] INVIO messaggio type: 1 e numero: 5.794727
+[P1] INVIO messaggio type: 1 e numero: 3.129368
+PROCESSO P2 AVVIATO
+[P2] DESCRITTORE della coda: 23
+[P2] INVIO messaggio type: 2 e numero: 8.401877
+[P2] INVIO messaggio type: 2 e numero: 3.943829
+[P2] INVIO messaggio type: 2 e numero: 7.830992
+[P2] INVIO messaggio type: 2 e numero: 7.984400
+[P2] INVIO messaggio type: 2 e numero: 9.116473
+[P2] INVIO messaggio type: 2 e numero: 1.975514
+[P2] INVIO messaggio type: 2 e numero: 3.352227
+[P2] INVIO messaggio type: 2 e numero: 7.682296
+[P2] INVIO messaggio type: 2 e numero: 2.777747
+[P2] INVIO messaggio type: 2 e numero: 5.539700
+[P2] INVIO messaggio type: 2 e numero: 4.773971
+PROCESSO P3 AVVIATO
+PROCESSO P1 AVVIATO
+[P3] DESCRITTORE della coda: 23
+[P3] messaggio ricevuto tipo 1 numero 5.388391
+[P3] messaggio ricevuto tipo 1 numero 5.781859
+[P3] messaggio ricevuto tipo 1 numero 0.438235
+[P3] messaggio ricevuto tipo 1 numero 0.671195
+[P3] messaggio ricevuto tipo 1 numero 8.001060
+[P3] messaggio ricevuto tipo 1 numero 6.323448
+[P3] messaggio ricevuto tipo 1 numero 8.827947
+[P3] messaggio ricevuto tipo 1 numero 4.524410
+[P3] messaggio ricevuto tipo 1 numero 5.245667
+[P3] messaggio ricevuto tipo 1 numero 5.794727
+[P3] messaggio ricevuto tipo 1 numero 3.129368
+[P3] messaggio ricevuto tipo 2 numero 8.401877
+[P3] messaggio ricevuto tipo 2 numero 3.943829
+[P3] messaggio ricevuto tipo 2 numero 7.830992
+[P3] messaggio ricevuto tipo 2 numero 7.984400
+[P3] messaggio ricevuto tipo 2 numero 9.116473
+[P3] messaggio ricevuto tipo 2 numero 1.975514
+[P3] messaggio ricevuto tipo 2 numero 3.352227
+[P3] messaggio ricevuto tipo 2 numero 7.682296
+[P3] messaggio ricevuto tipo 2 numero 2.777747
+[P3] messaggio ricevuto tipo 2 numero 5.539700
+[P3] messaggio ricevuto tipo 2 numero 4.773971
+la media dei valori ricevuti da P1: 4.920573
+la media dei valori ricevuti da P2: 5.761730
+descrittore della coda: 23
