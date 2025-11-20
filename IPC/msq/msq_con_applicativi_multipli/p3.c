@@ -15,7 +15,7 @@ int main(){
     printf("PROCESSO P3 AVVIATO\n");
     printf("PROCESSO P1 AVVIATO\n");
 
-    key_t queue_key = ftok("./start", 'a'); // perché P1, P2, P3 sono eseguibili separati
+    key_t queue_key = ftok(".", 'a'); // perché P1, P2, P3 sono eseguibili separati
     int id_queue = msgget(queue_key, IPC_CREAT | 0664);
     
     

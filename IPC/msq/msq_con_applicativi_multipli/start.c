@@ -22,7 +22,7 @@ int main()
 
     // def chiave e ottenere il descrittore
 
-    key_t queue_key = ftok("./start", 'a'); // perché P1, P2, P3 sono eseguibili separati
+    key_t queue_key = ftok(".", 'a'); // perché P1, P2, P3 sono eseguibili separati
     int id_queue = msgget(queue_key, IPC_CREAT | 0664);
 
     if (id_queue > 0)
@@ -48,7 +48,6 @@ int main()
     pid = fork();
     if (pid == 0)
     {
-        printf("\n\n\nprovo a creare p2 %d\n\n\n", pid);
         // creo P2
         execl("./p2", "./p2", NULL);
         printf("QUI CI ARRIVO SOLO SE HO UN ERRORE NELLA EXEC\n");
