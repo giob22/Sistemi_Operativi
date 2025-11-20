@@ -89,19 +89,18 @@ Se la shared memory non è stata giá creata da un altro processo, la funzione `
 ---
 ESEMPIO: con chiave cablata e flag `IPC_CREAT`
 
-```c
-  	...
-	key_t chiave = 40;
-  	int ds_shm;
-  	ds_shm = shmget(chiave, 1024, IPC_CREAT | 0664);
-
-  	if(ds_shm < 0) {
-   		// qualcosa è andato storto (memoria esaurita, etc.)
-    	perror(“errore shmget!”);
-    	exit(1);
-  	}
-  	... Utilizza la shared memory (esistente o nuova)...
-```
+    ```c
+...
+key_t chiave = 40;
+int ds_shm;
+ds_shm = shmget(chiave, 1024, IPC_CREAT | 0664);     
+if(ds_shm < 0) {
+	// qualcosa è andato storto (memoria esaurita, etc.)
+	perror(“errore shmget!”);
+	exit(1);
+}
+... Utilizza la shared memory (esistente o nuova)...
+    ```
 
 In questo caso il flag `IPC_CREAT` impone di creare una nuova shared memory se non ne esiste una con la stessa `key`; la crea con le caratteristiche specificate di dimensione e permessi di accesso.
 
