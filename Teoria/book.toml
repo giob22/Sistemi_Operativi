@@ -2,3 +2,8 @@
 title = "Teoria"
 authors = ["giob22"]
 language = "en"
+
+[output.html]
+mathjax-support = true
+
+
