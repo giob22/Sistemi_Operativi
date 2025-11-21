@@ -69,6 +69,30 @@ FINE 1
 
 **PROBLEMA CON `key_t queue_key = ftok(".",'a')`**
 
-<!-- @todo vedi quello che il professore ha scritto su teams e integra con quello che sta scritto nella documentazione -->
+`ftok()` è una funzione che serve a generare una chiave **IPC** da usare con:
 
+- `msgget`
+- `shmget`
+- `semget`
+
+Non è l'unico modo per utilizzare correttamente queste primitive, ma è sicuramente il modo più generale e corretto.
+
+La funzione prende come input 2 parametri:
+
+1) `pathname`
+
+   - deve essere un percorso esistente nel filesystem
+   - deve puntare ad un file esistente → se non esiste, `ftok` fallisce e ha come valore di ritorno `-1` (valore non ammissibile ad essere una chiave)
+2) `proj_id`
+
+   - un intero di cui solo i primi 8 bit vengono considerati
+   - quindi possiamo utilizzare un carattere per tale parametro
+
+Il problema riscontrato è in riferimento al primo parametro, perché il processo deve avere il permesso ad accedere al file che il percorso punta.
+
+Nel caso in cui tale file non ha i permessi corretti il processo si interrompe impostando la variabile `errno = 13`, dove tale valore corrisponde a `EACCES` cioè **permission denied**.
+
+Situazioni del genere potrebbero essere molto fastidiose se non si verifica sempre quello che accade nel momento di un crash, in questo caso è bastato verificare il contenuto della variabile globale `errno`.
+
+Tale variabile bisogna importarla poiché risiede nella libreria standard `errno`.
 <!-- @todo inserisci qui tutte le note importanti sulla logica -->
