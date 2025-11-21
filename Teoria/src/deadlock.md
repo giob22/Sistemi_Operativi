@@ -180,6 +180,8 @@ In questo caso `P1` richiede `Ra` la cui unica istanza è detenuta da `P2` che r
 
 Nel momento in cui è presente un ciclo del genere possiamo essere **sicuri** che tra questi processi è **possibile** che avvenga una situazione di deadlock.
 
+Invece possiamo considerare che **si verifica** il deadlock se i processi partono da una condizione iniziale in cui hanno già in possesso le rispettive risorse e facciano una richiesta per l'altra, quando nessuno dei due processi ha terminato.
+
 Ovviamente nel caso in cui le risorse avessero più istanze non ci sarebbe un problema, perché i due processi accederebbero a istanze diverse e quindi non si violerebbe la **mutua esclusione**.
 
 <p align='center'><img src='images/grafo_nodeadolock.png' width='300' ></p>
@@ -192,7 +194,11 @@ OSSERVAZIONI:
   
   → Se il grafo **non contiene cicli** ⟹ non si verificano situazioni di stallo
 
-- Se il grafo **contiene un ciclo** ⟹ si potrebbe verificare una situazione di stallo, la cui possibilità diminuisce con il numero di istanze per ogni risorsa. (ma non è mai zero)
+- Se il grafo **contiene un ciclo** ⟹ si potrebbe verificare una situazione di stallo, la cui possibilità diminuisce con il numero di istanze per ogni risorsa.
+  
+  Quindi la possibilità che ci sia un deadlock esiste ma non è detto che si verifica, perché tutto dipende anche dalla velocità relativa di esecuzione di ogni processo.
+
+Un caso che possiamo considerare UTOPICO è quando ogni risorsa ha tante istanze quanti siano i processi che potenzialmente possano richiederla → impossibile proprio perché non sappiamo il numero di processi che potenzialmente è troppo elevato e le risorse sono limitate.
 
 Linux cosa fa? Quando rileva un deadlock tenta di **eliminare** (a posteriori) questa condizione andando a terminare uno dei processi scatenanti, la cui scelta dipende da delle metriche.
 
@@ -232,13 +238,13 @@ NOTA: se creo due processi e faccio in modo che questi vadino in deadlock, il si
 
 Le condizioni **necessarie** sono:
 
-- **Mutua esclusione**
-- **Impossibilità di prelazione** → significa non poter eliminare un arco in modo arbitrario rispetto chi l'ha creato.
+- **Mutua esclusione** → un processo per alla volta può usare la risorsa.
+- **Impossibilità di prelazione** → una risorsa può esser rilasciata **solo volontariamente** dal processo che la possiede, al termine della sua esecuzione. 
   
-  Ovvero un processo non può togliere una risorsa a un altro processo che la sta utilizzando.
-- **Possesso e attesa** → il processo che possiede già una risorsa fa una richiesta per un'altra risorsa.
+  Quindi non esistono casi in cui a un processo venga prelazionata una risorsa a favore di un altro che la richiede.
+- **Possesso e attesa** → un processo che possiede almeno una risorsa, **attende di acquisire ulteriori risorse** già possedute da altri processi.
 
-Invece le condizioni **sufficienti** sono:
+Invece le condizioni **sufficienti** sono (tutte quelle necessarie + attesa circolare):
 
 - **Mutua esclusione**
 - **Impossibilità di prelazione**
@@ -247,4 +253,4 @@ Invece le condizioni **sufficienti** sono:
 
 Affinché ci sia attesa circolare devono necessariamente esser verificate tutte le condizioni necessarie. Quindi possiamo dire che se è presente un'attesa circolare allora automaticamente è presente una condizione di deadlock.
 
-
+(Attesa circolare è una conseguenza di un ciclo nel grafo di assegnazione, ma non è detto che si verifichi)
