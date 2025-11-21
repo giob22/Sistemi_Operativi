@@ -69,6 +69,6 @@ FINE 1
 
 **PROBLEMA CON `key_t queue_key = ftok(".",'a')`**
 
-
+<!-- @todo vedi quello che il professore ha scritto su teams e integra con quello che sta scritto nella documentazione -->
 
 <!-- @todo inserisci qui tutte le note importanti sulla logica -->
