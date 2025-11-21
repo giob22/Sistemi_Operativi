@@ -65,4 +65,10 @@ FINE 2
 FINE 1
 ```
 
+## Errore riscontrato con la `ftok()`
+
+**PROBLEMA CON `key_t queue_key = ftok(".",'a')`**
+
+
+
 <!-- @todo inserisci qui tutte le note importanti sulla logica -->
