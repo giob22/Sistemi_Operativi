@@ -469,6 +469,8 @@ e *m* = numero di tipi di risorse
   
   Aij = allocazione corrente al processo Pi della risorsa Rj
 
+---
+
 ### Process Initiation Denial
 
 - La matrice *C* (di richiesta) indica **il numero massimo di richieste** per ogni processo (righe), di una certa risorsa (colonne).
