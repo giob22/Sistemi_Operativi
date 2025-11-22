@@ -244,7 +244,7 @@ Le condizioni **necessarie** sono:
   Quindi non esistono casi in cui a un processo venga prelazionata una risorsa a favore di un altro che la richiede.
 - **Possesso e attesa** → un processo che possiede almeno una risorsa, **attende di acquisire ulteriori risorse** già possedute da altri processi.
 
-Invece le condizioni **sufficienti** sono (tutte quelle necessarie + attesa circolare):
+Invece le condizioni **necessarie e sufficienti** sono (tutte quelle necessarie + attesa circolare):
 
 - **Mutua esclusione**
 - **Impossibilità di prelazione**
@@ -254,3 +254,278 @@ Invece le condizioni **sufficienti** sono (tutte quelle necessarie + attesa circ
 Affinché ci sia attesa circolare devono necessariamente esser verificate tutte le condizioni necessarie. Quindi possiamo dire che se è presente un'attesa circolare allora automaticamente è presente una condizione di deadlock.
 
 (Attesa circolare è una conseguenza di un ciclo nel grafo di assegnazione, ma non è detto che si verifichi)
+
+Attesa circolare è la condizione che si verifica nel momento in cui
+
+- esiste un insieme {P0, P1, P2, ..., Pn} di processi in attesa, tali che:
+  
+  - P0 è in attesa per una risorsa che è posseduta da P1
+  - P1 è in attesa per una risorsa che è posseduta da P2
+  - ...
+  - Pn-1 è in attesa per una risorsa che è posseduta da Pn
+  - Pn è in attesa per una risorsa che è posseduta da P0
+  
+  Ovvero quando nel grafo di assegnazione si crea un ciclo di attesa perché non ci sono abbastanza istanze di risorse disponibili affinché almeno uno di questi processi non ha bisogno di attendere.
+
+<p align='center'><img src='images/attesa_circolare.png' width='600' ></p>
+
+## Deadlock PREVENTION
+
+Nella deadlock **prevention**, di evita il deadlock **invalidando** una delle quattro condizioni necessarie e sufficienti.
+
+Svantaggi nell'utilizzo di questo tipo di gestione del deadlock:
+
+1) mancato uso di risorse che sono disponibili;
+2) esecuzione rallentata dei processi. → la politica di gestione costringe a processi ad attendere anche quando non è necessario
+3) non è possibile alcun tipo di cooperazione tra processi
+
+### Mutua esclusione
+
+La mutua esclusione è imposta dalle caratteristiche della risorsa e spesso non è rimovibile a meno che non si serializzi l'esecuzione dei processi, quindi non si necessita di un mutex.
+
+In questo caso però peggiorano molto le performance perché non si sfrutta più la concorrenza tra i processi.
+
+- Può esse rilassata in alcuni casi di risorse condivisibili
+  
+  come, ad esempio, le risorse read-only.
+
+- Comporta costi maggiori → il sistema deve garantire che una risorsa critica (che potrebbe generare inconstistenze) non sia accessibile da più processi che ne fanno richiesta.
+  
+  Quindi che la risorsa è posseduta da un solo processo per volta.
+
+### Possesso e attesa
+
+Eliminando questa condizione si forza un processo a **richiedere una risorsa solo quando non ne possiede altre** (es. all'avvio richiede tutte le risorse necessarie alla sue esecuzione).
+
+In questo caso si deve implementare una sorta di dichiarazione per ogni processo delle risorse che utilizza. 
+
+Tale dichiarazione deve contenere tutte le risorse necessarie che verranno bloccate per tutta l'esecuzione del processo. Quindi si può capire che è molto inefficiente come soluzione perché le risorse vengono bloccate per tutta l'esecuzione anche se il processo le utilizza in una piccola parte.
+
+→ Approccio soggetto a **starvation**, perché potrebbe esistere un processo che è sempre in esecuzione e utilizza una risorsa che non potrà mai essere utilizzata da altri processi.
+
+<p align='center'><img src='images/rimozione_possesso_e_attesa.png' width='600' ></p>
+
+- In questo caso se P1 non termina mai → P2 non potrà mai terminare la propria esecuzione.
+
+### Impossibilità di prelazione
+
+Rilassando il vincolo di impossibilità di prelazione se un processo già possiede alcune risorse, e ne richiede un'altra che non gli può esser allocata immediatamente, allora **rilascia tutte le risorse possedute**.
+
+Quindi non si mette in attesa per la singola risorsa che richiede mantenendo il possesso di quelle già allocate, ma libera tutte le risorse e si mette in attesa.
+
+Tale processo quindi non si metterà in attesa per la sola risorsa in più richiesta ma anche per tutte le altre che possedeva e che ha rilasciato.
+
+→ il processo verrà eseguito nuovamente solo quando può riottenere il possesso sia delle **vecchie che delle nuove risorse**.
+
+<!-- @todo inserisci un immagine o una git esemplificativa -->
+
+### Attesa circolare
+
+Si stabilisce a priori un **ordinamento totale** tra tutte le risorse.
+
+E si richiede che ogni processo richieda le risorse seguendo l'ordine prestabilito.
+
+Quindi se un processo ha bisogno di utilizzare un certo numero di risorse deve richiedere l'accesso a queste nell'ordine prestabilito nonostante tale ordine non sia quello delle operazioni che effettua su queste.
+
+Nell'esempio successivo P2 chiede l'accesso prima a "disco 1" poi a "disco 2" nonostante operi inizialmente solo su "disco 2".
+
+→ provoca una perdita delle performance perché un processo potrebbe possedere una risorsa per un tempo che è molto superiore rispetto al tempo effettivo nel quale opera su tale risorsa.
+
+ESEMPIO: 
+
+Ordine imposto:
+
+1) disco 1
+2) disco 2
+
+<div style="display:flex; gap:20px;">
+
+  <!-- Colonna P1 -->
+<div style="border:2px solid #b7c0e3; background:#eef1ff; padding:15px; width:45%; border-radius:6px; color:#2b2b2b;">
+  <b>P₁</b><br><br>
+  …<br><br>
+  <div style="border:2px dashed red; padding:6px; border-radius:4px; color:#2b2b2b;">
+  wait (<span style="color:red;">mutex1</span>)<br>
+  &lt;inizio uso disco 1&gt;
+  </div>
+  …<br><br>
+  wait (<span style="color:green;">mutex2</span>)
+
+  &lt;inizio uso disco 2&gt;<br>
+  …
+</div>
+
+  <!-- Colonna P2 -->
+<div style="border:2px solid #d0d0d0; background:#f5f5f5; padding:15px; width:45%; border-radius:6px; color:#2b2b2b;">
+  <b>P₂</b><br><br>
+  …<br><br>
+  <div style="border:2px dashed red; padding:6px; border-radius:4px; color:#2b2b2b;">
+  wait (<span style="color:red;">mutex1</span>)
+  <br>
+  wait (<span style="color:green;">mutex2</span>)<br>
+  </div>
+  &lt;inizio uso disco 2&gt;<br>
+  
+  …<br>
+
+  &lt;inizio uso disco 1&gt;<br>
+  …<br><br>
+</div>
+
+</div>
+
+- In questo caso, supponendo che P2 faccia per **primo** la prima richiesta delle risorse:
+  
+  - P1 è **impossibilitato a usare "disco 1"** anche se P2 sta usando "disco 2".
+  - Si è imposto un ordine di acquisizione delle risorse (a discapito dell'efficienza).
+
+Questo tipo di approccio per la gestione PREVENTION non permette l'implementazione di una cooperazione (come anche gli altri approcci) tra processi.
+
+→ implementando il problema produttori consumatori otteniamo che i produttori producono sempre fino a che non terminano. Solo dopo la terminazione dei produttori i consumatori potranno accedere ai dati prodotti.
+→ comportamento non richiesto per l'implementazione.
+
+## Deadlock AVOIDANCE
+
+Nella gestione AVOIDANCE il sistema decide **a tempo di esecuzione** se una richiesta di una risorsa può portare a un deadlock (**prevenzione dinamica**).
+
+- **nessun vincolo a priori** delle risorse
+- se lo stato attuale delle risorse è **rischioso**, un algoritmo **rifiuta la richiesta** di allocazione
+
+Quindi si accetta la possibilità di incorrere in un deadlock, non eliminando le condizione necessarie, ma si cerca di evitarlo valutando lo stato in cui si trova in sistema ogni volta che viene effettuata una richiesta (a *run-time*).
+
+Quindi istante per istante, possedendo **la storia precedente del grafo delle assegnazioni delle risorse**, un algoritmo valuta se **successivamente** a una certa richiesta da parte di un processo porta l'applicazione a un deadlock.
+
+Quindi l'algoritmo deve essere in grado di fare una **sorta di predizione sull'andamento dell'esecuzione** dei processi sugli istanti successivi a una qualsiasi richiesta per una risorsa.
+
+Quindi possiamo considerarla come una prevenzione, che **non è più statica** come per la gestione PREVENTION, ma **dinamica**.
+
+Anche questa come soluzione al deadlock è molto complicata perché richiede diverse assunzioni: come quella di riuscire a prevedere le eventuali richieste di un processo se questo non le dichiara a priori.
+
+<p align='center'><img src='images/avoidance_esempio.png' width='500' ></p>
+
+La memoria totale è `200 kb`.
+
+- P2 non avrà accesso alla risorsa nel momento in cui la richiede perché il processo P1 è già in esecuzione e possiede già una istanza della stessa risorsa.
+
+  Però il motivo per cui viene rifiutata la richiesta di P2 è perché guardando la storia di P1 si nota che affinché questo possa terminare dovrà ottenere un'altra istanza della risorsa.
+
+  Nel momento in cui richiederà un'altra istanza della risorsa non ci sarà più spazio per l'istanza richiesta da P2
+
+  - Caso in cui avviene il deadlock →  P2 riceva la risorsa (supponendo che successivamente ne richieda un'altra da `80 kb`).
+
+    → Quindi la memoria in possesso sarà `80 + 70 = 150kb`.
+
+    → Il processo P1 si sospende perché ne richiede `70kb` e allo stesso modo si sospende P2 perché ne richiede, come detto, `80kb`.
+
+    → Entrambi i processi sono sospesi in attesa che l'altro rilasci la risorsa: deadlock.
+  
+  Nell'esempio un algoritmo ha valutato questa situazione conoscendo la storia di allocazione dei processi.
+
+Quindi è necessario supporre che per ogni processo si deve dichiarare la **storia di allocazione**, altrimenti non di possono fare previsioni sull'andamento dell'esecuzione.
+
+Questo produce un **overhead** elevato sullo sheduler e in generale sul kernel. Ma da una soluzione per non entrare nel deadlock.
+
+Linux implementa ciò? No perché non si conosce a priori la storia di allocazione di ogni processo → è impossibile prevedere un deadlock in questo modo.
+
+<div style="border:3px solid #202092ff; background:#eef1ff; padding:12px; border-radius:6px; color:#555555">
+  <b style="color:#d40000;">**Presupposto**</b>: queste tecniche richiedono di
+  <span style="color:#d40000;">conoscere in anticipo</span>
+  tutte le richieste che un processo può fare nell’arco della sua esecuzione.
+</div>
+
+Questa è un assunzione molto pesante, un caso più semplice di utilizzo è quello che: ogni processo **dichiara** il **numero massimo** di istanze di risorse di cui può avere bisogno.
+
+→ Tali istanze però potrebbero non esser utilizzate subito e quindi tolte ad altri processi che potrebbero sfruttarle immediatamente.
+
+### Approcci
+
+Abbiamo due diversi approcci per questo tipo di gestione:
+
+1) **Process initiation Denial**: all'avvio di un nuovo processo (rifiuto l'esecuzione del processo)
+   
+   Non si avvia un processo se le sue richieste potrebbero portare ad un deadlock
+2) **Resource Allocation Denial**: al momento di una richiesta di allocare una risorsa. (il processo esegue ma possono essere vietate le richieste nonstante la disponibilità corrente è valida)
+   
+   Si consente l'avvio, ma le richieste di allocazione possono essere rifiutate se possono portare a deadlock.
+
+---
+
+Entrambi questi approcci si basano sulla costruzione di diverse strutture algebriche:
+
+sia *n* = numero di processi, 
+
+e *m* = numero di tipi di risorse
+
+- **Resource** = *R* = (R1, ..., Rm)
+  
+  Risorse totali nel sistema. Ri p il numero di istanze presenti nel sistema per la risorsa i-esima.
+- **Available** = *V* = (V1, ..., Vm)
+  
+  Numero di istanze per ogni risorsa non allocate ad alcun processo. Vi rappresenta il # di istanze della risorsa Ri non ancora allocate.
+- **Claim** = *C* = matrice *n x m*
+  
+  Cij = richiesta del processo Pi per la risorsa Rj
+- **Allocation** = *A* = matrice *n x m*
+  
+  Aij = allocazione corrente al processo Pi della risorsa Rj
+
+### Process Initiation Denial
+
+- La matrice *C* (di richiesta) indica **il numero massimo di richieste** per ogni processo (righe), di una certa risorsa (colonne).
+- Deve essere fornita prima dell'avvio dei processi
+  
+  Quindi questa matrice verrà aggiornata e ricalcolata ogni volta che un processo termina o inizia la sua esecuzione.
+
+<p align='center'><img src='images/c.png' width='300' ></p>
+
+Un processo Pn+1 viene eseguito solo se: 
+
+<a id="legge_numero_richieste_massimo"></a>
+<p align='center'><img src='images/numero_richieste_massimo.png' width='300' ></p>
+
+Cioè un processo viene eseguito se il **numero massimo di richieste di tutti i processi** (sommatoria) **più quelle del nuovo processo** (Cij) per la risorse j-esima è minore del numero di istanze della richiesta Rj.
+
+Questo deve esser calcolato per ogni tipo di risorsa → per ogni colonna di *C*.
+
+ESEMPIO:
+
+<p align='center'><img src='images/esempio_process_initiation_denial.png' width='600' ></p>
+
+In questo esempio P1 non viene eseguito fin tanto che P2 non termina la sua esecuzione (almeno).
+
+Il motivo per cui non viene eseguito è proprio il [vincolo](#legge_numero_richieste_massimo) imposto da process initiation denial:
+
+- nel momento in cui P1 tenta di esser eseguito.
+  
+  Per MB di memoria:\
+  100 (R1) >= 70 (C11) + 70 (C21) + 0 (C31) = 140 ⟹  non verificato
+
+  Per la porta seriale:\
+  1 (R2) >= 1 (C12) + 1 (C22) + 0 (C32) = 2 ⟹  non verificato
+
+### Resource Allocation Denial
+
+Tale approccio viene chiamato anche **algoritmo del banchiere**
+
+→ viene eseguito ad ogni tentativo di allocazione
+
+- se l'allocazione può portare ad uno stato "non-sicuro" viene rifiutata.
+
+L'algoritmo fa in modo che lo stato del sistema (risorse e processi) **non sia mai uno stato non sicuro**
+
+<p align='center'><img src='images/stato_sistema.png' width='300' ></p>
+
+La **strategia** consiste nel trovare una sequenza di esecuzione *safe*.\
+La sicurezza di uno stato dipende dalle risorse disponibili, e dalle richieste di tutti i processi nel sistema.
+
+<p align='center'><img src='images/esempio_stato_non_safe.png' width='550' ></p>
+
+Quindi l'obiettivo è fare in modo di determinare una sequenza di esecuzione che non faccia mai entrare lo stato del sistema nella porzione del piano *unsafe*.
+
+ESEMPIO:
+
+<p align='center'><img src='images/esempio_unsafe.png' width='500' ></p>
+
+In questo esempio si può vedere l'avanzamento dell'esecuzione di P1 e P2.
+
+<!-- @fix continua.... pag43 ppt SO15 -->
