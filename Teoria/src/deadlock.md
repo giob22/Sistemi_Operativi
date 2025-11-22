@@ -289,7 +289,7 @@ In questo caso però peggiorano molto le performance perché non si sfrutta più
   
   come, ad esempio, le risorse read-only.
 
-- Comporta costi maggiori → il sistema deve garantire che una risorsa critica (che potrebbe generare inconstistenze) non sia accessibile da più processi che ne fanno richiesta.
+- Comporta costi maggiori → il sistema deve garantire che una risorsa critica (che potrebbe generare inconsistenze) non sia accessibile da più processi che ne fanno richiesta.
   
   Quindi che la risorsa è posseduta da un solo processo per volta.
 
@@ -444,7 +444,7 @@ Abbiamo due diversi approcci per questo tipo di gestione:
 1) **Process initiation Denial**: all'avvio di un nuovo processo (rifiuto l'esecuzione del processo)
    
    Non si avvia un processo se le sue richieste potrebbero portare ad un deadlock
-2) **Resource Allocation Denial**: al momento di una richiesta di allocare una risorsa. (il processo esegue ma possono essere vietate le richieste nonstante la disponibilità corrente è valida)
+2) **Resource Allocation Denial**: al momento di una richiesta di allocare una risorsa. (il processo esegue ma possono essere vietate le richieste nonostante la disponibilità corrente è valida)
    
    Si consente l'avvio, ma le richieste di allocazione possono essere rifiutate se possono portare a deadlock.
 
