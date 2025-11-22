@@ -317,7 +317,7 @@ Tale processo quindi non si metterà in attesa per la sola risorsa in più richi
 
 → il processo verrà eseguito nuovamente solo quando può riottenere il possesso sia delle **vecchie che delle nuove risorse**.
 
-<!-- @todo inserisci un immagine o una git esemplificativa -->
+<!-- @todo inserisci un immagine o una gif esemplificativa -->
 
 ### Attesa circolare
 
