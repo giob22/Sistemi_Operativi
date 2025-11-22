@@ -509,7 +509,7 @@ Il motivo per cui non viene eseguito è proprio il [vincolo](#legge_numero_richi
 
 Tale approccio viene chiamato anche **algoritmo del banchiere**
 
-→ viene eseguito ad ogni tentativo di allocazione
+→ viene eseguito ad ogni tentativo di allocazione;
 
 - se l'allocazione può portare ad uno stato "non-sicuro" viene rifiutata.
 
