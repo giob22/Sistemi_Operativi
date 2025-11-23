@@ -428,7 +428,7 @@ Questo produce un **overhead** elevato sullo sheduler e in generale sul kernel. 
 Linux implementa ciò? No perché non si conosce a priori la storia di allocazione di ogni processo → è impossibile prevedere un deadlock in questo modo.
 
 <div style="border:3px solid #202092ff; background:#eef1ff; padding:12px; border-radius:6px; color:#555555">
-  <b style="color:#d40000;">**Presupposto**</b>: queste tecniche richiedono di
+  <b style="color:#d40000;">Presupposto</b>: queste tecniche richiedono di
   <span style="color:#d40000;">conoscere in anticipo</span>
   tutte le richieste che un processo può fare nell’arco della sua esecuzione.
 </div>
@@ -528,6 +528,35 @@ ESEMPIO:
 
 <p align='center'><img src='images/esempio_unsafe.png' width='500' ></p>
 
-In questo esempio si può vedere l'avanzamento dell'esecuzione di P1 e P2.
+In questo esempio si può vedere la sequenza delle operazioni di richiesta e rilascio delle risorse R1 e R2 per i processi P1 e P2.\
+Si nota subito che questa configurazione **potrebbe** portare ad uno stato non sicuro (deadlock) a run-time (dipende dalla velocità relativa di esecuzione).
+
+Infatti non è detto che possa esserci un deadlock, perché come vediamo l'algoritmo del banchiere ha come risultato due sequenze sicure per lo stato iniziale.\
+→ quindi lo stato iniziale è uno stato sicuro, ciò significa che l'esecuzione potrebbe arrivare a terminare senza il manifestarsi di **deadlock** (se viene seguita una delle sequenze sicure). 
+
+<p align='center'><img src='images/esempio_spazio_stato.png' width='600' ></p>
+
+- Il modo in cui sono stati eseguiti i due processi hanno portato lo stato ad essere **non sicuro**, in questo caso è inevitabile il deadlock.
+- Entrambi i processi resteranno in attesa l'uno dell'altro.
+
+#### Sequenza sicura
+
+<div style="border:3px solid #202092ff; background:#eef1ff; padding:12px; border-radius:6px; color:#555555">
+Il sistema è in uno <b style="color:#d40000;"> stato sicuro</b> se, partendo da questo stato, <b style="color:#d40000;">esiste un sequenza sicura</b> di esecuzione di tutti i processi nel sistema.
+</div>
+
+Tale sequenza è una sequenza di **esecuzione "ipotetica"** dei processi nel sistema che porta al processo richiedente di una risorsa ad terminare la propria esecuzione. (es. Pa, Pb, Pc, ...)
+
+Affinché uno stato sia sicuro è sufficiente che esista almeno una sequenza sicura.
+
+L'algoritmo del banchiere prevede proprio di trovare la sequenza sicura che verifichi lo stato, se al processo che ha richiesto una risorsa la ottiene.
+
+Se esiste almeno una sequenza sicura,\
+tale che il processo richiedente possa terminare dopo una serie di terminazione di altri processi.
+
+→ Allora lo stato **è** **sicuro** e la richiesta viene accettata.
+
+→ Altrimenti se **non esiste** lo stato non sarà sicuro e quindi la richiesta **viene rifiutata**; 
+il processo si mette in **attesa** e verrà riattivato solo nel momento in cui la sua richiesta porti in uno stato sicuro.
 
 <!-- @fix continua.... pag43 ppt SO15 -->
