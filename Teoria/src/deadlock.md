@@ -545,14 +545,18 @@ Infatti non è detto che possa esserci un deadlock, perché come vediamo l'algor
 Il sistema è in uno <b style="color:#d40000;"> stato sicuro</b> se, partendo da questo stato, <b style="color:#d40000;">esiste un sequenza sicura</b> di esecuzione di tutti i processi nel sistema.
 </div>
 
-Tale sequenza è una sequenza di **esecuzione "ipotetica"** dei processi nel sistema che porta al processo richiedente di una risorsa ad terminare la propria esecuzione. (es. Pa, Pb, Pc, ...)
+Tale sequenza è una sequenza di **esecuzione "ipotetica"** dei processi nel sistema che porta al processo richiedente di una risorsa a terminare la propria esecuzione. (es. Pa, Pb, Pc, ...)
+
+(che porta a tutti i processi del sistema a terminare)
 
 Affinché uno stato sia sicuro è sufficiente che esista almeno una sequenza sicura.
 
-L'algoritmo del banchiere prevede proprio di trovare la sequenza sicura che verifichi lo stato, se al processo che ha richiesto una risorsa la ottiene.
+L'algoritmo del banchiere prevede proprio di trovare la sequenza sicura che verifichi lo stato corrente, se al processo che ha richiesto una risorsa la ottiene.
 
 Se esiste almeno una sequenza sicura,\
-tale che il processo richiedente possa terminare dopo una serie di terminazione di altri processi.
+tale che il processo richiedente possa terminare dopo una serie di terminazioneùi di altri processi.
+
+(tale che tutti i processi del sistema possano terminare dopo una serie finita di terminazioni di altri processi)
 
 → Allora lo stato **è** **sicuro** e la richiesta viene accettata.
 
@@ -595,30 +599,42 @@ il processo si mette in **attesa** e verrà riattivato solo nel momento in cui l
 >
   <img
     src="images/esempio_resource_allocation_denial/4.png"
-    style="height: 300px; display: inline-block; margin-right: 20px;"
+    style="width: 500px; display: inline-block; margin-right: 20px;"
   >
   <img
     src="images/esempio_resource_allocation_denial/5.png"
-    style="height: 300px; display: inline-block; margin-right: 20px;"
+    style="width: 500px; display: inline-block; margin-right: 20px;"
   >
   <img
     src="images/esempio_resource_allocation_denial/6.png"
-    style="height: 300px; display: inline-block; margin-right: 20px;"
+    style="width: 500px; display: inline-block; margin-right: 20px;"
   >
 </div>
 
-
-
-
-  
 - se il processo i-esimo riesce a terminare allora potrà essere aggiunto alla **sequenza sicura**; altrimenti si passa al prossimo processo.
+
+  <p align='center'><img src='images/esempio_resource_allocation_denial/7.png' width='500' ></p>
+
+  - Pc è in grado di terminare quindi viene aggiunto alla sequenza sicura di esecuzione.
+  - Si suppone che dopo la sua terminazione **rilasci** tutte le risorse possedute.\
+    → in modo da permettere ad altri processi di terminare.
+  <p align='center'><img src='images/esempio_resource_allocation_denial/8.png' width='500' ></p>
+  
+  - Pa riesce a terminare, viene aggiunto alla sequenza sicura.
+  
+  <p align='center'><img src='images/esempio_resource_allocation_denial/9.png' width='500' ></p>
+
+  - Anche Pb riesce a terminare.\
+    → Si è trovato una sequenza sicura di esecuzione in cui tutti i processi terminano a valle dell'allocazione di risorse a Pa.
 
 Si itera questo procedimento fin quando:
 
 - il prossimo processo a far parte della sequenza sicura è il processo richiedente, Pa.
 - A questo punto **termina l'algoritmo con una sequenza sicura di esecuzione**.
 
-⟹ la richiesta viene accettata perché lo **stato** dopo l'allocazione delle risorse al processo Pa è **sicuro**.
+⟹ la richiesta viene accettata perché lo **stato**, dopo l'allocazione delle risorse al processo Pa, è **sicuro**.
+
+<p align='center'><img src='images/esempio_resource_allocation_denial/10.png' width='500' ></p>
 
 oppure
 
@@ -628,6 +644,67 @@ oppure
 ⟹ la richiesta di Pa viene **rifiutata** perché lo stato successivo se la richiesta fosse accettata sarebbe **non sicuro**.\
 Il processo rimane in attesa fin quando la propria richiesta non porti in uno stato sicuro.
 
+
+#### caratteristiche di una sequenza sicura
+
+La sequenza sicura (P1, P2, ..., Pn) è un ordine di esecuzione dei processi, tale che:
+
+- include **tutti i processi attualmente attivi** nel sistema;
+- ogni processo Pi esegue **completamente**, dopo che tutti i processi precedenti Pj, j < i, abbiano a loro volta **eseguito per intero** e nell'ordine della sequenza;
+- Ogni processo Pi ottiene tutte le risorse del suo **claim**, e le **rilascia** **tutte** al termine della sua esecuzione;
+- ogni processo Pi usa una **quantità di risorse non superiore** alla somma di:
+
+  - risorse **disponibili** nello stato S
+  - risorse **rilasciate** dei processi **precedenti** nella sequenza, Pj con j < i 
+
+
+#### considerazioni
+
+Per un corretto funzionamento è necessario che l'algoritmo sia sempre **eseguito** **ad** **ogni** **tentativo** **di** **allocazione** di risorse.
+
+In ogni momento in cui lo stato cambia si verifica se esiste almeno una sequenza sicura.
+
+Intuitivamente, l'algoritmo garantisce sempre che **esista almeno una exit strategy** che evita il deadlock.
+
+Questa sequenza sicuro non è detto che sia l'ordine effettivo con cui eseguiranno i processi.
+
+#### problematiche:
+
+- è richiesto che sia **noto** **preventivamente** il numero **massimo** di risorse che ogni processo utilizzerà;
+- i processi che vengono analizzati dell'algoritmo devono essere indipendenti (non è prevista la sincronizzazione).
+  
+  Altrimenti il problema si complicherebbe eccessivamente\
+  → si dovrebbe tener conto che un processo possa terminare solo se termini prima un altro processo;
+- deve esser presente un numero predeterminato e costante di risorse da allocare;
+- Tutti i processi devono rilasciare le risorse possedute prima di terminare.
+
+## Deadlock DETECTION
+
+- Non vincola le richieste alle risorse, consente il verificarsi del deadlock.
+- Il sistema esegue un algoritmo **per il rilevamento dell'attesa circolare**:
+  
+  - periodicamente;
+  - ad ogni richiesta;
+  - quando il grado di uso della CPU è basso.
+- In caso affermativo, il sistema applica un algoritmo di **ripristino** (recovery).
+
+La strategia di detection sfrutta il **grado di attesa**, che è un grafo costruito da quello di assegnazione delle risorse.
+
+Tale grafo rappresenta l'attesa che un processo ha rispetto un altro processo.
+
+- Ogni nodo è un processo.
+- Gli archi indicano che un processo è in attesa che un altro processo rilasci la propria risorsa.
+- Periodicamente viene aggiornato e chiamato l'algoritmo per la **ricerca di eventuali cicli di attesa**.
+  
+
+  - Tale algoritmo richiede un numero di operazioni dell'ordine di *n*^2, dove *n* è il numero di vertici (processi).
+
+<p align='center'><img src='images/grafo_attesa.png' width='400' ></p>
+
+Strategie di ripristino:
+- si **uccidono tutti i processi** in uno stato di deadlock
+- si esegue un **checkpoint** di uno stato precedente al deadlock e si fanno **ripartire i processi**
+- si **uccide un processo alla volta** fino a quando il deadlock non esiste più
 
  
 <!-- @fix continua.... pag43 ppt SO15 -->
