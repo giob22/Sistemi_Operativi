@@ -556,7 +556,78 @@ tale che il processo richiedente possa terminare dopo una serie di terminazione 
 
 → Allora lo stato **è** **sicuro** e la richiesta viene accettata.
 
-→ Altrimenti se **non esiste** lo stato non sarà sicuro e quindi la richiesta **viene rifiutata**; 
+→ Altrimenti se **non esiste** lo stato non sarà sicuro e quindi la richiesta **viene rifiutata**;
 il processo si mette in **attesa** e verrà riattivato solo nel momento in cui la sua richiesta porti in uno stato sicuro.
 
+#### workflow
+
+- Si parte da uno stato che si suppone esser sicuro.
+
+  <p align='center'><img src='images/esempio_resource_allocation_denial/1.png' width='500' ></p>
+
+- Un processo Pa fa una richiesta di istanze di risorsa.
+  
+  <p align='center'><img src='images/esempio_resource_allocation_denial/2.png' width='500' ></p>
+- Dopo tale richiesta si verifica che lo stato sia sicuro, supponendo che la richiesta sia stata accettata.
+
+→ come avviene tale verifica:
+
+- si tenta di trovare una sequenza sicura partendo dallo stato in cui la richiesta di Pa sia stata accettata.
+  
+  <p align='center'><img src='images/esempio_resource_allocation_denial/3.png' width='500' ></p>
+
+- si considera **ogni processo Pi** in esecuzione che necessita dello stesso tipo di risorse (Pa,Pb,Pc);
+- si verifica se il processo Pi possa terminare, con **le risorse disponibili rimanenti**, considerando che la richiesta di Pa sia stata accettata.
+  
+  Quindi si suppone di assegnare al processo Pi tutte le risorse del suo **claim**, se disponibili.\
+  Se c'è disponibilità si suppone che il processo termini e rilasci le risorse possedute;
+
+<div
+  style="
+    width: 100%;
+    max-width: 750px;          /* larghezza massima, simile alla colonna di testo */
+    margin: 0 auto;            /* centra il blocco */
+    overflow-x: auto;          /* scroll orizzontale se le img non ci stanno */
+    overflow-y: hidden;
+    white-space: nowrap;       /* tutte le immagini sulla stessa riga */
+    padding-bottom: 10px;
+  "
+>
+  <img
+    src="images/esempio_resource_allocation_denial/4.png"
+    style="height: 300px; display: inline-block; margin-right: 20px;"
+  >
+  <img
+    src="images/esempio_resource_allocation_denial/5.png"
+    style="height: 300px; display: inline-block; margin-right: 20px;"
+  >
+  <img
+    src="images/esempio_resource_allocation_denial/6.png"
+    style="height: 300px; display: inline-block; margin-right: 20px;"
+  >
+</div>
+
+
+
+
+  
+- se il processo i-esimo riesce a terminare allora potrà essere aggiunto alla **sequenza sicura**; altrimenti si passa al prossimo processo.
+
+Si itera questo procedimento fin quando:
+
+- il prossimo processo a far parte della sequenza sicura è il processo richiedente, Pa.
+- A questo punto **termina l'algoritmo con una sequenza sicura di esecuzione**.
+
+⟹ la richiesta viene accettata perché lo **stato** dopo l'allocazione delle risorse al processo Pa è **sicuro**.
+
+oppure
+
+- se per un'iterazione **non** si trova alcun processo in **grado** **di** **terminare** **completamente**, supponendo di assegnargli tutte le risorse del **claim** (**se disponibili**).
+- Allora il risultato dell'algoritmo è che non esiste una sequenza sicura.
+
+⟹ la richiesta di Pa viene **rifiutata** perché lo stato successivo se la richiesta fosse accettata sarebbe **non sicuro**.\
+Il processo rimane in attesa fin quando la propria richiesta non porti in uno stato sicuro.
+
+
+ 
 <!-- @fix continua.... pag43 ppt SO15 -->
