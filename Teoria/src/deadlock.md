@@ -705,6 +705,14 @@ Strategie di ripristino:
 - si **uccidono tutti i processi** in uno stato di deadlock
 - si esegue un **checkpoint** di uno stato precedente al deadlock e si fanno **ripartire i processi**
 - si **uccide un processo alla volta** fino a quando il deadlock non esiste più
+- si **prelazionano le risorse** ai processi bloccati fino a quando il deadlock non esiste più
 
- 
-<!-- @fix continua.... pag43 ppt SO15 -->
+Nel caso in cui la strategia prevede l'aborto di un processo in esecuzione, si possono utilizzare diverse metriche per decidere quale tra quelli interessati:
+
+- minor tempo di CPU consumato fino a quel momento
+- minor numero di linee di output prodotte finora
+- maggior tempo stimato per la terminazione
+- minor numero di risorse allocate finora
+- minore priorità
+
+<p align='center'><img src='images/ricapitolazione.png' width='500' ></p>
