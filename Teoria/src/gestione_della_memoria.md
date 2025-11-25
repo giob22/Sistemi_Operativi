@@ -150,7 +150,8 @@ La posizione del codice e dei dati **non può più essere modificata** a tempo d
 
 <p align='center'><img src='images/rilocazione_statica.png' width='550' ></p>
 
-Il problema di questo tipo di rilocazione si presenta nel **contex switch**: il processo quando viene prelazionato e inserito nella coda dei processi pronti oppure swappato, nel momento della sua successiva esecuzione deve trovarsi sempre nella stessa area di memoria.\
+Il problema di questo tipo di rilocazione si presenta nel **contex switch**: il processo quando viene prelazionato e inserito nella coda dei processi pronti oppure swappato\
+→nel momento della sua successiva esecuzione deve trovarsi sempre nella stessa area di memoria.\
 Questo è un grande **onere computazionale** affidato al sistema operativo.
 
 ### dinamica
@@ -203,5 +204,62 @@ In questo caso banale la traduzione avviene con la somma tra l'indirizzo virtual
 <p align='center'><img src='images/caso_obsoleto.png' width='550' ></p>
 
 Ovviamente dobbiamo prevedere un modo per modificare i registri dell'MMU, che sono specifici per ogni processo.
+
+Questo modello infatti non è la realtà, è uno schema di funzionamento base dell'MMU.
+
+## Gestione dello spazio virtuale
+
+Vi sono due possibili approcci per gestire lo **spazio virtuale** degli indirizzi.
+
+- Uno **spazio unico**\
+  (corrispondente all'intero processo)
+- Un insieme di **segmenti**\
+  (**segmentazione** → la memoria del processo è gestita in porzioni separate)
+
+<p align='center'><img src='images/approcci_spazio_virtuale.png' width='500' ></p>
+
+Nell'approccio segmentato l'immagine del processo è suddivisa in **porzioni logiche** (segmenti) gestite in modo separato ed indipendente dal sistema operativo.\
+Ogni segmento può avere una dimensione variabile, in base alla struttura logica del programma (codice, heap, stack, dati).
+
+**Vantaggio principale**:\
+La segmentazione facilita la condivisione di aree di memoria fisica tra più processi, mappandole in segmenti distinti del loro spazio di indirizzamento.\
+* → Esempio:\
+  il segmento di codice (text) di un programma è di sola lettura.\
+  Più processi che eseguono lo stesso programma possono **condividere la stessa copia fisica** del codice, mappandola nel proprio spazio di indirizzamento virtuale all'interno del segmento dedicato all'area testo.
+
+### segmentazione
+
+<div style="display: flex;">
+<div>
+A <b>tempo di compilazione</b>, si configura lo spazio virtuale segmentato.
+
+Viene creato un diverso **segmento** per ciascun **modulo** del programma.
+
+---
+
+#### vantaggi della segmentazione
+
+- **Protezione** dei segmenti;\
+  permette una **granularità fine** nella gestione dei permessi sullo spazio di indirizzamento.\
+  Ad ogni segmento può avere **permessi diversi** (lettura, scrittura, esecuzione).
+
+</div>
+<p align='center'><img src='images/segmenti_per_moduli.png' width='300' ></p>
+</div>
+
+- **Condivisione** dei segmenti;\
+  segmenti come **codice** (text) o le **librerie** **condivise** possono essere mappate da più processi e condividere un'unica copia fisica, **riducendo l'uso della memoria**.
+
+- **Allocazione indipendente** dei segmenti in memoria fisica → riduce (ma non elimina) il problema della frammentazione.\
+  Ogni segmento può essere **collocato separatamente in punti diversi** della memoria fisica.
+
+---
+
+Un indirizzo virtuale è una coppia (contiene due informazioni), fatta da:
+
+- un **identificativo** del segmento;
+- uno **scostamento** (offset) all'interno del segmento.
+
+<p align='center'><img src='images/info_indirizzi_virtuali.png' width='600' ></p>
 
 <!-- @todo continua -->
