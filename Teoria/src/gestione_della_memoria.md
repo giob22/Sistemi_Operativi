@@ -205,6 +205,9 @@ In questo caso banale la traduzione avviene con la somma tra l'indirizzo virtual
 
 Ovviamente dobbiamo prevedere un modo per modificare i registri dell'MMU, che sono specifici per ogni processo.
 
+Oltre a cambiare valore per ogni processo i due registri devono esser modificati anche ogni volta che un processo passa in esecuzione da che era swappato\
+→ con la rilocazione dinamica potrebbe ritrovarsi in una posizione della memoria fisica differente alla precedente
+
 Questo modello infatti non è la realtà, è uno schema di funzionamento base dell'MMU.
 
 ## Gestione dello spazio virtuale
@@ -262,4 +265,110 @@ Un indirizzo virtuale è una coppia (contiene due informazioni), fatta da:
 
 <p align='center'><img src='images/info_indirizzi_virtuali.png' width='600' ></p>
 
+L'**MMU** è il componente su cui si basa anche la segmentazione.
+
+- Traduce gli indirizzi virtuali dalla forma (*segmento*, *offset*) in indirizzi fisici.
+- Nel caso di **pochi segmenti**, è sufficiente avere nella MMU più coppie di registri base/limite: uno per ogni segmento.
+
+Questo è un **limite** fisico importante perché non mi permetterebbe di avere molti segmenti. → non posso avere un numero infinito di registri.
+
+---
+
+ESEMPIO SEGMENTAZIONE CASO SEMPLICE:
+
+<p align='center'><img src='images/MMU_multi_registro.png' width='500' ></p>
+
+- in questo caso ogni coppia di registri corrisponde a limite e base per un segmento allocato in memoria fisica
+
+---
+
+Nel caso **generale**, quando si vuole supportare un **numero arbitrario di segmenti**, non è possibile avere una coppia **base/limite** nella MMU per ogni segmento di un processo.
+
+Per questo motivo:
+
+- le coppie base/limite non risiedono nella MMU, ma sono memorizzare in **memoria RAM**;
+- queste informazioni sono raccolte in una struttura dedicata, chiamata **tabella dei segmenti (segment table)** unica **per ogni processo**;
+- ogni **entry** della tabella dei segmenti contiene i dati relativi a un **segmento del processo**: **indirizzo base**, **limite** e **bit di controllo** (permessi rwx).
+
+La MMU gestisce la segment table con due appositi **registri**:
+
+- **STBR** (Segment Table Base Register): indirizzo in memoria fisica in cui si trova la tabella dei segmenti.
+- **STLR** (Segment Table Limit Register): dimensione della tabella dei segmenti (indica il **numero di segmenti del processo**)
+
+---
+
+ESEMPIO DI TRADUZIONE UTILIZZANDO LA SEGMENT TABLE:
+
+<p align='center'><img src='images/trad_segment_table.png' width='600' ></p>
+
+- `sg` è l'offset per identificare l'entry point relativo ad un segmento.
+- Per accedere alla tabella il processore utilizza le informazioni contenute in `STBR` e `STLR`  i cui valori sono contenuti all'interno del PCB di ogni processo.
+
+---
+
+NOTA sulla segment table:
+
+- ogni processo ha una **segment table differente**
+- i registri STBR/STLR sono configurati ad ogni **contex switch** dei processi\
+  → durante il contex switch il SO carica i valori di STBR/STLR dal **PCB del processo** (sono legati al singolo processo).
+
+<p align='center'><img src='images/contex_ST.png' width='600' ></p>
+
+#### protezione
+
+Ogni segmento può avere diversi **permessi di accesso** specificati da bit di controllo contenuti nella segment table.
+
+- Ogni riga della segment table di un processo contiene per ogni entry anche una sequenza di **bit di controllo** per gestire i permessi sull'area di memoria in cui è mappato il segmento.
+- MMU produce una **exception** se il programma non rispetta i permessi.
+
+<p align='center'><img src='images/entry_bit.png' width='400' ></p>
+
+#### condivisione
+
+La segmentazione consente la **condivisione dei segmenti** tra più processi, allocando in memoria fisica una sola copia del segmento.
+
+Abbiamo due processi con le rispettive tabelle dei segmenti.
+
+→ Se hanno una entry in comune significa che i due processi possono accedere alla stessa area di memoria fisica.\
+Quindi stanno effettivamente condividendo la copia del segmento di memoria. Questo permette di allocare una sola copia del segmento in memoria.
+
+<p align='center'><img src='images/condivisione_segmento.png' width='500' ></p>
+
+#### allocazione
+
+Uno spazio/segmento di memoria virtuale può essere **collocato in memoria fisica** in due possibili modi:
+
+- allocazione **contigua**:
+  
+  lo spazio/segmento è **copiato per intero**, in un intervallo di memoria fisica agli indirizzi [D;D+I]
+
+- allocazione **non contigua** (**paginazione**)
+
+
+##### allocazione contigua
+
+- Il SO colloca il proprio blocco di memoria virtuale, e quelli dei processi, in intervalli **non-sovrapposti** della memoria fisica
+- Quando un processo termina, la memoria fisica occupata si libera, creando un **hole**
+- Quando un nuovo processo viene caricato, occorre **cercare un hole sufficientemente grande** da contenerlo
+  
+  → compito dello sheduler a medio termine.
+
+<p align='center'><img src='images/allocazione_contigua.png' width='600' ></p>
+
+Questo è un esempio su come facilmente si può arrivare ad un problema di **frammentazione esterna** della memoria.
+
+Se ci sono **più buchi liberi**, ci sono vari criteri per scegliere dove collocare un segmento:
+
+- **first-fit**: si assegna il **primo** hole sufficientemente grande;
+- **best-fit**: si assegna lo hole **più piccolo** tra quelli sufficientemente grandi per contenere lo spazio di indirizzamento del processo;
+- **worst fit**: si assegna lo hole più grande.
+
+In generale, gli **schemi a partizione di dimensione variabile** soffrono del problema della frammentazione esterna.
+
+**Frammentazione esterna**: spazio di memoria perduto sotto forma di spezzoni.
+
+- Lo spazio di memoria totale sarebbe sufficiente per soddisfare una richiesta, **ma non è contiguo**.
+- → non si sfrutta a pieno la quantità di memoria totale a disposizione.
+
+Dualmente gli schemi a partizione di dimensione fissa soffrono del problema della frammentazione interna.
 <!-- @todo continua -->
