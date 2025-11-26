@@ -372,4 +372,4 @@ In generale, gli **schemi a partizione di dimensione variabile** soffrono del pr
 - → non si sfrutta a pieno la quantità di memoria totale a disposizione.
 
 Dualmente gli schemi a partizione di dimensione fissa soffrono del problema della frammentazione interna.
-<!-- @todo continua -->
+<!-- @todo continua con la prossima lezione -->
