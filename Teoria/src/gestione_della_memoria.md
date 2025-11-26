@@ -194,6 +194,7 @@ MMU è un componente hardware della CPU che ha il compito di rendere **trasparen
 ESEMPIO DI RILOCAZIONE DINAMICA:
 
 Caso basilare (obsoleto):
+
 - spazio virtuale unico → viene trattato come un unica area.
 - allocazione contigua → viene allocato in memoria tutto insieme.
 
