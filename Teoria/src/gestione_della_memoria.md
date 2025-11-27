@@ -593,4 +593,4 @@ Dove la prima parte indica il tempo in caso di successo mentre la seconda indica
 
 Questo *EAT* è il **tempo medio che un sistema impiega per accedere alla memoria**, tendendo conto sia degli **hit cache** che dei **miss cache**.
 
-<!-- @todo continua con la prossima lezione -->
+<!-- @todo continua  -->
