@@ -603,6 +603,8 @@ Dove la prima parte indica il tempo in caso di successo mentre la seconda indica
 
 Questo *EAT* è il **tempo medio che un sistema impiega per accedere alla memoria**, tendendo conto sia degli **hit cache** che dei **miss cache**.
 
+(supponendo che la pagina sia effettivamente presente in memoria fisica, ovvero che non debba esser caricata dalla memoria di massa)
+
 #### Dimensione della tabella delle pagine
 
 La scelta della dimensione della pagina influenza molto l'efficienza, per questo è necessario che si trovi un gusto compromesso per sistemi general porpose.
