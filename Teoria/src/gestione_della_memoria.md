@@ -814,6 +814,8 @@ Quindi per ogni segmento avremo una tabella delle pagine in cui sono mappate le 
 Quando il processore utilizza un indirizzo virtuale `x = <sg, sc>`, `sg` identifica un segmento all'interno della tabella dei segmenti.\
 Una volta ottenuto l'indirizzo base della tabella delle pagine per il segmento identificato precedentemente, viene utilizzata l'altra parte dell'indirizzo virtuale `sc` per identificare la pagine fisica.
 
+→ si utilizza `sc` come offset rispetto l'indirizzo base della tabella delle pagine.
+
 A questo punto, ottenuta l'indirizzo base della pagina fisica, si somma a questo l'offset `of` per ottenere l'indirizzo fisico a cui il processo fa riferimento.
 
 Ovviamente durante tutto questo processo si devono verificare le condizione che non causino inconsistenze tra i processi, come le condizione di limite con `STBL` e `PTLR`.
