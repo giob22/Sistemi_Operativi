@@ -593,4 +593,131 @@ Dove la prima parte indica il tempo in caso di successo mentre la seconda indica
 
 Questo *EAT* è il **tempo medio che un sistema impiega per accedere alla memoria**, tendendo conto sia degli **hit cache** che dei **miss cache**.
 
-<!-- @todo continua  -->
+#### Dimensione della tabella delle pagine
+
+La scelta della dimensione della pagina influenza molto l'efficienza, per questo è necessario che si trovi un gusto compromesso per sistemi general porpose.
+
+Supponendo di avere un sistema che valuta indirizzi a `32bit`.
+→ Lo spazio totale di indirizzamento:  \\(2^{32} = 4\\)GB.
+
+Usando pagine di \\(1\\)KB (\\(2^{10}\\)):
+
+- **dimensione** della tabella: \\(2^{22} = 4\\)MB → ⚠️​
+- **frammentazione interna** media: \\(\frac{2^{10}}{2} = 0.5\\)KB → 👍🏿
+
+Usando pagine di \\(64\\)KB (\\(2^{16}\\)): 
+
+- **dimensione** della tabella: \\(2^{16} = 64\\)KB → 👍🏿
+- **frammentazione interna** media: \\(\frac{2^{10}}{2} = 0.5\\)KB → ⚠️​
+
+→ bisogna scegliere una **dimensione di pagina** che abbia un buon **compromesso** tra i due valori.
+
+### Validità delle pagine virtuali
+
+Raramente un processo usa tutto il suo spazio di indirizzamento virtuale.\
+→ quantità di memoria usata tipicamente da una applicazione desktop si aggira intorno: ~\\(100\\)MB. (single process)
+
+Lo spazio virtuale che un processo potenzialmente può utilizzare è pari all'intero spazio di indirizzamento: se ho `16bit` per indirizzo → \\(4\\)GB
+
+<p align='center'><img src='images/spazio_processi.png' width='300' ></p>
+
+In realtà alcune delle pagine all'interno dello spazio virtuale allocato, non sono veramente utilizzate.
+
+→ tra i bit di controllo possiamo aggiungere un *validity bit*.
+
+Quindi il SO può marcare le pagine **virtuali in uso** usando tale bit nella tabella delle pagine.
+
+> il bit di validità so riferisce alle pagine virtuali → infatti ogni entry point della tabella delle pagine identifica una pagina virtuale.
+
+Il bit di validità viene attivato nel momento in cui la pagina è **allocata** dal processo (es. tramite `malloc()`).
+
+<p align='center'><img src='images/bit_validita.png' width='400' ></p>
+
+<!-- @todo : chiedi al professore questa parte → slide 429 -->
+
+Cosa accede durante un **contex switch**
+
+<p align='center'><img src='images/contex_switch.png' width='500' ></p>
+
+- La TLB viene popolata a **run-time** → inizialmente saranno presenti solo page fault che porsano al SO a ricaricare le pagine in memoria principale.
+
+Oltre al bit di validità è presente un ulteriore bit di controllo: il *dirty bit*.
+
+Questo dirty bit è legato al fatto che la pagina **è stata scritta** durante la sua permanenza in memoria fisica.
+
+Quando un processo **scrive** in una pagina fisica, la MMU setta automaticamente il dirty bit a \\(1\\).\
+Questo bit indica che il contenuto della pagina **non coincide più** con la copia originale presente su disco. → tale informazione ha un implicazione durante lo **swap-out**.
+
+- Se il dirty bit = 1, significa che la oagina contiene modifiche **che devono essere salvate nello swap**, altrimenti andrebbero perse.
+- Se il dirty bit = 0, significa che la pagina **non è stata modificata** e che **esiste già una copia valida** della pagina su disco (es. nell'eseguibile del processo, è stata già salvata precedentemente).
+
+Per il meccanismo di coerenza caching, si deve garantire la coerenza tra memoria grande e memoria piccola.
+
+### Struttura della tabella delle pagine
+
+Bisogna capire quale struttura sia più adatta a contenere la tabella delle pagine al fine di risolvere diverse problematiche:
+
+**Problemi**: le tabelle delle pagine:
+
+- hanno grosse dimensioni
+- sono numerose (una per ogni processo)
+- sono "sparse" (poche pagine valide)
+
+**Soluzioni**: per ogni problema
+
+- Paginazione gerarchica → evita il problema della **grandezza**
+- Tabella delle pagine basata su hash → evita il problema della **numerosità**
+- Tabella delle pagine invertita → non si usa più (ideale per vecchi sistemi operativi)\
+  → per evitare il problema della **sparsità**
+
+#### Paginazione gerarchica
+
+Suddivisione della tabella delle pagine in parti più piccole, secondo una **organizzazione **gerarchica****.
+
+- La MMU divide l'indirizzo di pagina in più parti (\\(p_1,p_2)\\).
+- Nella tabella di primo libello, trova l'indirizzo della tabella di secondo livello, e così via.
+  
+---
+
+>Nota: la MMU **impiega più tempo per attraversare la tabella gerarchica** (aumentano i tempi di accesso).
+
+Vediamo il motivo di questo tempo aggiuntivo per attraversare la memoria: (2 livelli di gerarchia)
+
+indirizzo virtuale: \\((p_1, p_2, offset)\\).
+
+Il flusso sarebbe:
+
+1) La MMU accede alla tabella di primo livello e usando \\(p_1\\) (**accesso a memoria**) ottiene l'indirizzo base della tabella di secondo livello.
+2) La MMU accede alla tabella di secondo livello e usando \\(p_2\\) (**accesso a memoria**) ottiene il numero di frame corrispondente.
+3) Infine, la MMU accede alla memoria principale nel frame trovaro e utilizza \\(offset\\) (**accesso a memoria**) per recuperare la casella desiderata.
+
+
+
+
+Il motivo dell'aumento del tempo per attraversare la tabella è che la MMU ha bisogno di fare molti **più accessi a memoria fisica** per tradurre un **singolo** **indirizzo** **virtuale**.
+
+Nel caso di paginazione semplice (ad un livello) il numero di accessi totali per operare la traduzione di un indirizzo virtuale è pari a 2.
+
+1) Accesso alla page table
+2) accesso alla memoria fisica
+
+---
+
+<p align='center'><img src='images/tabella_gerarchica.png' width='500' ></p>
+
+- Con l'utilizzo di questa struttura si è risolto il problema della grandezza di una tabella delle pagine.
+
+<p align='center'><img src='images/struttura_gerarchica.png' width='600' ></p>
+
+- Linux utilizza 4 livelli gerarchici per la tabella delle pagine di ogni processo.
+- Questa struttura serve **per evitare di allocare una struttura grande quanto tutto lo spazio indirizzabile dal processo**.\
+  → sono presenti delle porzioni per cui è possibile evitare l'allocazione
+
+Le singole tabelle sono più piccole rispetto alla tabella non gerarchica.
+
+ESEMPIO DI PAGINAZIONE A DUE LIVELLI:
+
+Nella paginazione gerarchica, il "numero di pagina" nell'indirizzo virtuale viene **a sua volta suddiviso in più parti** (tante quante sono i livelli di gerarchia).
+
+<p align='center'><img src='images/esempio_gerarchia.png' width='400' ></p>
+
