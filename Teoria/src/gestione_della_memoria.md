@@ -582,7 +582,7 @@ La ricerca di un valore in tale cache associativa ha complessità O(1) → costa
 
 - Si possono verificare due situaizioni:
   - L'accesso alla TLB produce un cache hit, quindi subito ho l'entry point della pagina in memoria fisica, tale operazione richiede nanosecondi.
-  - L'accesso alla TLB produce un cache miss, quindi la ricerca passa sulla tabella delle pagine, tale operazione richiede decine di nanosecondi
+  - L'accesso alla TLB produce un cache miss, quindi la ricerca passa sulla tabella delle pagine, tale operazione richiede decine di nanosecondi.
 
   In ogni caso dovrò fare più di un accesso per ottenere il dato/istruzione nella memoria fisica.
 
