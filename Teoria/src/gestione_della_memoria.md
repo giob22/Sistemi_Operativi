@@ -818,6 +818,5 @@ A questo punto, ottenuta l'indirizzo base della pagina fisica, si somma a questo
 
 Ovviamente durante tutto questo processo si devono verificare le condizione che non causino inconsistenze tra i processi, come le condizione di limite con `STBL` e `PTLR`.
 
-
->Quindi nella tabella dei segmenti individuo l'entry point che fa riferimento alla tabella delle pagine per quel segmento.
+>Quindi nella tabella dei segmenti individuo l'*entry point* che fa riferimento alla tabella delle pagine per quel segmento.
 
