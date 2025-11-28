@@ -281,9 +281,12 @@ Nella fase di copia il loader si può comportare in due modi a seconda della tip
   - Il caricamento effettivo del codice/dati avviene **solo quando necessario**.
   - La MMU genera un fault quando la **CPU tenta di accedere a una parte del processo che NON è ancora stata caricata in memoria fisica**.
   
-  A questa fault generata, il SO chiama un handler che fa una recovery. Ovvero verifica se tale parte di processo a cui voule accedere la CPU è presente in memoria secondaria e la carica, permettendo al processore di proseguire con l'esecuzione.
+  A questa fault generata (**interruzione sincrona**), il SO chiama un handler che fa una recovery. Ovvero verifica se tale parte di processo a cui voule accedere la CPU è presente in memoria secondaria e la carica, permettendo al processore di proseguire con l'esecuzione.
 
   Se tale parte non viene trovata viene rilanciata ancora la fault che in questo caso genera la terminazione del processo → ha tentato di accedere ad un indirizzo di memoria che non fa parte del proprio spazio di indirizzamento.
+
+  >NOTA: fault è un tipo di interruzione sincrona perché viene chiamata nel momento in cui nella tabella delle pagine o segmenti non è stata mappata la pagina virtuale in una fisica.
+  > **NON è asincrona**.
 
 ## Gestione dello spazio virtuale
 
