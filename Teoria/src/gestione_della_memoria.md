@@ -372,7 +372,8 @@ La MMU gestisce la segment table con due appositi **registri**:
 - **STBR** (Segment Table Base Register): indirizzo in memoria fisica in cui si trova la tabella dei segmenti.
 - **STLR** (Segment Table Limit Register): dimensione della tabella dei segmenti (indica il **numero di segmenti del processo**)
 
-Il SO, all'atto del caricamento in memoria del processo da eseguire, imposterà l'**indirizzo fisico** dell'*entry point* della *segment table* nel registro **STBR**
+Il SO, all'atto del caricamento in memoria del processo da eseguire, imposterà l'**indirizzo fisico** dell'*entry point* della *segment table* nel registro **STBR**.\
+Tale indirizzo essendo strettamente legato al processo, è contenuto all'interno del PCB.
 
 ---
 
@@ -460,6 +461,12 @@ Ovvero siamo sprecando una porzione dell'ultimo segmento in cui è contenuta l'i
 <p align='center'><img src='images/frammentazione_interna.png' width='550' ></p>
 
 ## Paginazione
+
+La segmentazione oggi non viene più utilizzata.
+
+Invece viene utilizzata la paginazione perché permette di eliminare un enorme problema: la frammentazione esterna.
+
+Ovviamente non è perfetto come approccio infatti anche questo introduce un problema, quello di frammentazione interna. → perdo mediamente per ogni pagina una quantità di memoria pari alla metà della dimensione della pagina stessa.
 
 **Paginazione**:
 
@@ -610,7 +617,10 @@ Usando pagine di \\(64\\)KB (\\(2^{16}\\)):
 - **dimensione** della tabella: \\(2^{16} = 64\\)KB → 👍🏿
 - **frammentazione interna** media: \\(\frac{2^{10}}{2} = 0.5\\)KB → ⚠️​
 
-→ bisogna scegliere una **dimensione di pagina** che abbia un buon **compromesso** tra i due valori.
+Come si può notare la scelta di una dimensione o del numero di pagine influenza l'altra grandezza.
+
+→ bisogna scegliere una **dimensione di pagina** che abbia un buon **compromesso** tra i due valori.\
+→ Il compromesso è tra **frammentazione e performance**. Perché aumentato il numero di pagine riduco la frammentazione ma diminuisco le performance poiché il SO deve gestire un grande numero di pagine; invece diminuendo il numero di pagine aumento la frammentazione interna media per ogni pagina.
 
 ### Validità delle pagine virtuali
 
@@ -633,7 +643,22 @@ Il bit di validità viene attivato nel momento in cui la pagina è **allocata** 
 
 <p align='center'><img src='images/bit_validita.png' width='400' ></p>
 
-<!-- @todo : chiedi al professore questa parte → slide 429 -->
+Supponendo che all'interno della page table sono contenute tutte le possibili pagine che un processo può utilizzare. → copre l'intero spazio di indirizzamento.
+
+Allora potremmo avere due casistiche nel momenti in cui un processo genera un indirizzo virtuale la cui parte che **identifica il numero** di pagina non è associato a nessun frame fisico.\
+Le cause di questa situazione sono dovute al fatto che:
+
+- la pagina potrebbe esser stata swappata V = 0;
+- l'indirizzo virtuale non appartiene ad alcuna regione di memoria valida del processo.
+
+
+<p align='center'><img src='images/page_fault.png' width='500' ></p>
+
+La MMU genera quindi genera una **exception** (page fault).
+
+- Il SO non termina subito il processo se la pagina appartiene al suo spazio di indirizzamento, infatti viene eseguita l'ISR per gestire il page fault che cerca di allocarla dalla memoria secondaria.
+  - Il SO termina il processo solo le il risultato del page fault handler non mappa la pagina virtuale in una pagina fisica → perché non è stata trovata nella memoria secondaria.
+  - Oppure se l'operazione che il processo tenta di fare su tale area non è valida secondo i permessi descritti su questa.
 
 Cosa accede durante un **contex switch**
 
@@ -674,7 +699,7 @@ Bisogna capire quale struttura sia più adatta a contenere la tabella delle pagi
 
 Suddivisione della tabella delle pagine in parti più piccole, secondo una **organizzazione **gerarchica****.
 
-- La MMU divide l'indirizzo di pagina in più parti (\\(p_1,p_2)\\).
+- La MMU divide l'indirizzo di pagina in più parti (\\(p_1,p_2)\\), tante quanti sono i livelli di gerarchia.
 - Nella tabella di primo libello, trova l'indirizzo della tabella di secondo livello, e così via.
   
 ---
@@ -690,9 +715,6 @@ Il flusso sarebbe:
 1) La MMU accede alla tabella di primo livello e usando \\(p_1\\) (**accesso a memoria**) ottiene l'indirizzo base della tabella di secondo livello.
 2) La MMU accede alla tabella di secondo livello e usando \\(p_2\\) (**accesso a memoria**) ottiene il numero di frame corrispondente.
 3) Infine, la MMU accede alla memoria principale nel frame trovaro e utilizza \\(offset\\) (**accesso a memoria**) per recuperare la casella desiderata.
-
-
-
 
 Il motivo dell'aumento del tempo per attraversare la tabella è che la MMU ha bisogno di fare molti **più accessi a memoria fisica** per tradurre un **singolo** **indirizzo** **virtuale**.
 
@@ -711,7 +733,7 @@ Nel caso di paginazione semplice (ad un livello) il numero di accessi totali per
 
 - Linux utilizza 4 livelli gerarchici per la tabella delle pagine di ogni processo.
 - Questa struttura serve **per evitare di allocare una struttura grande quanto tutto lo spazio indirizzabile dal processo**.\
-  → sono presenti delle porzioni per cui è possibile evitare l'allocazione
+  → sono presenti delle porzioni (tabelle intermedie) per cui è possibile evitare l'allocazione perché vuote
 
 Le singole tabelle sono più piccole rispetto alla tabella non gerarchica.
 
@@ -720,4 +742,79 @@ ESEMPIO DI PAGINAZIONE A DUE LIVELLI:
 Nella paginazione gerarchica, il "numero di pagina" nell'indirizzo virtuale viene **a sua volta suddiviso in più parti** (tante quante sono i livelli di gerarchia).
 
 <p align='center'><img src='images/esempio_gerarchia.png' width='400' ></p>
+
+### Tabelle delle pagine basate su hash
+
+Le righe della tabella delle pagine sono organizzate utilizzando una **lista concatenata (linked list)**.
+
+- Si memorizzano esclusivamente le righe per le pagine valide.
+- Otteniamo quindi un ulteriore **risparmio di memoria**, ma ciò **rallenta la ricerca** (occorre scandire la linked list, ricerca basata sul contenuto).
+
+Per ottimizzare i tempi di ricerca, si dividono le righe su **tante liste concatenate** di **piccole dimensioni**.
+
+- Una funzione di hash è applicata al numero della pagina virtuale.
+- Gli elementi (entry) con lo **stesso valore della funzione di hash** sono **collocati** nella **stessa** **lista** **concatenata**.
+
+<p align='center'><img src='images/hash_page_table.png' width='500' ></p>
+
+- Dopo l'applicazione della funzione di hash sul numero di pagina, che si trovava nell'indirizzo virtuale, si individua una delle \\(M\\) pagine (liste concatenate).
+- Dove \\(M < N\\) perché la funzione di hash procude delle collisioni (\\(N\\) è il numero di pagine totali).
+- Dopo aver individuato la lista concatenata si cerca all'interno di questa il numero di pagina che identifica la pagina fisica in cui è mappata la pagina virtuale.
+
+Ovviamente in questo approccio la lunghezza delle liste concatenate è contenuto rispetto al caso in cui abbiamo solo una lista concatenata di tutte le pagine associate ad un processo.
+
+### Tabella delle pagine invertita
+
+Negli schemi precedenti esiste **una tabella distinta per ogni processo**.
+
+In questo approccio, **tabella delle pagine invertita**, si hanno queste caratteristiche:
+
+- **Una** sola tabella delle pagine **comune a tutti i processi**.
+- Questa tabella ha un elemento per **ogni pagina fisica**.
+- Ogni elemento contiene l'indirizzo **virtuale** della pagina memorizzata **in quella locazione fisica**, con informazioni sul processo detentore della pagina.
+
+<p align='center'><img src='images/tabella_delle_pagine_invertita.png' width='500' ></p>
+
+Una sola è la tabella delle pagine → globale.
+
+Il numero di righe è pari al numero di pagine fisiche (invece che virtuali).
+
+- Ogni entry della tabella contiene il PID, del processo che possiede la pagina fisica, e l'indirizzo virtuale di tale pagina.
+- Una volta trovata la riga corrispondente si valuta l'offset rispetto l'indirizzo di base della tabella delle pagine invertita.\
+  Tale offset corrisponde alla prima parte dell'indirizzo fisico della pagina in memoria fisica.
+
+  Infatti l'ultima operazione è quella di inserire l'offset nella parte dell'indirizzo virtuale in cui è presente il numero di pagina e il PID.
+
+In questo approccio risparmiamo la numerosità delle pagine, oltre al fatto che queste non sono più sparse nella memoria fisica. → si può sfruttare il principio di località.
+
+### Segmentazione paginata
+
+Utilizzata in Linux.
+
+<p align='center'><img src='images/segmentazione_paginata.png' width='500' ></p>
+
+In questa soluzione si utilizza principalmente una paginazione con il supporto hardware.
+
+Ma a livello software si sfruttano tutti i vantaggi della segmentazione:
+
+- condivisione dei segmenti
+- granularità fine per l'assegnazione dei permessi → protezione delle aree di memoria
+- dimensione variabile dei segmenti
+
+Questa tabella dei segmenti viene risolta in software, mentre la tabella delle pagine viene risolta in hardware sempre dall'MMU.
+
+La **tabella dei segmenti** è unica **per ogni processo**.\
+La **tabella delle pagine** è unica per **ogni segmento del processo**.
+
+Quindi per ogni segmento avremo una tabella delle pagine in cui sono mappate le pagine virtuali corrispondenti a tale segmento in pagine fisiche.
+
+Quando il processore utilizza un indirizzo virtuale `x = <sg, sc>`, `sg` identifica un segmento all'interno della tabella dei segmenti.\
+Una volta ottenuto l'indirizzo base della tabella delle pagine per il segmento identificato precedentemente, viene utilizzata l'altra parte dell'indirizzo virtuale `sc` per identificare la pagine fisica.
+
+A questo punto, ottenuta l'indirizzo base della pagina fisica, si somma a questo l'offset `of` per ottenere l'indirizzo fisico a cui il processo fa riferimento.
+
+Ovviamente durante tutto questo processo si devono verificare le condizione che non causino inconsistenze tra i processi, come le condizione di limite con `STBL` e `PTLR`.
+
+
+>Quindi nella tabella dei segmenti individuo l'entry point che fa riferimento alla tabella delle pagine per quel segmento.
 
