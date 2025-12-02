@@ -104,5 +104,287 @@ Un thread può **terminare** per diversi motivi:
 
 Nel caso si ammette l'utilizzo di `pthread_cancel()` perdiamo il potere del **thread master** sulla vita dei thread creati.
 
+Inoltre, è importante che non si verifichi mai la situazione in cui un thread termina perché il processo è terminato.\
+Nel modello POSIX i thread vivono dentro un processo → se il **thread** **master** termina, **termina l'intero processo**.
+
+Per questo c'è la necessità di dover utilizzare la funzione `pthread_exit()` anche nel thread master.\
+Tale funzione termina solo il thread corrente ma lascia vivi gli altri thread del processo finché non terminano da soli.
+
+`pthread_exit(void* retval)`
+
+- usata per terminare un thread esplicitamente;
+- se usata nel programma principale, gli altri thread continueranno ad eseguire;
+- è buona norma utilizzarla in tutti i thread;
+- `retval`: indica lo stato di uscita del thread.
+
+ESEMPIO PER `ptrhead_exit()`:
+
+```c
+#include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_NUM_THREADS 4
+
+void* print_hello(void* p){ // void* start_routine(void*);
+  printf("%d: hello world\n", *((int*)p));
+  pthread_exit(NULL);
+}
+
+int main(){
+  pthread_t threads[MAX_NUM_THREADS];
+
+  int ret;
+
+  for(int i = 0; i < MAX_NUM_THREADS; i++){
+    ret = pthread_create(&threads[i], NULL, print_hello, (void *)(&i));
+    if (ret != 0){
+      printf("ERRORE: return code from pthread_create is %d\n", ret);
+      exit(-1);
+    }
+  }
+
+  pthread_exit(NULL); // terminazione del thread padre
+}
+```
+
+Questo è un buon utilizzo di `pthread_exit()` da parte dei thread creati e dal thread master.
+
+Non possiamo dire la stessa cosa per il parametro passato che viene utilizzato come argomento nella `print_hello()`.\
+Infatti, tale parametro appartiene allo stack del thread padre, non è copiata per valore ma per riferimento, quindi nel momento in cui il padre la modifica cambia il valore anche nel contesto dei thread figli.
+
+L'output sul terminale:
+
+```bash
+2: hello world
+4: hello world
+3: hello world
+3: hello world
+5: hello world
+```
+
+Si ha **race condition** e, generalmente, non è buona norma passare per argomento un `arg` che sia legato allo **stack del thread master**; nella maggior parte dei casi utilizziamo lo heap per creare aree di memoria che andranno condivise.
+
+>In ogni caso potrebbe presentarsi race condition → è necessario gestire la mutua esclusione su tali variabili.
+
+Inoltre potrebbe capitare delle anomalie nel momento in cui il padre termina il for, prima che i thread abbiano avuto la possibilità di utilizzare l'indirizzo in loro possesso che è legato allo stack del thread master.\
+→ La variabile `i` esce dallo scope, quindi non fa più parte dello spazio di indirizzamento lecito del processo.
+
+Infatti l'indirizzo virtuale di memoria prima occupato dalla variabile `i` potrebbe esser utilizzato dal thread master per allocare nuove variabile che non hanno nulla a che fare con i thread in esecuzione.
+
+---
+
+Nello stesso esempio se utilizzassimo:
+
+```c
+void* print_hello(void* p){
+  printf("%d: hello world (%p)\n",p, &p);
+  ...
+}
+int main(){
+...
+...
+pthread_create(&threads[i], NULL, print_hello, (void*)i);
+...
+}
+```
+
+Otteniamo un effetto soddisfacente a livello visivo, ma logicamente sarebbe sbagliato perché stiamo facendo il casting di un intero in un tipo `void*` che il thread potrebbe usare, deferenziandolo, e ottenere `segmentation fault`.
+
+→ otteniamo infatti dei **warning** da parte del compilatore che ci avvisa di questo cast illecito.
+
+Risultato con `%d` nella `printf`:
+
+```bash
+0: hello world (0x776ef97feeb8)
+1: hello world (0x776ef8ffdeb8)
+3: hello world (0x776ef7ffbeb8)
+2: hello world (0x776ef87fceb8)
+```
+
+Risultato con `%p` sostituito ad `%d`, perché `p` è un puntatore:
+
+```bash
+(nil): hello world (0x7d0ba11feeb8)
+0x2: hello world (0x7d0ba01fceb8)
+0x1: hello world (0x7d0ba09fdeb8)
+0x3: hello world (0x7d0b9f9fbeb8)
+```
+
+Ovviamente l'indirizzo tra parentesi riguarda quello della variabile locale in cui è contenuto il puntatore nella funzione `print_hello()`.
+
+Supponiamo che il thread utilizzasse `p` erroneamente come un puntatore, potrebbe farlo proprio perché è `void*` allora otteniamo:
+
+```c
+void* print_hello(void* p){
+  printf("%d: hello world (%p)\n", p, &p);
+  int c = *((int*)p);
+  pthread_exit(NULL);
+}
+```
+
+```bash
+(nil): hello world (0x790a875feea8)
+0x1: hello world (0x790a86dfdea8)
+Segmentation fault (core dumped)
+```
+
+---
+
+L'utilizzo corretto, più **safe**, per il passaggio dei parametri è utilizzare l'area di memoria **HEAP**.
+
+```c,hl_lines=4
+#include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_NUM_THREADS 4
+
+void* print_hello(void* p){ // void* start_routine(void*);
+  printf("%d: hello world\n", *((int*)p)); //
+  free(p);                                 //
+  pthread_exit(NULL);
+}
+
+int main(){
+  pthread_t threads[MAX_NUM_THREADS];
+
+  int ret;
+
+  for(int i = 0; i < MAX_NUM_THREADS; i++){
+    int* ptr_i = (int*)malloc(sizeof(int));   //
+    *ptr_i = i;                               //
+    ret = pthread_create(&threads[i], NULL, print_hello, (void *)ptr_i);
+    if (ret != 0){
+      printf("ERRORE: return code from pthread_create is %d\n", ret);
+      exit(-1);
+    }
+  }
+
+  pthread_exit(NULL); // terminazione del thread padre
+}
+```
+
+Ovviamente quando allochiamo nello heap è ad onere del programmatore l'allocazione e la deallocazione di aree di memoria.
+
+Quindi è da fare attenzione a dove inseriamo la chiamata `free()` per evitare che questa venga eseguita troppo presto, due volte sullo stesso puntatore o non venga eseguita proprio.
+
+
+
+### Passaggio di parametri
+
+La `pthread_create()` può passare un singolo argomento di tipo `void*` alla `start_routine`.
+
+Per passare più **di un argomento** al thread, occcorre definire una `struct`:
+
+```c
+struct dati{
+  int parametro1;
+  char parametro2
+}
+```
+
+Nel padre, occorre **allocare sullo heap** (`malloc()`) un istanza della struct, e **passarne il puntatore** al thread figlio.
+
+```c
+struct dati *d = (struct dati*) malloc(sizeof(struct dati));
+
+d->parametro1 = 10;
+d->parametro2 = 'c';
+pthread_create(&id, NULL, start_routine, (void*)d);
+```
+
+- Il puntatore alla `struct dati` viene convertito in un puntatore a `void` perché ogni puntatore può subire questo casting, quindi ogni tipo di variabile può esser passata per argomento.
+- `void*` è un tipo di puntatore generico.
+
+Per usare successivamente all'interno del thread correttamente la struttura dati passata per riferimento `void*` è necessario un **casting inverso**.
+
+All'interno della funzione `star_routine()`
+
+```c
+struct dati* dati = (struct dati*) p
+```
+
+Come visto è importante utilizzare l'area heap per condividere dati fra thread.
+
+→ Invece è scorretto utilizzare l'area stack. (esempio e ragionamento precedente)
+
+I motivi principali come già detti sono:
+
+- le variabili allocate nello stack del thread master sono soggette al ciclo di vita e allo scope del thread master;
+- tali variabili sono soggette anche alla modifica da parte del thread master stesso, e potrebbero impattare susl comportamento dei thread creati.
+
+### Join
+
+- L'operazione di **join** permette di sincronizzare un thread master con uno o più thread figli.
+- La chiamata `pthread_join(threadID, status)` blocca il chiamante finché il thread identificato da `threadID` non termini.
+
+<p align='center'><img src='images/work_flow_join.png' width='500' ></p>
+
+Quindi per permettere al padre di attendere la terminazione del thread figlio, questo deve chiamare la funzione:
+
+```c
+pthread_join(id, NULL);
+```
+
+- `id` è di tipo `pthread_t` e specifica un thread figlio che ha creato;
+- `NULL` specifica che il padre non intede ricevere dati di uscita dal thread figlio.
+
+---
+
+Per poter utilizzare la funzione `pthread_join` su un figlio è necessario che questo sia stato dichiarato **"joinable"** all'atto della sua creazione.
+
+Di default ogni pthread è joinable, ma volendo esplicitarlo dobbiamo utilizzare i `pthread_attr_t` all'atto della sua creazione.
+
+```c
+pthread_attr_t attr;
+pthread_attr_init(&attr);
+pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
+...
+pthread_create(&id, attr, start_routine, (void*) data);
+...
+...
+pthread_join(id, NULL);
+```
+
+`attr` non è altro che una variabile che tiene conto di diversi attributi e caratteristiche che possiamo imporre ad un thread:
+
+- Detach state
+- Dimensione dello stack
+- Politica di scheduling
+- Priorità
+- etc.
+
+---
+
+Nel caso il thread padre volesse ricevere dei dati nel momento in cui il thread figlio termina deve inserire un puntatore alla struttura o variabile in cui il figlio ha inserito tali dati.
+
+Supponiamo che la struttura sia: 
+
+```c
+struct status{
+  ...
+};
+```
+
+Allora il thread figlio, identificato con `id`, farà nel momento in cui termina:
+
+```c
+struct status* dati_uscita = (struct status*) malloc(sizeof(struct status));
+...// riempie la struttura 
+pthread_exit(dati_uscita);
+```
+
+Il thread master per ricevere tali dati farà:
+
+```c
+struct status dati;
+pthread_join(id, &dati);
+...// lettura dei dati
+```
+
+### Creazione e distribuzione di Mutex
+
+
 
 <!-- 15:55 -->
