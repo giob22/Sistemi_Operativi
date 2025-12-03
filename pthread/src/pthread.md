@@ -385,6 +385,88 @@ pthread_join(id, &dati);
 
 ### Creazione e distribuzione di Mutex
 
+La libreria PThread ci mette a disposizione l'implementazione di un **mutex** o **lock** per gestire la mutua esclusione tra risorse condivise tra thread.
+
+- `pthread_mutex_t`
+  - Una struttura dati "opaca" (il programmatore non deve conoscerne il contenuto)
+  - Rappresenta un **oggetto-mutex**
+- `pthread_mutex_init(pthread_mutex_t * mutex, pthread_attr_t * attr)`
+  - Crea un nuovo mutex e lo inizializza come "sbloccato" (unlocked)
+  - `mutex` è il puntatore di tipo `pthread_mutex_t`
+  - `attr` è il puntatore di tipo `pthread_attr_t` utilizzato per impostare degli attributi del mutex (possiamo inserire `NULL` se vogliamo un mutex di default)
+- `pthread_mutex_destroy (pthread_mutex_t * mutex)`
+  - Disattiva il mutex identificato dal valore della variabile passata per parametro.
+- `pthread_mutex_lock(pthread_mutex_t * mutex)`
+  - Serve ad un thread per acquisire una risorsa in mutua esclusione rispetto gli altri thread. Quindi serve per delineare la sezione critica.
+  - Se è già stato acquisito da un altro thread, il chiamante si **blocca in attesa** di un **unlock**
+- `pthread_mutex_unlock(pthread_mutex_t * mutex)`
+  - Invocato da un thread per **rilasciare la sezione critica**, e per consentire quindi l'accesso ad un altro thread precedentemente bloccato a questa.
+- `pthread_mutex_trylock(pthread_mutex_t * mutex)`
+  - Analoga alla lock, ma non bloccante. Se il mutex è già acquisito, ritorna immediatamente con codice di errore `EBUSY`
+  - Altrimenti lo acquisisce e ritorna come risultato `0`
+  - Possiamo dire che è una versione non bloccante della `pthread_mutex_lock`
+
+---
+
+ESEMPIO CONTATORE CONDIVISTO
+
+```c
+#include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#define NUM_THREADS 2
+// definisco la struttura counter
+struct counter{
+  int valore;
+  pthread_mutex_t mutex;
+
+};
+
+void* in_counter(void* p){
+  struct counter* pc = (struct counter*)p;
+  for (int i = 0; i < 100000; i++){
+    pthread_mutex_lock(&(pc->mutex));
+    pc->valore++;
+    pthread_mutex_unlock(&(pc->mutex));
+  }
+  pthread_exit(NULL);
+}
+
+int main(){
+
+  pthread_t threads[NUM_THREADS];
+
+  struct counter* p = (struct counter*) malloc(sizeof(struct counter));
+  // inizializzo il counter
+  p->valore = 0; 
+  // inizializzo il mutex
+  pthread_mutex_init(&(p->mutex), NULL);
+
+  // creo i thread che faranno gli incrementi
+  for (int i = 0; i < NUM_THREADS; i++){
+    pthread_create(&threads[i], NULL, in_counter, (void*)p);
+  }
+  // faccio la join così che il padre si blocchi 
+  // in attesa della terminazione dei thread figli
+  for (int i = 0; i < NUM_THREADS; i++){
+    pthread_join(threads[i], NULL);
+  }
+
+  printf("valore raggiunto dal counter → %d\n", p->valore);
+
+  return 0;
+}
+```
+
+---
+
+### Condition Variables (CV)
+
+La gestione della cooperazione e sincronizzazione tra thread avviene mediante **condition variables (CV)**.
+
+Queste variabili vanno sempre utilizzate in abbinamento con un **mutex**, realizzando un costrutto Monitor di tipo **signal-and-continue**.\
+É necessario che siano utilizzate in contemporanea ad un mutex proprio perché molte procedure che operano con le condition variables hanno la necessità di un mutex.
 
 
 <!-- 15:55 -->
