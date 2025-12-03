@@ -148,6 +148,20 @@ int main(){
 }
 ```
 
+output:
+
+```bash
+valore raggiunto dal counter → 200000
+```
+
+Nel caso togliessi il lock e l'unlock prima e dopo la modifica del buffer singolo otterrei un risultato del tipo:
+
+```bash
+valore raggiunto dal counter → 115111
+```
+
+Molto diverso rispetto a quello che mi sarei dovuto aspettare.
+
 Questo è un buon utilizzo di `pthread_exit()` da parte dei thread creati e dal thread master.
 
 Non possiamo dire la stessa cosa per il parametro passato che viene utilizzato come argomento nella `print_hello()`.\

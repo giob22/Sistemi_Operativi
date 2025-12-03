@@ -3,6 +3,12 @@
 #include <stdlib.h>
 
 
+#ifdef DEBUG
+
+#define LOG(string, ...) printf("[LOG] "  string  "\n", ##__VA_ARGS__)
+
+#endif
+
 #define PIENO 1
 #define VUOTO 0
 

@@ -14,14 +14,19 @@ int main(){
 
     
 
-
     // creo la struttura condivisa che sarà allocata nello heap
     struct prodcons* p = (struct prodcons*) malloc(sizeof(struct prodcons));
+    #ifdef DEBUG
+        LOG("creo l'area di memoria nello heap per contenere la risorsa condivisa, indirizzo: %p", p);
+    #endif
 
     // inizializzo il contenuto della struct
     // riguardante le variabili di sincronizzazione
     // condition variables
     // mutex
+    #ifdef DEBUG
+        LOG("inizializzo:\n1) le variabili per la sinconizzazione\n2) il mutex\n3) le condition variables");
+    #endif
     p->stato = VUOTO;
     pthread_mutex_init(&(p->mutex), NULL);
     pthread_cond_init(&(p->ok_produci_cond), NULL);
@@ -30,7 +35,10 @@ int main(){
     // creo i threads che saranno produttori e consumatori (equal numero altrimenti uno dei due potrebbe non terminare mai)
 
     // ogni thread è per default joinable, altrimenti dovrei fare una cosa del genere:
-    
+    #ifdef DEBUG
+        LOG("inizializzo gli attributi per i thread per fare in modo che siano joinable");
+    #endif
+
     pthread_attr_t attributi;
     // inizializzo gli attributi
     pthread_attr_init(&attributi);
@@ -39,18 +47,31 @@ int main(){
 
     for (int i = 0; i < NUM_THREADS; i++){
     	if (i%2 == 0){ // produttore
-	    srand(time(NULL) * getpid());
-    	    pthread_create(&threads[i], &attributi /*andrebbero gli attributi*/, produttore, (void*)p);
+	        srand(time(NULL) * getpid());
+    	    pthread_create(&threads[i], &attributi /*potrei inserire anche NULL perché un thread è joinable per default*/
+                           , produttore, (void*)p);
+            #ifdef DEBUG
+                LOG("thread produttore creato");
+            #endif
 	}else{ // consumatore
 	    pthread_create(&threads[i], &attributi, consumatore, (void*)p);
+        #ifdef DEBUG
+            LOG("thread consumatore creato");
+        #endif
 	}
     }
 
+    #ifdef DEBUG
+        LOG("attendo la terminazione dei thread creati");
+    #endif
     for (int i = 0; i < NUM_THREADS; i++){
     	pthread_join(threads[i], NULL);
     }
 
     // ovviamente prima della terminazione devo distruggere mutex e le condition variables create
+    #ifdef DEBUG
+        LOG("fatto il destroy del mutex, condition variables e free dell'area di memoria allocata nello heap");
+    #endif
     pthread_mutex_destroy(&(p->mutex));
     pthread_cond_destroy(&(p->ok_produci_cond));
     pthread_cond_destroy(&(p->ok_consuma_cond));
