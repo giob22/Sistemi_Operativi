@@ -117,7 +117,7 @@ Tale funzione termina solo il thread corrente ma lascia vivi gli altri thread de
 - è buona norma utilizzarla in tutti i thread;
 - `retval`: indica lo stato di uscita del thread.
 
-ESEMPIO PER `ptrhead_exit()`:
+ESEMPIO PER `pthread_exit()`:
 
 ```c
 #include <pthread.h>
@@ -468,5 +468,62 @@ La gestione della cooperazione e sincronizzazione tra thread avviene mediante **
 Queste variabili vanno sempre utilizzate in abbinamento con un **mutex**, realizzando un costrutto Monitor di tipo **signal-and-continue**.\
 É necessario che siano utilizzate in contemporanea ad un mutex proprio perché molte procedure che operano con le condition variables hanno la necessità di un mutex.
 
+#### Creazione e distruzione di CV
 
+- `pthread_cond_t`
+  - Struttura dati "opaca"
+  - Rappresenta un oggetto-varcondition
+- `pthread_cond_init(pthread_cond_t* cond, pthread_condattr_t * attr)`
+  - Inizializza la condition variable per l'uso
+  - `cond` è il puntatore alla condition variable da inizializzare
+  - `attr` è una struttura dati passata per riferimento che specifica le caratteristiche della condition variable
+- `pthread_cond_destroy(pthread_cond_t cond)`
+  - Disattiva la CV che non serve più identificata da `cond`
+#### Gestione delle condition variables: wait e signal
+
+- `pthread_cond_wait(pthread_cond_t * cond, pthread_mutex_t * mutex)`
+  - Deve essere utilizzata dentro un **monitor**, quindi richiede in ingresso anche un mutex
+  - Per eseguirla correttamente lo stesso thread deve aver già chiamato `pthread_mutex_lock(&mutex)`
+  - Il thread chiamante viene sospeso e messo nella coda di attesa della condition variable\
+    Il mutex viene rilasciato automaticamente
+  - Quando il thread viene riattivato, il mutex viene riacquisito sempre all'interno della `pthread_cond_wait`
+- `pthread_cond_signal(pthread_cond_t * cond)`
+  - Viene risvegliato un thread in attesa sulla condition variable identificata per il riferimento passato per parametro
+  - La semantica utilizzata è quella di un monitor **signal-and-wait**, quindi quando un thread chiamata tale funzione non viene sospeso ma continua la sua esecuzione all'interno del monitor\
+  → motivo per cui troviamo questa asimmetria nei prototipi delle funzioni `pthread_cond_wait()` e `pthread_cond_signal()`; la seconda non ha bisogno del riferimento al monitor dato che non lo rilascia durante la sua esecuzione
+- `pthread_cond_broadcast(pthread_cond_t * cond)`
+  - Essendo una semantica **signal-and-continue** possiamo utilizzare anche questa funzione 
+  - Attiva tutti i thread sospesi sulla condition variable passata per riferimento
+  - I thread risvegliti accederanno uno alla volta al monitor
+
+Per gestire le condizioni di sincronizzazione che determinano se un thread ha bisogno di sospendersi su una condition variable o meno, dobbiamo utilizzare un costrutto `while`.\
+→ Perché la semantica è **signal-and-continue**, quindi nei momento in cui un thread sospeso viene riattivato ed entra nel monitor non abbiamo la sicurezza che la condizione di sincronizzazione sia valida ancora.
+
+### Monitor con PThreads
+
+In PThreads, un monitor può essere ottenuto combinando **un mutex** e una o più **condition variables**
+
+- Tipicamente per permettere a tutti i thread di operare con lo stesso monitor e stesse CV, questi si inseriscono all'interno di una `struct`.
+- La `struct` conterrà, oltre la risorsa che condivideranno i thread, anche il monitor, definito da un mutex e una o più condition variables.
+- Tale struttura per essere condivisa in modo corretto andrà allocata all'interno dello **heap**.
+
+```c
+struct dati_condivisi{
+  ... // es., un buffer e le variabili di stato
+  ... // ad esso associato
+
+  pthread_mutex_t mutex;
+  pthread_cond_t cv1;
+  pthread_cond_t cv2;
+  ... // altre condition variables
+};
+```
+
+→ ESEMPIO DI SINCRONIZZAZIONE TRA THREAD
+
+<p align='center'><img src='images/esempio_var_cond.png' width='700' ></p>
+
+La gestione della sincronizzazione e mutua esclusione è analoga a quella vista per programmi multi-processo, a cambiare sono le performance e il modo in cui vengono condivise le risorse in questione.
+
+<p align='center'><img src='images/analogia_multi_process_threads.png' width='550' ></p>
 <!-- 15:55 -->

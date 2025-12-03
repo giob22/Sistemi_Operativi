@@ -29,7 +29,6 @@ int main(){
   p->valore = 0; 
   // inizializzo il mutex
   pthread_mutex_init(&(p->mutex), NULL);
-
   // creo i thread che faranno gli incrementi
   for (int i = 0; i < NUM_THREADS; i++){
     pthread_create(&threads[i], NULL, in_counter, (void*)p);
