@@ -17,7 +17,9 @@ int main(){
 
         pid_t pid;
         int ds_queue_gen_filter, ds_queue_filter_checksum, ds_queue_checksum_visual;
-        int total_process = NUM_GENERATORS + NUM_FILTER + NUM_CHECKSUM + NUM_VISUAL;
+        //int total_process = NUM_GENERATORS + NUM_FILTER + NUM_CHECKSUM + NUM_VISUAL;
+        // modifica fatta da me 
+        int total_process_no_gen = NUM_FILTER + NUM_CHECKSUM + NUM_VISUAL;
 
         //create queues
         int key_queue_gen_filter = ftok("./main.c", 'f'); /* TODO: definire chiave coda generatore-filtro */
@@ -86,7 +88,11 @@ int main(){
                         exit(0);
                     }
                 }        
-        }        
+        }
+        //modifica fatta da me 
+        for(int i = 0; i < NUM_GENERATORS; i++){
+            wait(NULL);
+        }   
 
 
         for (i=0; i<NUM_FILTER+NUM_CHECKSUM+NUM_VISUAL; i++){
@@ -105,13 +111,16 @@ int main(){
                             visualizzatore(ds_queue_checksum_visual);
                         }
                 }
-        }
-
-       
-        for (i=0; i<total_process; i++){
+                // modifica fatta da me
                 wait(NULL);
-        }
+            }
 
+       /* //modifica fatta da me
+       for (i=0; i<total_process_no_gen; i++){
+        wait(NULL);
+        }
+    */
+    
         /* TODO: deallocare risorse (code, shm, monitor) */
 
         remove_monitor(&(pc->m)); // marco come eliminabile il monitor

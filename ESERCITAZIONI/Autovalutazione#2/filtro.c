@@ -33,16 +33,17 @@ void filtro(int ds_queue_gen_filter, int ds_queue_filter_checksum){
             
                 /* TODO: effettuare la ricerca del caratter 'x' e inviare il messaggio al processo checksum nel caso di carattere non trovato */
                 int ret_invio;
-                if (strchr(mess.text, 'x') == NULL) 
-                // il messaggio deve essere inviato
+                if (strchr(mess.text, 'x') == NULL) {
+                        // il messaggio deve essere inviato
                         ret_invio = msgsnd(ds_queue_filter_checksum, &mess, sizeof(message) - sizeof(long), 0);
-                // altrimenti il messaggio viene scartato
-                // verifichiamo che non ci siano stati problemi nell'invio
-                if (ret_invio < 0){
-                        perror("msgsnd del messaggio on ds_queue_filter_checksum FALLITA!");
-                        exit(-1);
+                        // altrimenti il messaggio viene scartato
+                        // verifichiamo che non ci siano stati problemi nell'invio
+                        if (ret_invio < 0){
+                                perror("msgsnd del messaggio on ds_queue_filter_checksum FALLITA!");
+                                exit(-1);
+                        }
                 }
-        
+                        
                 
                 
         }
