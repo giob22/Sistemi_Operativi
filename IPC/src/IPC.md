@@ -166,7 +166,7 @@ Sempre nella stessa cartella possiamo trovare informazioni anche per le altre IP
 
 Il comando `ipcrm` invece ci permette di marcare come eliminabile al kernel una struttura IPC dato il suo identificativo. Il comando è molto utile quando il programmatore non ha rimosso esplicitamente le strutture allocate.
 
-ESEMPIO: eliminiamo la shared memory avente pid `133215`
+ESEMPIO: eliminiamo la shared memory avente file descriptor `133215`
 
 ```bash
 ipcrm -m 133215
