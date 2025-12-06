@@ -1,5 +1,9 @@
 all: start
 
+run: start
+	stdbuf -oL -eL ./start 2>&1 | ts 
+
+
 start: main.o procedure.o
 	gcc -o start main.o procedure.o -pthread
 
@@ -13,3 +17,4 @@ clean:
 	rm -f *.o
 	rm -f *~
 	rm -f ./start
+	rm -f *.txt

@@ -30,10 +30,10 @@ void * Viaggiatori (void * p){
 	int i;
 	int ris;
 	for(i=0;i<3;i++){
-        
-		sleep(rand()%6+1);
+		int s = rand()%6+1;
+		sleep(s);
 		ris=leggi_molo(m);
-		printf("[V]~La nave n.ro %d è nel molo %d\n", m->id_nave, ris);
+		printf("[V]~La nave n.ro %d è nel molo %d (%d)\n", m->id_nave, ris, s);
         
 	}
 	pthread_exit(NULL);
