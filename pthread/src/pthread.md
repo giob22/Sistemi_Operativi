@@ -289,7 +289,7 @@ Quindi è da fare attenzione a dove inseriamo la chiamata `free()` per evitare c
 
 La `pthread_create()` può passare un singolo argomento di tipo `void*` alla `start_routine`.
 
-Per passare più **di un argomento** al thread, occcorre definire una `struct`:
+Per passare più **di un argomento** al thread, occorre definire una `struct`:
 
 ```c
 struct dati{
