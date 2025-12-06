@@ -493,6 +493,7 @@ Queste variabili vanno sempre utilizzate in abbinamento con un **mutex**, realiz
   - `attr` è una struttura dati passata per riferimento che specifica le caratteristiche della condition variable
 - `pthread_cond_destroy(pthread_cond_t cond)`
   - Disattiva la CV che non serve più identificata da `cond`
+
 #### Gestione delle condition variables: wait e signal
 
 - `pthread_cond_wait(pthread_cond_t * cond, pthread_mutex_t * mutex)`
