@@ -172,3 +172,5 @@ ESEMPIO: eliminiamo la shared memory avente file descriptor `133215`
 ipcrm -m 133215
 ```
 
+.
+
