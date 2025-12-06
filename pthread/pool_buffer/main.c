@@ -52,7 +52,7 @@ int main(){
     pthread_attr_init(&attributi);
     // inserisco gli attributi che desidero un thread
     pthread_attr_setdetachstate(&attributi, PTHREAD_CREATE_JOINABLE); // legato al detach del thread
-
+	
     for (int i = 0; i < NUM_THREADS; i++){
     	if (i%2 == 0){ // produttore
 	        srand(time(NULL) * getpid());
