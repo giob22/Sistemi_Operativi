@@ -98,9 +98,9 @@ Importante notare che è possibile passare solo un argomento per parametro alla 
 Un thread può **terminare** per diversi motivi:
 
 - termina l'esecuzione della `start_routine()` uscendo fuori dallo scope di tale funzione;
--  il thread chiama la funzione `pthread_exit()`;
--  il thread è concellato da un altro thread con `pthread_cancel()`;
--  L'intero processo termina.
+- il thread chiama la funzione `pthread_exit()`;
+- il thread è concellato da un altro thread con `pthread_cancel()`;
+- L'intero processo termina.
 
 Nel caso si ammette l'utilizzo di `pthread_cancel()` perdiamo il potere del **thread master** sulla vita dei thread creati.
 
