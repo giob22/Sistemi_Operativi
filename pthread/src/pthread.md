@@ -541,4 +541,6 @@ struct dati_condivisi{
 La gestione della sincronizzazione e mutua esclusione è analoga a quella vista per programmi multi-processo, a cambiare sono le performance e il modo in cui vengono condivise le risorse in questione.
 
 <p align='center'><img src='images/analogia_multi_process_threads.png' width='550' ></p>
+
+continua...
 <!-- 15:55 -->
