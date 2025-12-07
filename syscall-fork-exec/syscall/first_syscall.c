@@ -21,7 +21,7 @@ int main(int argc, char **argv){
 		"add %2, %1\n\t" // %2 + %1 → %1
 		"mov %1, %0\n\t" // %1 → %0
 		: "=r" (result),  // output
-		  "+r" (a) // sto dicendo che a sarà sia un input che potrà esser modificato
+		  "+r" (a) // sto dicendo che a sarà un input che potrà esser modificato
 		: "r" (b) // input
 );
 // result → %0

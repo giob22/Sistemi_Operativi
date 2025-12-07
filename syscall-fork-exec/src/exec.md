@@ -1,3 +1,6 @@
+<script src="../javascript.js"></script>
+
+
 # System Call `exec`
 
 ## Introduzione

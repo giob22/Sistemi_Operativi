@@ -1,3 +1,6 @@
+<script src="../javascript.js"></script>
+
+
 # fork(): creazione di un processo
 
 La creazione di nuovi processi è gestita dalla chiamata di sistema: 
