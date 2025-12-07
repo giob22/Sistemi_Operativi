@@ -1,3 +1,6 @@
+<script src="../javascript.js"></script>
+
+
 # pthread
 
 **thread** possono essere definiti come un flusso di esecuzione all'interno di un processo (*leggero*).
