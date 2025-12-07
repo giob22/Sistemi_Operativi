@@ -1,4 +1,4 @@
-Indice 
+Indice:
 
 1) [IPC](./IPC.md)
 2) [Shared Memory](./Shared_memory.md)
@@ -9,3 +9,5 @@ Indice
 7) [Sincronizzazione nel modello ad ambiente locale](./Sincronizzazione_locale.md)
 8) [Mailbox](./Mailbox.md)
 9) [Note:](./Note.md)
+
+<script src="../javascript.js"></script>
