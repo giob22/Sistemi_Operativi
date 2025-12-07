@@ -1,3 +1,6 @@
+<script src="../javascript.js"></script>
+
+
 # Monitor
 
 Il **monitor** è una struttura sintattica (modello concettuale) che opera su una risorsa condivisa (shm) gestendone l'accesso e la sincronizzazione tra processi/thread concorrenti.

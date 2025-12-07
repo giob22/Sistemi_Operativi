@@ -1,3 +1,5 @@
+<script src="../javascript.js"></script>
+
 
 # Shared memory
 

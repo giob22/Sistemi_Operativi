@@ -1,3 +1,6 @@
+<script src="../javascript.js"></script>
+
+
 # Sincronizzazione nel modello ad ambiente locale
 
 Il modello ad ambiente **locale** si riferisce a una struttura in cui ogni processo opera nel proprio ambiente privato, **senza alcuna memoria condivisa** tra vari processi.

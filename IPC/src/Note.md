@@ -1,3 +1,6 @@
+<script src="../javascript.js"></script>
+
+
 # NOTE
 
 ## Utilizzo di semafori tra processi con fork + exec

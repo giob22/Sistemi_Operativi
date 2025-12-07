@@ -1,3 +1,6 @@
+<script src="../javascript.js"></script>
+
+
 # Semaphore
 
 I semafori sono delle risorse IPC, ma il loro valore interno si comporta come una variabile condivisa gestita dal kernel.

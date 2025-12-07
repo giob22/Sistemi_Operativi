@@ -1,3 +1,5 @@
+<script src="../javascript.js"></script>
+
 # IPC: Interprocess Communication
 
 Per implementare la comunicazione e quindi anche la sincronizzazione tra processi, abbiamo bisogno che questi comunichino mediante un mezzo; tale mezzo è definito come **risorse IPC**.
@@ -171,4 +173,5 @@ ESEMPIO: eliminiamo la shared memory avente file descriptor `133215`
 ```bash
 ipcrm -m 133215
 ```
+
 

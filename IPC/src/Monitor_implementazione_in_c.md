@@ -1,3 +1,6 @@
+<script src="../javascript.js"></script>
+
+
 # Monitor Implementazione in C
 
 Per sfruttare il concetto di monitor in `c` dobbiamo realizzare una libreria sfruttando il concetto di **semaforo** per implementare tutte le funzionalità di un **monitor**.

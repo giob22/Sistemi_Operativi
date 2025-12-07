@@ -1,3 +1,6 @@
+<script src="../javascript.js"></script>
+
+
 # Problema dei lettori/scrittori
 
 Come per il problema produttori/consumatori sono presenti due categorie di processi:

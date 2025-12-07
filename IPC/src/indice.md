@@ -10,4 +10,3 @@ Indice:
 8) [Mailbox](./Mailbox.md)
 9) [Note:](./Note.md)
 
-<script src="../javascript.js"></script>

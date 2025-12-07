@@ -1,3 +1,5 @@
+<script src="../javascript.js"></script>
+
 # Coda di messaggi: mailbox
 
 UNIX (System V), come anche Linux, mette a disposizione primitive IPC che supportano la **comunicazione indiretta** tra processi (anche indipendenti) basata su uno **scambio di messaggi**. 
