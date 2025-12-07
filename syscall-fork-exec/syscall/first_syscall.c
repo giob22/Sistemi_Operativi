@@ -23,7 +23,7 @@ int main(int argc, char **argv){
 		: "=r" (result),  // output
 		  "+r" (a) // sto dicendo che a sarà un input che potrà esser modificato
 		: "r" (b) // input
-);
+	);
 // result → %0
 // a → %1
 // b → %2
