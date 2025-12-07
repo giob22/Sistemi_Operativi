@@ -1,3 +1,6 @@
+<script src="../javascript.js"></script>
+
+
 # Gestione della memoria
 
 La **memoria principale** costituisce, insieme la CPU, una delle risorse per realizzare **l'astrazione di processo**.

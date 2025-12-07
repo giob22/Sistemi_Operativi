@@ -1,3 +1,6 @@
+<script src="../javascript.js"></script>
+
+
 # Deadlock
 
 Deadlock è un fenomeno che può presentarsi nelle **applicazioni concorrenti** che porta a un blocco permanente di processi in **competizione per risorse condivise**.
