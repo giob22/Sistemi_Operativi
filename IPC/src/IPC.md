@@ -20,6 +20,7 @@ Ogni risorsa **IPC** è gestita con l'utilizzo di due primitive **get** e **ctl*
 La primitiva **get** utilizza una "chiave" (IPC key), e opportuni parametri, per restituire al processo un **descrittore della risorsa**.
 
 La primitiva **ctl** (control) permette, dato un descrittore, di:
+
 - verificare lo stato di una risorsa;
 - cambiare lo stato di una risorsa;
 - rimuovere una risorsa
@@ -150,6 +151,7 @@ key        semid      owner      perms      nsems
 ```
 
 è possibile utilizzare i seguenti flag per mostrare solo alcune risorse IPC:
+
 ```bash
   Resource options:
  -m, --shmems      shared memory segments
@@ -157,14 +159,13 @@ key        semid      owner      perms      nsems
  -s, --semaphores  semaphores
  -a, --all         all (default)
 ```
+
 Tale comando (`ipcs`) cattura le sue informazione dal **file system virtuale** `/proc` di Linux. In particolar modo in `/proc/sysvipc/shm` sono contenute tutte le informazioni sulle shared memory.
 
 Sempre nella stessa cartella possiamo trovare informazioni anche per le altre IPC:
 
 - **message queue** → `/proc/sysvipc/msg`;
 - **semafori** → `/proc/sysvipc/sem`.
-
-
 
 Il comando `ipcrm` invece ci permette di marcare come eliminabile al kernel una struttura IPC dato il suo identificativo. Il comando è molto utile quando il programmatore non ha rimosso esplicitamente le strutture allocate.
 
@@ -173,5 +174,3 @@ ESEMPIO: eliminiamo la shared memory avente file descriptor `133215`
 ```bash
 ipcrm -m 133215
 ```
-
-
