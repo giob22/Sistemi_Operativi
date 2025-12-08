@@ -545,5 +545,4 @@ La gestione della sincronizzazione e mutua esclusione è analoga a quella vista 
 
 <p align='center'><img src='images/analogia_multi_process_threads.png' width='550' ></p>
 
-continua...
 <!-- 15:55 -->
