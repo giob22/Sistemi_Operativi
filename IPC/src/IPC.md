@@ -39,9 +39,11 @@ Le risorse IPC sono **permanenti**: se un processo termina o si stacca dalla ris
 ## Primitiva `get`
 
 La primitiva `get` ha la seguente firma:
+
 ```c
   int ...get(key_t key, ..., int flag);
 ```
+
 - **key** è la chiave dell'oggetto IPC. 
   
   Tale chiave è un valore intero arbitrario che può essere:
