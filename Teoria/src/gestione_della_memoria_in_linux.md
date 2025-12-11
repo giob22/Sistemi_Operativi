@@ -117,6 +117,6 @@ Inoltre tali pagine sono `memory-mapped`, quindi è presente una loro copia in m
 
 Lo stesso non si può dire per le pagine fisiche che corrispondono allo **heap** del processo.
 
-<!-- @todo continua... -->
+<!-- @todo continua... slide 149 -->
 
-// TODO: continua
+// TODO: continua.
