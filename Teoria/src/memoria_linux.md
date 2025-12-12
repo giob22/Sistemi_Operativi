@@ -4,19 +4,15 @@ Con l'uso di `top` possiamo avere info sull'utilizzo di memoria fisica utilizzat
 
 <p align='center'><img src='images/top.png' width='500' ></p>
 
-<div style="background: #333;">
-<b>
 
-- <span style="color: #ff3131;">Memoria RAM e SWAP del sistema, il loro utilizzo e la quantità libera</span>
+- <span style="color: #ff3131; background: #333;"><b>Memoria RAM e SWAP del sistema, il loro utilizzo e la quantità libera</b></span>
 
-- <span style="color: #cb6ce6;">Spazio di indirizzamento utilizzato dal processo</span>
+- <span style="color: #cb6ce6; background: #333;"><b>Spazio di indirizzamento utilizzato dal processo</b></span>
 
-- <span style="color: #c1ff72;">Memoria "residente", ovvero lo spazio occupato in RAM dal processo</span>
+- <span style="color: #c1ff72; background: #333;"><b>Memoria "residente", ovvero lo spazio occupato in RAM dal processo</b></span>
 
-- <span style="color: #5ce1e6;">Pagine condivise dai processi (es. codice librerie)</span>
-</b>
+- <span style="color: #5ce1e6; background: #333;"><b>Pagine condivise dai processi (es. codice librerie)</b></span>
 
-</div>
 
 Linux utilizza una gestione della memoria del tipo **paginata** e **segmentata**.
 
