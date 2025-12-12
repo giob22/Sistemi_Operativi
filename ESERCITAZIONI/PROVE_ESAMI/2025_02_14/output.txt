@@ -1,0 +1,50 @@
+[MAIN] msq create:
+collettore: 38
+server: 39
+[COLLETTORE] Ricevuto valore=10 dal sensore 1
+[COLLETTORE] Ricevuto valore=16 dal sensore 2
+[COLLETTORE] Ricevuto valore=14 dal sensore 3
+[COLLETTORE] Inviato valore=13
+[COLLETTORE] Ricevuto valore=13 dal sensore 1
+[COLLETTORE] Ricevuto valore=11 dal sensore 2
+[COLLETTORE] Ricevuto valore=13 dal sensore 3
+[COLLETTORE] Inviato valore=12
+[COLLETTORE] Ricevuto valore=12 dal sensore 1
+[COLLETTORE] Ricevuto valore=12 dal sensore 2
+[COLLETTORE] Ricevuto valore=17 dal sensore 3
+[COLLETTORE] Inviato valore=13
+[COLLETTORE] Ricevuto valore=15 dal sensore 1
+[COLLETTORE] Ricevuto valore=10 dal sensore 2
+[COLLETTORE] Ricevuto valore=13 dal sensore 3
+[COLLETTORE] Inviato valore=12
+[COLLETTORE] Ricevuto valore=12 dal sensore 1
+[COLLETTORE] Ricevuto valore=12 dal sensore 2
+[COLLETTORE] Ricevuto valore=16 dal sensore 3
+[COLLETTORE] Inviato valore=13
+[MAIN] msq create:
+collettore: 38
+server: 39
+[SENSORE] Inviato valore=16
+[SENSORE] Inviato valore=11
+[SENSORE] Inviato valore=12
+[SENSORE] Inviato valore=10
+[SENSORE] Inviato valore=12
+[MAIN] msq create:
+collettore: 38
+server: 39
+[SENSORE] Inviato valore=14
+[SENSORE] Inviato valore=13
+[SENSORE] Inviato valore=17
+[SENSORE] Inviato valore=13
+[SENSORE] Inviato valore=16
+[MAIN] msq create:
+collettore: 38
+server: 39
+[SENSORE] Inviato valore=10
+[SENSORE] Inviato valore=13
+[SENSORE] Inviato valore=12
+[SENSORE] Inviato valore=15
+[SENSORE] Inviato valore=12
+[MAIN] msq create:
+collettore: 38
+server: 39

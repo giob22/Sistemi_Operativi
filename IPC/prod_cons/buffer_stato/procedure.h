@@ -5,7 +5,7 @@
 #define SPAZIO_DISP 0 // per gestire l'attesa dei prod
 
 #define MESS_DISP 1 // per gestire l'attesa dei cons
-// nel caso in cui abbiamo piú processi consumatori e produttori ho bisogno di gestire il loro accesso agli indici di testa e coda
+// nel caso in cui abbiamo piú processi consumatori e produttori ho bisogno di gestire il loro accesso al vettore di stato
 // altrimenti andremo incontro a RACE CONDITION
 #define MUTEX_C 2
 #define MUTEX_P 3
