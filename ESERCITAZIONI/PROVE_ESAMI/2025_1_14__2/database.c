@@ -97,6 +97,8 @@ int main() {
         pthread_join(threads[i], NULL);
     }
 
+    pthread_mutex_destroy(&(r->mutex));
+
 
 
     free(r->vettore);
@@ -157,6 +159,8 @@ void * worker(void * x) {
         msgsnd(p->msqid_res_2, &res_for_server, sizeof(messaggio_risposta) - sizeof(long), 0);
         pthread_mutex_unlock(&(r->mutex));
     }
+
+    free(p);
 
     return NULL;
 
