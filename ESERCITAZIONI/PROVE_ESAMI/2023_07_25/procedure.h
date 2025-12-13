@@ -1,6 +1,8 @@
 #ifndef _PROCEDURE_
 #define _PROCEDURE_
 
+// è un problema di lettori scrittori con starvation di entrambi
+
 #include <pthread.h>
 
 typedef struct {
@@ -9,6 +11,14 @@ typedef struct {
     int quantita;
 
     /* TBD: Aggiungere ulteriori variabili per la sincronizzazione */
+    int num_lettori; // lettori
+    int num_scrittori;
+    int num_scrittori_s;
+
+    pthread_mutex_t mutex;
+    pthread_cond_t cv_lett;
+    pthread_cond_t cv_scritt;
+    
 
 } MonitorPortafoglio;
 

@@ -15,13 +15,16 @@ int main() {
     MonitorPortafoglio * m[3];
 
     for(int i = 0; i<3; i++) {
-
         /* TBD: Creare ed inizializzare gli oggetti monitor */
-
+        m[i] = (MonitorPortafoglio*) malloc(sizeof(MonitorPortafoglio));
+        inizializza(m[i], QUANTITA_INIZIALE, VALORE_INIZIALE);
     }
 
 
     /* TBD: Creare il thread aggiornatore, passargli il vettore di oggetti monitor */
+    pthread_t aggiornatore;
+
+    // aggiungere gli attributi
 
 
     for(int i = 0; i<3; i++) {
