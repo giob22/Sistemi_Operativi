@@ -128,7 +128,7 @@ void * worker(void * x) {
         int posizione = /* TBD */req_from_server.pos;
         int pid_server = /* TBD */req_from_server.type;
 
-        printf("[DB] Ricevuta richiesta (tipo=%s, pid=%d, posizione=%d, valore=%d)\n", (tipo_richiesta == LETTURA) ? "LETTURA" : "SCRITTURA", pid_server, posizione, valore);
+        printf("[DB %ld] Ricevuta richiesta (tipo=%s, pid=%d, posizione=%d, valore=%d)\n", pthread_self(),(tipo_richiesta == LETTURA) ? "LETTURA" : "SCRITTURA", pid_server, posizione, valore);
 
 
         int valore_risposta;
@@ -150,6 +150,7 @@ void * worker(void * x) {
             printf("[DB] Tipo richiesta non valido\n");
         }
 
+        pthread_mutex_unlock(&(r->mutex));
 
 
         /* TBD: Inviare un messaggio di risposta, includendo la variabile "valore_risposta" */
@@ -157,7 +158,6 @@ void * worker(void * x) {
         res_for_server.valore = valore_risposta;
         res_for_server.type = pid_server;
         msgsnd(p->msqid_res_2, &res_for_server, sizeof(messaggio_risposta) - sizeof(long), 0);
-        pthread_mutex_unlock(&(r->mutex));
     }
 
     free(p);
