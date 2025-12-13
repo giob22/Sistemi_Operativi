@@ -1,6 +1,9 @@
 #ifndef _HEADER_H
 #define _HEADER_H
+#include <unistd.h>
 
+#define LETTURA 3
+#define SCRITTURA 4
 
 typedef struct {
 
@@ -8,6 +11,10 @@ typedef struct {
             La stessa struttura può essere usata sia per i messaggi dal client al server,
             sia per i messaggi dal server al database.
      */
+    long type;
+    int op;
+    int pos;
+    int valore;
 
 } messaggio_richiesta;
 
@@ -17,6 +24,9 @@ typedef struct {
             La stessa struttura può essere usata sia per i messaggi dal database al server,
             sia per i messaggi dal server al client.
      */
+    long type;
+    int valore;
+    
 
 } messaggio_risposta;
 
