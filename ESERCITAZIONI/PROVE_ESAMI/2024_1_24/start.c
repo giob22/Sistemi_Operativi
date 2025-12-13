@@ -61,5 +61,6 @@ int main() {
     msgctl(send_queue, IPC_RMID, NULL);
     msgctl(rcv_queue, IPC_RMID, NULL);
 
+    printf("[MAIN] applicazione terminata...\n");
     return 0;
 }

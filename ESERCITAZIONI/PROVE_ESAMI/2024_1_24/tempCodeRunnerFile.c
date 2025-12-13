@@ -1,1 +1,0 @@
-id_shm_invio
