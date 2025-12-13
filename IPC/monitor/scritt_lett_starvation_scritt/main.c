@@ -21,7 +21,7 @@ int main(){
     // inizializziamo la tutto il monitor
     buf->num_lettori = 0;
     // inizializziamo il monitor con 2 condition variable
-    init_monitor(&(buf->m), 1);
+    init_monitor(&(buf->m), 2);
 
     int num_lettori = 3;
     int num_scrittori = 1;

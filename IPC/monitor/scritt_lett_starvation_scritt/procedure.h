@@ -8,6 +8,7 @@
 // definiamo due identificatori, uno per ogni variabile condition
 
 #define VARCOND_LETTORI 0
+#define VARCOND_SCRITTORI 1
 
 
 
