@@ -471,7 +471,7 @@ valore raggiunto dal counter → 200000
 Nel caso togliessi il lock e l'unlock prima e dopo la modifica del buffer singolo otterrei un risultato del tipo:
 
 ```bash
-valore raggiunto dal counter → 115111
+valore raggiunto dal counter → 115121
 ```  
 
 Molto diverso rispetto a quello che mi sarei dovuto aspettare.
