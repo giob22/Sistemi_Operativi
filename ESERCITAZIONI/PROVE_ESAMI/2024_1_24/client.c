@@ -14,8 +14,19 @@ int main() {
 
     srand(getpid());
 
+    // RICORDA DI INVERTIRE LE CODE DI MESSAGGI LATO CLIENT
 
     /* TBD: Ottenere gli identificativi delle code di messaggi */
+    key_t key_send = ftok("./start.c", 'a');
+    key_t key_rcv = ftok("./start.c", 'b');
+    int send_queue=msgget(key_send, 0);
+    int rcv_queue=msgget(key_rcv, 0);
+
+
+    	printf("[CLIENT] %d    %d\n", send_queue,rcv_queue);
+
+
+
 
 	
      if(send_queue<0){
@@ -37,19 +48,25 @@ int main() {
     printf("[CLIENT %d] Invio richiesta (num. valori: %d)\n", getpid(), num_valori);
 
     /* TBD: Inviare il messaggio di richiesta */
+
+    req.pid = getpid();
+    req.valori = num_valori;
+
+    msgsnd(send_queue, &req, sizeof(msg_init_request) - sizeof(long), 0);
     
 	
-
     /* TBD: Ricevere il messaggio di risposta */
+    
+    msgrcv(rcv_queue, &res, sizeof(msg_init_response) - sizeof(long), getpid(), 0);
     
     printf("[CLIENT %d] Ricevuto risposta\n", getpid());
 
 
-    int id_shm_invio =/* TBD */;
-    int id_sem_invio =/* TBD */;
+    int id_shm_invio =res.id_shm_invio/* TBD */;
+    int id_sem_invio =res.id_sem_invio/* TBD */;
 
-    int id_shm_ricezione =/* TBD */;
-    int id_sem_ricezione =/* TBD */;
+    int id_shm_ricezione =res.id_shm_ricezione/* TBD */;
+    int id_sem_ricezione =res.id_sem_ricezione/* TBD */;
     
 	prodcons* p1;
 	prodcons* p2;

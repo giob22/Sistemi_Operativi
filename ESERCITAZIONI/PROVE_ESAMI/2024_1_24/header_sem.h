@@ -12,6 +12,8 @@
 #define MUTEXP 2
 #define MUTEXC 3
 
+#define NUM_CLIENT 2
+
 typedef struct prodcons {
 
     /* TBD: Definire la struttura con 
@@ -20,9 +22,10 @@ typedef struct prodcons {
             su shared memory UNIX
             
      */
-     
-    
-     
+
+    int buffer[DIM];
+
+    int testa,coda;
     
 } prodcons;
 

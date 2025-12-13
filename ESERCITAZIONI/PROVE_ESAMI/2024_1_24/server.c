@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/types.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sys/ipc.h>
@@ -11,16 +12,21 @@
 #include "header_sem.h"
 
 
-void server(/* TBD: Completare il passaggio di parametri */);
+void server(prodcons* p1,prodcons* p2, int val, int id_sem1, int id_sem2/* TBD: Completare il passaggio di parametri */);
 
 
 int main() {
 
 
     /* TBD: Ottenere gli identificativi delle code di messaggi */
-	
-	
 
+	key_t key_send = ftok("./start.c", 'a');
+    key_t key_rcv = ftok("./start.c", 'b');
+    int send_queue=msgget(key_send, 0);
+    int rcv_queue=msgget(key_rcv, 0);
+
+
+	printf("[SERVER] %d    %d\n", send_queue,rcv_queue);
 
     for(int richieste=0; richieste<2; richieste++) {
 
@@ -29,10 +35,12 @@ int main() {
 
 
         /* TBD: ricevere un messaggio dal client */
+		// riceve qualsiasi richiesta, da qualsiasi client
+		msgrcv(rcv_queue, &req, sizeof(msg_init_request) - sizeof(long), 0, 0);
        
 
-        int num_valori =/* TBD */;
-        int pid_client =/* TBD */;
+        int num_valori =req.valori;
+        int pid_client = req.pid;
 
         printf("[SERVER %d] Ricezione richiesta (num. valori: %d)\n", getpid(), num_valori);
 
@@ -40,12 +48,19 @@ int main() {
         /* TBD: Allocare e inizializzare le risorse che saranno condivise
                 tra il client e il processo server figlio
          */
-		
-        int id_sem_invio =/* TBD */;
-        int id_shm_invio =/* TBD */;
 
-        int id_sem_ricezione =/* TBD */;
-        int id_shm_ricezione =/* TBD */;
+		key_t ksem1 = ftok("./server.c", (char)(richieste + 1));
+		key_t ksem2 = ftok("./procedure.c", (char)(richieste + 1));
+		key_t kshm1 = ftok("./procedure.h", (char)(richieste + 1));
+		key_t kshm2 = ftok("./client.c", (char)(richieste + 1));
+
+		
+        int id_sem_invio = semget(ksem1, 4, IPC_CREAT | 0664);
+        int id_shm_invio = shmget(kshm1, sizeof(prodcons), IPC_CREAT | 0664);
+
+        int id_sem_ricezione = semget(ksem2, 4, IPC_CREAT | 0664);
+        int id_shm_ricezione = shmget(kshm2, sizeof(prodcons), IPC_CREAT | 0664);
+
 
 		if(id_shm_invio<0){
 			perror("Errore nel descrittore shared memory lato server\n");
@@ -69,24 +84,30 @@ int main() {
 		
 		}
 		
-		semctl(sem1, SPAZIO_DISPONIBILE, SETVAL, DIM);
-		semctl(sem1, MESSAGGIO_DISPONIBILE, SETVAL, 0);
-		semctl(sem1, MUTEXP, SETVAL, 1);
-		semctl(sem1, MUTEXC, SETVAL, 1);
+		semctl(id_sem_invio, SPAZIO_DISPONIBILE, SETVAL, DIM);
+		semctl(id_sem_invio, MESSAGGIO_DISPONIBILE, SETVAL, 0);
+		semctl(id_sem_invio, MUTEXP, SETVAL, 1);
+		semctl(id_sem_invio, MUTEXC, SETVAL, 1);
 		
-		semctl(sem2, SPAZIO_DISPONIBILE, SETVAL, DIM);
-		semctl(sem2, MESSAGGIO_DISPONIBILE, SETVAL, 0);
-		semctl(sem2, MUTEXP, SETVAL, 1);
-		semctl(sem2, MUTEXC, SETVAL, 1);
+		semctl(id_sem_ricezione, SPAZIO_DISPONIBILE, SETVAL, DIM);
+		semctl(id_sem_ricezione, MESSAGGIO_DISPONIBILE, SETVAL, 0);
+		semctl(id_sem_ricezione, MUTEXP, SETVAL, 1);
+		semctl(id_sem_ricezione, MUTEXC, SETVAL, 1);
 
         /* TBD: Inviare il messaggio di risposta al client, 
                 con gli identificativi delle risorse condivise
          */
-        
+
+		res.type = pid_client;
+		
+		res.id_shm_invio = id_shm_invio;
+		res.id_sem_invio = id_sem_invio;
+		res.id_shm_ricezione = id_shm_ricezione;
+		res.id_sem_ricezione = id_sem_ricezione;
 
         printf("[SERVER %d] Inviato risposta\n", getpid());
 
-    	ret=msgsnd(rcv_queue, &res, sizeof(msg_init_response)-sizeof(long), 0);
+    	int ret=msgsnd(rcv_queue, &res, sizeof(msg_init_response)-sizeof(long), 0);
     	if(ret<0){
     		perror("Errore nella send lato server\n");
     		exit(1);
@@ -105,9 +126,18 @@ int main() {
         /* TBD: Creare un processo server figlio, e
                 passargli i riferimenti alle risorse condivise
          */
-        
 
+		pid_t pid = fork();
+		if (pid == 0) {
+			server(p1, p2, num_valori, id_sem_invio, id_sem_ricezione);
+			exit(0);
+		}
+
+		shmctl(id_shm_invio,IPC_RMID, NULL);
+		shmctl(id_shm_ricezione,IPC_RMID, NULL);
     }
+
+	
 
 }
 
@@ -115,7 +145,7 @@ int main() {
 
 void server(prodcons* p1,prodcons* p2, int val, int id_sem1, int id_sem2) {
 
-    int num_valori = /* TBD */;
+    int num_valori = val;
 
     for(int i=0; i<num_valori; i++) {
 
