@@ -1,3 +1,5 @@
+#include <complex.h>
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -7,12 +9,17 @@
 #define QUANTITA_INIZIALE 500
 #define VALORE_INIZIALE 100
 
-void * aggiornatore(void *);
-void * azionista(void *);
+void * aggiornatore(void * x);
+void * azionista(void * x);
 
 int main() {
 
-    MonitorPortafoglio * m[3];
+    MonitorPortafoglio ** m = (MonitorPortafoglio**) malloc(sizeof(MonitorPortafoglio) * 3);
+
+    pthread_attr_t attr;
+    pthread_attr_init(&attr);
+    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
+
 
     for(int i = 0; i<3; i++) {
         /* TBD: Creare ed inizializzare gli oggetti monitor */
@@ -22,36 +29,48 @@ int main() {
 
 
     /* TBD: Creare il thread aggiornatore, passargli il vettore di oggetti monitor */
-    pthread_t aggiornatore;
+    pthread_t agg;
 
-    // aggiungere gli attributi
+    pthread_create(&agg, &attr, aggiornatore, (void*)m);
 
-
+    pthread_t azi[3];
     for(int i = 0; i<3; i++) {
-            
+
+        pthread_create(&azi[i], &attr, azionista, (void*)m[i]);
         /* TBD: Creare i thread azionisti, passando a ognuno uno degli oggetti monitor */
     }
 
 
     /* TBD: Attendere la terminazione del thread aggiornatore */
+    pthread_join(agg, NULL);
 
     for(int i = 0; i<3; i++) {
-
+        pthread_join(azi[i], NULL);
         /* TBD: Attendere la terminazione dei thread azionisti, deallocare gli oggetti */
     }
 
+
+    // Devo deallocare tutto e eliminare i monitor e le cv di ogni portafoglio
+    for (int i = 0; i < 3; i++) {
+        termina(m[i]);
+        free(m[i]);
+    }
+    free(m);
+    printf("[MAIN] terminato con successo\n");
 
     return 0;
 }
 
 
 
-void * aggiornatore(void *) {
+void * aggiornatore(void * x) {
 
     /* TBD: Gestire il passaggio dei parametri
 
         Suggerimento: Dichiarare l'array di oggetti con la sintassi "MonitorPortafoglio ** m = ..." 
     */
+
+    MonitorPortafoglio ** m = (MonitorPortafoglio**)x;
 
     for(int i=0; i<10; i++) {
 
@@ -63,6 +82,7 @@ void * aggiornatore(void *) {
 
             
             /* TBD: Invocare il metodo "aggiorna" sull'oggetto monitor */
+            aggiorna(m[j],valore);
         }
 
         sleep(1);
@@ -73,9 +93,10 @@ void * aggiornatore(void *) {
     for(int j=0; j<3; j++) {
 
         /* TBD: Invocare il metodo "aggiorna" sull'oggetto monitor, con valore 200 */
+        aggiorna(m[j], 200);
 
         sleep(1);
-
+        aggiorna(m[j], 0);
         /* TBD: Invocare il metodo "aggiorna" sull'oggetto monitor, con valore 0 */
     }
 
@@ -83,17 +104,21 @@ void * aggiornatore(void *) {
 }
 
 
-void * azionista(void *) {
+void * azionista(void *x) {
 
     /* TBD: Gestire il passaggio dei parametri */
+
+    MonitorPortafoglio* m = (MonitorPortafoglio*)x; 
 
 
     printf("[AZIONISTA] Richiesta di vendita azioni, prezzo offerto 105\n");
 
     /* TBD: Invocare il metodo "vendita" sull'oggetto monitor, con valore 105 e quantità 50 */
 
+    vendita(m, 50, 105);
 
-    int valore = /* TBD: Invocare il metodo "leggi" */;
+
+    int valore = leggi(m)/* TBD: Invocare il metodo "leggi" */;
 
     printf("[AZIONISTA] Vendita effettuata, valore attuale %d\n", valore);
 
@@ -101,9 +126,9 @@ void * azionista(void *) {
     printf("[AZIONISTA] Richiesta di acquisto azioni, prezzo offerto 95\n");
 
     /* TBD: Invocare il metodo "acquisto" sull'oggetto monitor, con valore 95 e quantità 50 */
+    acquisto(m, 50, 95);
 
-
-    valore = /* TBD: Invocare il metodo "leggi" */;
+    valore = leggi(m)/* TBD: Invocare il metodo "leggi" */;
 
     printf("[AZIONISTA] Acquisto effettuato, valore attuale %d\n", valore);
 
