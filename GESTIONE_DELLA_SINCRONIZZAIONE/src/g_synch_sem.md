@@ -116,7 +116,7 @@ Sono necessari `4` semafori per gestire tale sincronizzazione:
 4) per gestire la mutua esclusione sul vettore di stato tra consumatori per la **ricerca del buffer occupato**.
 
 ```c
-#define SPAZIO_DISP 0
+#define SPAZIO_DISP DIM_BUFFER
 #define MESS_DISP 1
 #define MUTEXP 2
 #define MUTEXC 3
