@@ -17,7 +17,12 @@ typedef struct {
 	int buffer[DIM];
 	
 	// TODO: inserire i campi necessari alla gestione della coda circolare
-	} MonitorRisultati;
+
+	int testa,coda, dim;
+
+	Monitor m;
+
+} MonitorRisultati;
 
 
 void inserisci_risultato(MonitorRisultati * ls, int valore);
@@ -26,6 +31,8 @@ int stampa_risultati(MonitorRisultati * ls);
 typedef struct {
 	
 	// TODO: inserire i campi che costituiscono il messaggio da inviare
+	long type;
+	int val;
 		
 } Messaggio;
 
