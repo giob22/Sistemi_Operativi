@@ -1,72 +1,94 @@
-Bambino 34457 sta scrivendo la letterina...
-Invio lettera a Babbo Natale chiedendo 2 regali
+Ho ricevuto una letterina! Sono richiesti 2 regali
+Il totale dei regali richiesti finora è: 2
+Ho ricevuto una letterina! Sono richiesti 2 regali
+Ho ricevuto una letterina! Sono richiesti 4 regali
+[Lettore] Il totale di regali da consegnare è: 2
+Ho inviato conferma di ricezione al bambino
+[Lettore] Il totale di regali da consegnare è: 2
+Ho inviato conferma di ricezione al bambino
+[Lettore] Il totale di regali da consegnare è: 2
+Ho inviato conferma di ricezione al bambino
+Il totale dei regali richiesti finora è: 4
+Il totale dei regali richiesti finora è: 8
+Ho ricevuto una letterina! Sono richiesti 4 regali
+Ho ricevuto una letterina! Sono richiesti 2 regali
+Il totale dei regali richiesti finora è: 12
+Ho ricevuto una letterina! Sono richiesti 3 regali
+[Lettore] Il totale di regali da consegnare è: 12
+Ho inviato conferma di ricezione al bambino
+[Lettore] Il totale di regali da consegnare è: 12
+Ho inviato conferma di ricezione al bambino
+[Lettore] Il totale di regali da consegnare è: 12
+Ho inviato conferma di ricezione al bambino
+Il totale dei regali richiesti finora è: 14
+Il totale dei regali richiesti finora è: 17
+Ho ricevuto una letterina! Sono richiesti 3 regali
+Il totale dei regali richiesti finora è: 20
+Ho ricevuto una letterina! Sono richiesti 2 regali
+Ho ricevuto una letterina! Sono richiesti 5 regali
+[Lettore] Il totale di regali da consegnare è: 20
+Ho inviato conferma di ricezione al bambino
+[Lettore] Il totale di regali da consegnare è: 20
+[Lettore] Il totale di regali da consegnare è: 20
+Ho inviato conferma di ricezione al bambino
+Ho inviato conferma di ricezione al bambino
+Il totale dei regali richiesti finora è: 22
+Il totale dei regali richiesti finora è: 27
+Ho ricevuto una letterina! Sono richiesti 3 regali
+Ho ricevuto una letterina! Sono richiesti 4 regali
+Il totale dei regali richiesti finora è: 30
+Ho ricevuto una letterina! Sono richiesti 5 regali
+[Lettore] Il totale di regali da consegnare è: 30
+Ho inviato conferma di ricezione al bambino
+[Lettore] Il totale di regali da consegnare è: 30
+Ho inviato conferma di ricezione al bambino
+[Lettore] Il totale di regali da consegnare è: 30
+Ho inviato conferma di ricezione al bambino
+Il totale dei regali richiesti finora è: 34
+Il totale dei regali richiesti finora è: 39
+Ho ricevuto una letterina! Sono richiesti 4 regali
+Ho ricevuto una letterina! Sono richiesti 3 regali
+Il totale dei regali richiesti finora è: 43
+Ho ricevuto una letterina! Sono richiesti 2 regali
+[Lettore] Il totale di regali da consegnare è: 43
+[Lettore] Il totale di regali da consegnare è: 43
+Ho inviato conferma di ricezione al bambino
+Ho inviato conferma di ricezione al bambino
+[Lettore] Il totale di regali da consegnare è: 43
+Ho inviato conferma di ricezione al bambino
+Il totale dei regali richiesti finora è: 46
+Il totale dei regali richiesti finora è: 48
+Bambino 40385 sta scrivendo la letterina...
+Invio lettera a Babbo Natale chiedendo 4 regali
+Ho ricevuto la conferma di ricezione!
+Invio lettera a Babbo Natale chiedendo 3 regali
 Ho ricevuto la conferma di ricezione!
 Invio lettera a Babbo Natale chiedendo 5 regali
 Ho ricevuto la conferma di ricezione!
 Invio lettera a Babbo Natale chiedendo 4 regali
 Ho ricevuto la conferma di ricezione!
-Invio lettera a Babbo Natale chiedendo 1 regali
+Invio lettera a Babbo Natale chiedendo 3 regali
 Ho ricevuto la conferma di ricezione!
+Bambino 40383 sta scrivendo la letterina...
 Invio lettera a Babbo Natale chiedendo 2 regali
-Ho ricevuto la conferma di ricezione!
-Bambino 34455 sta scrivendo la letterina...
-Invio lettera a Babbo Natale chiedendo 1 regali
-Ho ricevuto la conferma di ricezione!
-Invio lettera a Babbo Natale chiedendo 1 regali
 Ho ricevuto la conferma di ricezione!
 Invio lettera a Babbo Natale chiedendo 4 regali
 Ho ricevuto la conferma di ricezione!
-Invio lettera a Babbo Natale chiedendo 1 regali
-Ho ricevuto la conferma di ricezione!
-Invio lettera a Babbo Natale chiedendo 3 regali
-Ho ricevuto la conferma di ricezione!
-Bambino 34567 sta scrivendo la letterina...
-Invio lettera a Babbo Natale chiedendo 2 regali
-Bambino 34456 sta scrivendo la letterina...
 Invio lettera a Babbo Natale chiedendo 3 regali
 Ho ricevuto la conferma di ricezione!
 Invio lettera a Babbo Natale chiedendo 3 regali
-Ho ricevuto la conferma di ricezione!
-Invio lettera a Babbo Natale chiedendo 2 regali
-Ho ricevuto la conferma di ricezione!
-Invio lettera a Babbo Natale chiedendo 1 regali
-Ho ricevuto la conferma di ricezione!
-Invio lettera a Babbo Natale chiedendo 1 regali
-Ho ricevuto la conferma di ricezione!
-Bambino 34569 sta scrivendo la letterina...
-Invio lettera a Babbo Natale chiedendo 1 regali
-Bambino 34455 sta scrivendo la letterina...
-Invio lettera a Babbo Natale chiedendo 1 regali
-Ho ricevuto la conferma di ricezione!
-Invio lettera a Babbo Natale chiedendo 1 regali
 Ho ricevuto la conferma di ricezione!
 Invio lettera a Babbo Natale chiedendo 4 regali
 Ho ricevuto la conferma di ricezione!
-Invio lettera a Babbo Natale chiedendo 1 regali
-Ho ricevuto la conferma di ricezione!
-Invio lettera a Babbo Natale chiedendo 3 regali
-Ho ricevuto la conferma di ricezione!
-Bambino 34568 sta scrivendo la letterina...
-Invio lettera a Babbo Natale chiedendo 1 regali
-Bambino 34456 sta scrivendo la letterina...
-Invio lettera a Babbo Natale chiedendo 3 regali
-Ho ricevuto la conferma di ricezione!
-Invio lettera a Babbo Natale chiedendo 3 regali
+Bambino 40384 sta scrivendo la letterina...
+Invio lettera a Babbo Natale chiedendo 2 regali
 Ho ricevuto la conferma di ricezione!
 Invio lettera a Babbo Natale chiedendo 2 regali
 Ho ricevuto la conferma di ricezione!
-Invio lettera a Babbo Natale chiedendo 1 regali
+Invio lettera a Babbo Natale chiedendo 2 regali
 Ho ricevuto la conferma di ricezione!
-Invio lettera a Babbo Natale chiedendo 1 regali
+Invio lettera a Babbo Natale chiedendo 5 regali
 Ho ricevuto la conferma di ricezione!
-Bambino 34455 sta scrivendo la letterina...
-Invio lettera a Babbo Natale chiedendo 1 regali
+Invio lettera a Babbo Natale chiedendo 2 regali
 Ho ricevuto la conferma di ricezione!
-Invio lettera a Babbo Natale chiedendo 1 regali
-Ho ricevuto la conferma di ricezione!
-Invio lettera a Babbo Natale chiedendo 4 regali
-Ho ricevuto la conferma di ricezione!
-Invio lettera a Babbo Natale chiedendo 1 regali
-Ho ricevuto la conferma di ricezione!
-Invio lettera a Babbo Natale chiedendo 3 regali
-Ho ricevuto la conferma di ricezione!
+FINE APPLICAZIONE

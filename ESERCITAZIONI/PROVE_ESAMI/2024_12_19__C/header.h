@@ -12,23 +12,26 @@
     TODO: completare le strutture necessarie per lo scambio di messaggi
 */
 
-typedef struct {
+typedef struct
+{
 
     long type;
     int numero_regali;
 
 } MessaggioRichiesta;
 
-typedef struct {
+typedef struct
+{
 
     long type;
 
 } MessaggioRisposta;
 
-typedef struct {
-/*
-    TODO: completare la struttura per risolvere il problema lettori-scrittori
-*/
+typedef struct
+{
+    /*
+        TODO: completare la struttura per risolvere il problema lettori-scrittori
+    */
     int totale_regali;
 
     int num_lettori;
