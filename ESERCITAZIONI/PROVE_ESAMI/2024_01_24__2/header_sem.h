@@ -5,11 +5,19 @@
 #include <sys/ipc.h>
 #include <sys/sem.h>
 
+
+#define SYNCH 0
+#define MUTEXL 1 
+
 typedef struct {
 
     /* TBD: Completare la struttura con le variabili
             necessarie per lo schema lettori-scrittori
      */
+
+    int buffer;
+
+    int num_lettori;
 
 } lettscritt;
 
