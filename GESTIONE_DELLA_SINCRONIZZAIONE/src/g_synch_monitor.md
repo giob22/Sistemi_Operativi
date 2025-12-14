@@ -285,8 +285,10 @@ Il monitor dovrà essere inizializzato con due condition variales.
 Si utilizza una struttura dati di questo tipo:
 
 ```c
-#define CV_LETT 0
-#define CV_SCRITT 1
+#define SYNCH 0 // gestire la cooperazione tra scrittori e lettori
+#define MUTEX 1 // gestire la mutua esclusione tra scrittori
+#define MUTEXL 2
+#define MUREXS 3
 
 typedef struct {
   int buffer;
@@ -306,3 +308,4 @@ Il monitor in questo caso deve essere inizializzato con due condition variables:
 Però è importante considerare che in questo caso il dato non è consumato, ciò significa che possono leggere contemporaneamente più processi lettori.
 
 
+  
