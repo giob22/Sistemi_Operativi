@@ -44,14 +44,15 @@ int main()
         {
             printf("La coda già esiste\n");
         }*/
-        
         queue_rts = msgget(key_rts, 0);
     }else{
         // errno = EEXIST, ovvero la coda già esiste
+        // però ha creato una coda la prima chiamata, quindi devo eliminarla
+        msgctl(queue_rts, IPC_RMID, NULL);
+        printf("%d\n", queue_rts);
         perror("msgget queue_rts");
         exit(1);
     }
-    exit(0);
     
 
     int queue_ots = msgget(key_ots, 0);
