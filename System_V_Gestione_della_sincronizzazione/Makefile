@@ -10,4 +10,4 @@ publish:
 	git add . &&\
 	git commit -m "aggiornamento automatico per appunti" &&\
 	git push &&\
-	cd ~/Desktop/SO/Sistemi_Operativi/SYSTEM_V_GESTIONE_DELLA_SINCRONIZZAIONE
+	cd ~/Desktop/SO/Sistemi_Operativi/System_V_Gestione_della_sincronizzazione
