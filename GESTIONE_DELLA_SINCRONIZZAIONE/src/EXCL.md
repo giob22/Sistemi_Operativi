@@ -10,7 +10,7 @@ Come verificare se una coda è stata già creata o meno. Per farlo abbiamo diver
     if (queue < 0){
         // oppure queue == -1
         // errno = EEXIST se la coda già esiste
-        if (errno = EEXIST){
+        if (errno == EEXIST){
             queue = msgget(key, 0);
         }else{
             // qualsiasi altro errore che ha portato in fallimento l'operazione
