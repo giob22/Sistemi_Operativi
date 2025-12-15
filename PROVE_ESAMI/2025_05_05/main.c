@@ -13,7 +13,7 @@
 int main(){
 	//ottenimento e attach shared memory
 	key_t key_shm;
-	key_shm = ftok("-/main.c", 'a')/*TODO*/;
+	key_shm = ftok("./main.c", 'a')/*TODO*/;
 
 	int ds_shm = shmget(key_shm, sizeof(struct Coda), IPC_CREAT | 0664) /*TODO*/;
 
