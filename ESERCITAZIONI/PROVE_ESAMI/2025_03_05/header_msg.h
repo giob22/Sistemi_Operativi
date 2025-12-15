@@ -7,14 +7,13 @@
 /* TBD: Completare la definizione delle strutture per i messaggi.
         È possibile definire in questo file delle costanti con la direttiva "define" 
  */
-
-#define OTS 1
-#define RTS 2
-#define TYPE 3
+#define OK_TO_SEND 90
+#define REQUEST_TO_SEND 99
+#define MESSAGE 66
 
 struct richiesta {
     long type;
-    int valore; // valore casuale
+    int value;
     /* TBD */
 };
 

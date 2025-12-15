@@ -5,52 +5,52 @@
 
 #include "header_msg.h"
 
-int main()
-{
-
-    /* Disabilita il buffering su stdout e stderr per scritture immediate */
-    setvbuf(stdout, NULL, _IONBF, 0);
-    setvbuf(stderr, NULL, _IONBF, 0);
+int main() {
 
     /* TBD: Creare le code di messaggi per la send sincrona*/
+    key_t key_rts = ftok(".", 'a');
+    key_t key_ots = ftok(".", 'b');
+    key_t key_req = ftok(".", 'c');
 
-    key_t kq1 = ftok(".start.c", 'a');
-    key_t kq2 = ftok(".start.c", 'b');
-    key_t kq3 = ftok("./start.c", 'c');
-
-    // creo le tre code di messaggi
-
-    int request = msgget(kq1, IPC_CREAT | 0664);
-    int ok_to_send = msgget(kq2, IPC_CREAT | 0664);
-    int msqid = msgget(kq3, IPC_CREAT | 0664);
-
-    pid_t pid;
-
+    int msqid_rts = msgget(key_rts, IPC_CREAT | 0664);
+    int msqid_ots = msgget(key_ots, IPC_CREAT | 0664);
+    int msqid_req = msgget(key_req, IPC_CREAT | 0664);
     /* TBD: Creare un processo figlio, ed eseguire il programma "server" */
+    pid_t pid;
     pid = fork();
     if (pid == 0)
     {
         execl("./server", "server", NULL);
-        perror("Errore della exec\n");
-        exit(-1);
+        perror("errore nella exec\n");
+        exit(1);
     }
-
+    
+    
+    
     /* TBD: Creare un processo figlio, ed eseguire il programma "client" */
     pid = fork();
     if (pid == 0)
     {
         execl("./client", "client", NULL);
-        perror("Errore della exec\n");
-        exit(-1);
+        perror("errore nella exec\n");
+        exit(1);
     }
+    
 
     /* TBD: Attendere la terminazione dei processi figli */
-    wait(NULL);
-    wait(NULL);
+    for (int  i = 0; i < 2; i++)
+    {
+        wait(NULL);
+    }
+    
+
 
     /* TBD: Eliminare le code di messaggi */
+    msgctl(msqid_rts, IPC_RMID, NULL);
+    msgctl(msqid_ots, IPC_RMID, NULL);
+    msgctl(msqid_req, IPC_RMID, NULL);   
+    printf("FINE APPLICAZIONE....\n"); 
+    return 0;
 
-    msgctl(request, IPC_RMID, NULL);
-    msgctl(msqid, IPC_RMID, NULL);
-    msgctl(ok_to_send, IPC_RMID, NULL);
+
 }

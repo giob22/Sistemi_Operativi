@@ -1,56 +1,117 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/wait.h>
+#include <errno.h>
 
 #include "header_msg.h"
 
-int main()
-{
-
-    /* Disabilita il buffering su stdout e stderr per scritture immediate */
-    setvbuf(stdout, NULL, _IONBF, 0);
-    setvbuf(stderr, NULL, _IONBF, 0);
+int main() {
 
     /* TBD: Ottenere gli identificativi delle code di messaggi */
-    key_t kq1 = ftok(".start.c", 'a');
-    key_t kq2 = ftok(".start.c", 'b');
-    key_t kq3 = ftok("./start.c", 'c');
+    key_t key_rts = ftok(".", 'a');
+    key_t key_ots = ftok(".", 'b');
+    key_t key_req = ftok(".", 'c');
 
-    int request = msgget(kq1, IPC_CREAT | 0664);
-    int ok_to_send = msgget(kq2, IPC_CREAT | 0664);
-    int msqid = msgget(kq3, IPC_CREAT | 0664);
+    int msqid_rts = msgget(key_rts, IPC_CREAT | IPC_EXCL | 0664);
+    if (msqid_rts < 0)
+    {
+        // significa che la coda già esiste e non ha potuto crearla in esclusiva
+        if (errno == EEXIST)
+        {
+            // faccio l'attach alla coda esistente
+            msqid_rts = msgget(key_rts, 0);
+        }else{
+            perror("ERRORE");
+            exit(2);
+        }
+    }else{
+        // se crea la coda significa che non è stata creata in precedenza dal processo start, quindi faccio terminare il processo
+        msgctl(msqid_rts, IPC_RMID, NULL);
+        perror("ERRORE");
+        exit(2);
+    }
+    
+    int msqid_ots = msgget(key_ots, IPC_CREAT | IPC_EXCL | 0664);
+    if (msqid_ots < 0)
+    {
+        // significa che la coda già esiste e non ha potuto crearla in esclusiva
+        if (errno == EEXIST)
+        {
+            // faccio l'attach alla coda esistente
+            msqid_ots = msgget(key_ots, 0);
+        }else{
+            perror("ERRORE");
+            exit(2);
+        }
+    }else{
+        // se crea la coda significa che non è stata creata in precedenza dal processo start, quindi faccio terminare il processo
+        msgctl(msqid_ots, IPC_RMID, NULL);
+        perror("ERRORE");
+        exit(2);
+    }
+    int msqid_req = msgget(key_req, IPC_CREAT | IPC_EXCL | 0664);
+    if (msqid_req < 0)
+    {
+        // significa che la coda già esiste e non ha potuto crearla in esclusiva
+        if (errno == EEXIST)
+        {
+            // faccio l'attach alla coda esistente
+            msqid_req = msgget(key_req, 0);
+        }else{
+            perror("ERRORE");
+            exit(2);
+        }
+    }else{
+        // se crea la coda significa che non è stata creata in precedenza dal processo start, quindi faccio terminare il processo
+        msgctl(msqid_req, IPC_RMID, NULL);
+        perror("ERRORE");
+        exit(2);
+    }
+    
+
 
     srand(getpid());
 
-    for (int i = 0; i < 3; i++)
-    {
+    for(int i=0; i<3; i++) {
 
         struct richiesta r;
         struct rts rts;
         struct ots ots;
 
         /* TBD: Inviare il messaggio "request to send" */
-        rts.type = RTS;
-        msgsnd(request, &rts, sizeof(struct rts) - sizeof(long), 0);
-
+        rts.type = REQUEST_TO_SEND;
+        int ret = msgsnd(msqid_rts, &rts, sizeof(struct rts) - sizeof(long), 0);
+        if (ret < 0)
+        {
+            perror("Errore");
+            exit(3);
+        }
         printf("[CLIENT] Inviato messaggio RTS\n");
 
-        // attendo la ricezione di un OTS
-        msgrcv(ok_to_send, &ots, sizeof(struct ots) - sizeof(long), OTS, 0);
 
+
+        
         /* TBD: Ricevere il messaggio "ok to send" */
-
+        ret = msgrcv(msqid_ots, &ots, sizeof(struct ots)- sizeof(long), OK_TO_SEND, 0);
+        if (ret < 0)
+        {
+            perror("Errore");
+            exit(3);
+        }
         printf("[CLIENT] Ricevuto messaggio OTS\n");
 
+
         int valore = rand() % 10;
-
-        r.type = TYPE;
-        r.valore = valore;
-
+        r.type = MESSAGE;
+        r.value = valore;
         /* TBD: Inviare un messaggio con il valore */
-        msgsnd(msqid, &r, sizeof(struct richiesta) - sizeof(long), 0);
-
+        ret = msgsnd(msqid_req, &r, sizeof(struct richiesta) - sizeof(long), 0);
+        if (ret < 0)
+        {
+            perror("Errore");
+            exit(3);
+        }
         printf("[CLIENT] Inviato messaggio MSG con valore %d\n", valore);
+
     }
 }
