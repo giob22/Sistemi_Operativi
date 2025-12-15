@@ -8,10 +8,28 @@
 
 // Variabili per la sincronizzazione
 
+#define CV_CONS 0
+#define CV_PROD 1
+
+#define MUTEX 0
+
 // struttura per risolvere il problema prod-cons
 
+typedef struct{
+
+    int buffer[DIM];
+
+    int dim,coda,testa;
+
+    Monitor m;
+} VettoreProdCons;
 
 // struttura per la gestione in mutua esclusione del buffer
+typedef struct{
+    int buffer;
+
+    int semid;
+} BufferMutuaEsclusione;
 
 void inizializza_vettore(VettoreProdCons * p);
 void produci(VettoreProdCons * p, int valore);
