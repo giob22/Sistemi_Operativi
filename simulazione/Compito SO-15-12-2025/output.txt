@@ -1,0 +1,66 @@
+[master] Coda ds_queue_buyer_control_oro creata! ID: 8
+[master] Coda ds_queue_buyer_control_argento creata! ID: 9
+[report] Coda ds_queue_buyer_control_oro ID: 8
+[report] Coda ds_queue_buyer_control_argento ID: 9
+Thread ORO - Quotazione SCRITTO = 1218 
+Thread ARGENTO - Quotazione SCRITTO = 1354 
+Thread ORO - Quotazione SCRITTO = 1957 
+Thread ARGENTO - Quotazione SCRITTO = 1069 
+Thread ORO - Quotazione SCRITTO = 1267 
+Thread ARGENTO - Quotazione SCRITTO = 1229 
+Thread ORO - Quotazione SCRITTO = 1182 
+Thread ARGENTO - Quotazione SCRITTO = 1266 
+Thread ORO - Quotazione SCRITTO = 1931 
+Thread ARGENTO - Quotazione SCRITTO = 1294 
+[buyer] Coda ds_queue_buyer_control_oro ID: 8
+[buyer] Coda ds_queue_buyer_control_argento ID: 9
+Thread ORO - Quotazione LETTA = 1931 
+Thread ORO - Quotazione SCRITTO = 1109 
+Thread ARGENTO - Quotazione SCRITTO = 1434 
+Thread ORO - Quotazione SCRITTO = 1944 
+Thread ARGENTO - Quotazione SCRITTO = 1104 
+Thread ORO - Quotazione SCRITTO = 1550 
+Thread ARGENTO - Quotazione SCRITTO = 1168 
+Thread ORO - Quotazione SCRITTO = 1746 
+Thread ARGENTO - Quotazione SCRITTO = 1384 
+Thread ORO - Quotazione SCRITTO = 1453 
+Thread ARGENTO - Quotazione SCRITTO = 1393 
+[buyer] Coda ds_queue_buyer_control_oro ID: 8
+[buyer] Coda ds_queue_buyer_control_argento ID: 9
+Thread ORO - Quotazione LETTA = 1453 
+[buyer] Coda ds_queue_buyer_control_oro ID: 8
+[buyer] Coda ds_queue_buyer_control_argento ID: 9
+Thread ORO - Quotazione LETTA = 1453 
+seller_threads 1 terminato
+seller_threads 2 terminato
+[buyer] Coda ds_queue_buyer_control_oro ID: 8
+[buyer] Coda ds_queue_buyer_control_argento ID: 9
+Thread ORO - Quotazione LETTA = 1453 
+[buyer] Coda ds_queue_buyer_control_oro ID: 8
+[buyer] Coda ds_queue_buyer_control_argento ID: 9
+Thread ORO - Quotazione LETTA = 1453 
+Thread ARGENTO - Quotazione LETTA = 1393 
+Thread ARGENTO - Quotazione LETTA = 1393 
+Thread ARGENTO - Quotazione LETTA = 1393 
+Thread ARGENTO - Quotazione LETTA = 1393 
+Thread ARGENTO - Quotazione LETTA = 1393 
+Thread ORO - Quotazione LETTA = 1453 
+Thread ORO - Quotazione LETTA = 1453 
+Thread ORO - Quotazione LETTA = 1453 
+Thread ORO - Quotazione LETTA = 1453 
+Thread ORO - Quotazione LETTA = 1453 
+Thread ARGENTO - Quotazione LETTA = 1393 
+Thread ARGENTO - Quotazione LETTA = 1393 
+Thread ARGENTO - Quotazione LETTA = 1393 
+Thread ARGENTO - Quotazione LETTA = 1393 
+Thread ARGENTO - Quotazione LETTA = 1393 
+MEDIA QUOTAZIONE ORO: 1500.00
+MEDIA QUOTAZIONE ARGENTO: 1393.00
+Figlio n.ro 10169 e' morto con status= 0 
+ buyer_threads 1 terminato
+buyer_threads 2 terminato
+buyer_threads 3 terminato
+buyer_threads 4 terminato
+buyer_threads 5 terminato
+Figlio n.ro 10168 e' morto con status= 0 
+ 

@@ -16,11 +16,13 @@ int main(){
     int ds_queue_buyer_control_oro, ds_queue_buyer_control_argento;
     
     //create queues
-    int key_queue_buyer_control_oro = /* TBD: generare la chiave */
-    int key_queue_buyer_control_argento = /* TBD: generare la chiave */
+    int key_queue_buyer_control_oro = ftok("./main.c", 'a');/* TBD: generare la chiave */
+    int key_queue_buyer_control_argento = ftok("./main.c", 'b');/* TBD: generare la chiave */
     
-    ds_queue_buyer_control_oro = /* TBD: ottenere il descrittore della coda per la quotazione oro */
-    ds_queue_buyer_control_argento = /* TBD: ottenere il descrittore della coda per la quotazione oro */
+    /* TBD: ottenere il descrittore della coda per la quotazione oro */
+    ds_queue_buyer_control_oro = msgget(key_queue_buyer_control_oro, 0);
+    /* TBD: ottenere il descrittore della coda per la quotazione argento */
+    ds_queue_buyer_control_argento = msgget(key_queue_buyer_control_argento, 0);
     
     printf("[report] Coda ds_queue_buyer_control_oro ID: %d\n", ds_queue_buyer_control_oro);
     printf("[report] Coda ds_queue_buyer_control_argento ID: %d\n", ds_queue_buyer_control_argento);
@@ -42,7 +44,7 @@ int main(){
             perror("Errore rcv ds_queue_buyer_control_oro");
             exit(-1);
         }
-        quotazione_oro_sum += m_oro.value;
+        quotazione_oro_sum += m_oro.quotazione;
     }
     
     for (i=0; i<10; i++){
@@ -52,7 +54,7 @@ int main(){
             perror("Errore rcv ds_queue_buyer_control_argento");
             exit(-1);
         }
-        quotazione_argento_sum += m_argento.value;
+        quotazione_argento_sum += m_argento.quotazione;
     }
     
     quotazione_oro_mean = quotazione_oro_sum/10;
