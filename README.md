@@ -1,2 +1,3 @@
 # Sistemi_Operativi
-repository del corso di sistemi operativi 
+
+Repository del corso di sistemi operativi.
