@@ -1,3 +1,5 @@
+<script src="../javascript.js"></script>
+
 # UTILIZZO DI EXCL
 
 ## CASO CREAZIONE DI UNA MESSAGE QUEUE

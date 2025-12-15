@@ -1,3 +1,5 @@
+<script src="../javascript.js"></script>
+
 # MONITOR
 
 Prendiamo in considerazione due implementazioni del costrutto monitor: 

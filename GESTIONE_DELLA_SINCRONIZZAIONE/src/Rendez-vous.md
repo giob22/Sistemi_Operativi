@@ -1,3 +1,6 @@
+<script src="../javascript.js"></script>
+
+
 # RENDEZ-VOUS
 
 Questo protocollo ci permette di implementare una send **sincrona** sfruttando la send asincrona e la receive bloccante fornite da System V UNIX.

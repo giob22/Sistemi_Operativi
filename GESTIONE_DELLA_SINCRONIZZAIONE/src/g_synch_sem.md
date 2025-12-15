@@ -1,3 +1,5 @@
+<script src="../javascript.js"></script>
+
 # SEMAPHOR
 
 <!--TODO aggiungi il link alla parte di teoria -->
