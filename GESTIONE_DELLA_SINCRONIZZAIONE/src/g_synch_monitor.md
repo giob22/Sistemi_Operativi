@@ -286,9 +286,7 @@ Si utilizza una struttura dati di questo tipo:
 
 ```c
 #define SYNCH 0 // gestire la cooperazione tra scrittori e lettori
-#define MUTEX 1 // gestire la mutua esclusione tra scrittori
-#define MUTEXL 2
-#define MUREXS 3
+#define MUTEXL 1
 
 typedef struct {
   int buffer;
@@ -306,6 +304,92 @@ Il monitor in questo caso deve essere inizializzato con due condition variables:
 2) uno scrittore non più scrivere se più lettori stanno leggendo.
 
 Però è importante considerare che in questo caso il dato non è consumato, ciò significa che possono leggere contemporaneamente più processi lettori.
+
+- SCRITTORI
+  - signal-and-wait / hoare
+
+    ```c
+    inizio_scrittura(buffer* b){  
+      enter_monitor(&(b->m));
+      // condizione di sincronizzazione per gli scrittori
+      if (b->num_lettori > 0){
+        leave_monitor(&(b->m)); // esce dal monitor
+        enter_monitor(&(b->m)); // si mette nuovamente in attesa del monitor
+      }
+      b->num_scrittori++;
+    }
+    ... // operazioni di scrittura
+    fine_scrittura(buffer* b){
+      b->num_scrittori--;
+      signal_condition(&(b->m), MUTEXL);
+      leave_monitor(&(b->m));
+    }
+    ```
+  - signal-and-continue
+
+    ```c
+    inizio_scrittura(buffer* b){  
+      enter_monitor(&(b->m));
+      // condizione di sincronizzazione per gli scrittori
+      while (b->num_lettori > 0){
+        leave_monitor(&(b->m)); // esce dal monitor
+        enter_monitor(&(b->m)); // si mette nuovamente in attesa del monitor
+      }
+      b->num_scrittori++;
+    }
+    ... // operazioni di scrittura
+    fine_scrittura(buffer* b){
+      b->num_scrittori--;
+      signal_all(&(b->m), MUTEXL); // cambiamento inportante
+      leave_monitor(&(b->m));
+    }
+    ```
+
+- LETTORE
+  - signal-and-wait / hoare
+
+    ```c
+    inizio_lettura(buffer* b){
+      enter_monitor(&(b->m));
+      // condizione di sincronizzazione
+      if (b->num_scrittori > 0){
+        wait_condition(&(b->m), MUTEXL);
+      }
+      b->num_lettori++;
+      signal_condition(&(b->m), MUTEXL); // permette di risvegliare gli altri lettori, è da utilizzare perché lo scrittore non fa un signal_all essendo il monitor signal-and-wait
+      leave_monitor(&(b->m));
+    }
+    ... // operazioni di lettura
+    fine_lettura(buffer* b){
+      enter_monitor(&(b->m));
+      b->num_lettori--;
+      leave_monitor(&(b->m));
+    }
+    ```
+  - signal-and-continue
+
+    ```c
+    inizio_lettura(buffer* b){
+      enter_monitor(&(b->m));
+      // condizione di sincronizzazione
+      while (b->num_scrittori > 0){
+        wait_condition(&(b->m), MUTEXL);
+      }
+      b->num_lettori++;
+      leave_monitor(&(b->m));
+    }
+    ... // operazioni di lettura
+    fine_lettura(buffer* b){
+      enter_monitor(&(b->m));
+      b->num_lettori--;
+      leave_monitor(&(b->m));
+    }
+    ```
+
+## LETT_SCRITT STARVATION DI ENTRAMBI
+
+
+
 
 
   
