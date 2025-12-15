@@ -281,8 +281,8 @@ Il monitor dovrà essere inizializzato con due condition variales.
     signal_condition(&(p->m), VARCOND_PRODUTTORI);
     leave_monitor(&(p->m));
     ```
-
-## LETT_SCRITT STARVATION DEGLI SCRITTORI
+<!--
+## LETT_SCRITT STARVATION DEGLI SCRITTORI (!ERRATO!)
 
 Si utilizza una struttura dati di questo tipo:
 
@@ -314,7 +314,7 @@ Però è importante considerare che in questo caso il dato non è consumato, ci�
     inizio_scrittura(buffer* b){  
       enter_monitor(&(b->m));
       // condizione di sincronizzazione per gli scrittori
-      if (b->num_lettori > 0){
+      while (b->num_lettori > 0){
         leave_monitor(&(b->m)); // esce dal monitor
         enter_monitor(&(b->m)); // si mette nuovamente in attesa del monitor
       }
@@ -346,51 +346,128 @@ Però è importante considerare che in questo caso il dato non è consumato, ci�
       leave_monitor(&(b->m));
     }
     ```
-
-- LETTORE
-  - signal-and-wait / hoare
-
-    ```c
-    inizio_lettura(buffer* b){
-      enter_monitor(&(b->m));
-      // condizione di sincronizzazione
-      if (b->num_scrittori > 0){
-        wait_condition(&(b->m), MUTEXL);
-      }
-      b->num_lettori++;
-      signal_condition(&(b->m), MUTEXL); // permette di risvegliare gli altri lettori, è da utilizzare perché lo scrittore non fa un signal_all essendo il monitor signal-and-wait
-      leave_monitor(&(b->m));
-    }
-    ... // operazioni di lettura
-    fine_lettura(buffer* b){
-      enter_monitor(&(b->m));
-      b->num_lettori--;
-      leave_monitor(&(b->m));
-    }
-    ```
-  - signal-and-continue
-
-    ```c
-    inizio_lettura(buffer* b){
-      enter_monitor(&(b->m));
-      // condizione di sincronizzazione
-      while (b->num_scrittori > 0){
-        wait_condition(&(b->m), MUTEXL);
-      }
-      b->num_lettori++;
-      leave_monitor(&(b->m));
-    }
-    ... // operazioni di lettura
-    fine_lettura(buffer* b){
-      enter_monitor(&(b->m));
-      b->num_lettori--;
-      leave_monitor(&(b->m));
-    }
-    ```
+-->
 
 ## LETT_SCRITT STARVATION DI ENTRAMBI
 
+Si utilizza una struttura contenente tali variabili
 
+```c
+#define CV_LETT 0
+#define CV_SCRITT 1
+
+typedef struct {
+
+  int buffer
+
+  int num_lettori;
+  int num_scrittori;
+
+  Monitor m;
+
+} Buffer;
+```
+
+Il monitor deve contenere due condition variables:
+
+1) un lettore può leggere se non sono ci sono scrittori a scrivere;
+2) uno scrittore non può scrivere se sono presenti scrittori o lettori stanno operando sulla risorsa condivisa.
+
+- SCRITTORI
+  - signal-and-wait / hoare
+
+    ```c
+    inizio_scrittura(Buffer* b){  
+      enter_monitor(&(b->m));
+      // condizione di sincronizzazione per gli scrittori
+      if (b->num_lettori > 0 || b->num_scrittori > 0){
+        wait_condition(&(b->m), CV_SCRITT);
+      }
+      b->num_scrittori++;
+      leave_monitor(&(b->m));
+    }
+    ... // operazioni di scrittura
+    fine_scrittura(Buffer* b){
+      b->num_scrittori--;
+      if (queue_condition(&(b->m), CV_SCRITT) > 0){
+        signal_condition(&(b->m), CV_SCRITT);
+      }else if (queue_condition(&(b->m), CV_LETT) > 0){
+        signal_condition(&(b->m), CV_LETT);
+      }
+      leave_monitor(&(b->m));
+    }
+    ```
+
+  - signal-and-continue
+
+    ```c
+    inizio_scrittura(Buffer* b){  
+      enter_monitor(&(b->m));
+      // condizione di sincronizzazione per gli scrittori
+      while (b->num_lettori > 0 || b->num_scrittori > 0){
+        wait_condition(&(b->m), CV_SCRITT);
+      }
+      b->num_scrittori++;
+      leave_monitor(&(b->m));
+    }
+    ... // operazioni di scrittura
+    fine_scrittura(Buffer* b){
+      b->num_scrittori--;
+      if (queue_condition(&(b->m), CV_SCRITT) > 0){
+        signal_condition(&(b->m), CV_SCRITT);
+      }else if (queue_condition(&(b->m), CV_LETT) > 0){
+        signal_all(&(b->m), CV_LETT);
+      }
+      leave_monitor(&(b->m));
+    }
+    ```
+
+- LETTORI
+  - signal-and-wait / hoare
+
+    ```c
+    inizio_lettura(Buffer* b){  
+      enter_monitor(&(b->m));
+      // condizione di sincronizzazione per gli scrittori
+      if (b->num_scrittori > 0){
+        wait_condition(&(b->m), CV_LETT);
+      }
+      b->num_lettori++;
+      signal_condition(&(b->m), CV_LETT);
+      leave_monitor(&(b->m));
+    }
+    ... // operazioni di lettura
+    fine_lettura(Buffer* b){
+      b->num_lettori--;
+      if (b->num_lettori == 0){
+        // ultimo lettore
+        signal_condition(&(b->m), CV_SCRITT);
+      }
+      leave_monitor(&(b->m));
+    }
+    ```
+
+  - signal-and-continue
+
+    ```c
+    inizio_lettura(Buffer* b){  
+      enter_monitor(&(b->m));
+      // condizione di sincronizzazione per gli scrittori
+      while (b->num_lettori > 0){
+        wait_condition(&(b->m), CV_LETT);
+      }
+      b->num_lettori++;
+      leave_monitor(&(b->m));
+    }
+    ... // operazioni di lettura
+    fine_lettura(Buffer* b){
+      b->num_lettori--;
+      if (b->num_lettori == 0){
+        signal_condition(&(b->m), CV_SCRITT);
+      }
+      leave_monitor(&(b->m));
+    }
+    ```
 
 
 
