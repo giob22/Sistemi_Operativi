@@ -4,6 +4,9 @@
 #define HEADER_H
 
 /* TBD: Definire le macro necessarie per le code di messaggio */
+
+#define ORO 24
+#define ARGENTO 44
  
 typedef struct {
     
@@ -12,12 +15,21 @@ typedef struct {
     //Var condivise
     int quotazione_oro;
     int quotazione_argento;
-    
+
+    int num_lettori;
+    int num_scrittori;
+    int num_scrittori_s;
+
+    pthread_mutex_t mutex;
+    pthread_cond_t cv_lett;
+    pthread_cond_t cv_scritt;
 }LettScritt;
 
 typedef struct {
     
     /* TBD: Definire i campi necessari per lo scambio di messaggi inerenti alla quotazione */
+    int type;
+    int quotazione;
     
 } Msg_Quotazione;
 
