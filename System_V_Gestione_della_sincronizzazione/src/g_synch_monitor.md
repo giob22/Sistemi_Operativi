@@ -86,7 +86,7 @@ Utilizzare un monitor per il problema consumatori produttori nel caso di un buff
     ```
 
 
-## PROD_CONS CODA CIRCLARE
+## PROD_CONS CODA CIRCOLARE
 
 Si utilizza una struttura che oltre a contenere informazioni riguardanti la risorsa condivisa, contiene anche delle variabili necessarie alla sincronizzazione:
 
