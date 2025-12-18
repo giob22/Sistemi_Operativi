@@ -18,9 +18,9 @@ fn stampa_file_ricorsiva(path: &std::path::PathBuf, space: String){
         let file_name = file.file_name();
         let extension: String;
         if path.is_dir() {
-            println!("{space}\u{1F4C1} {:?}", path.file_name().expect("Errore"));
+            println!("{space}\u{1F4C1} {}", path.file_name().expect("Errore").display());
             let mut next_space = space.clone();
-            next_space.push(' '); 
+            next_space.push_str("  "); 
             stampa_file_ricorsiva(&path, next_space);
         }else{
 
@@ -50,8 +50,23 @@ fn stampa_file_ricorsiva(path: &std::path::PathBuf, space: String){
             }
             
             // stampiamo il percorso a video
-            
-            println!("{space}\u{1F4C4}[{file_name:?}] e ha formato: {extension}");
+            println!("{space}\u{1F4C4}[{}] e ha formato: {extension}", file_name.display());
+            // spostiamo il file nella cartella giusta
+
+            if extension == "pdf" {
+                // costruisco la destinazione finale
+                let mut final_path = String::from("./cartella_prove/pdf/");
+                final_path.push_str(&file_name.to_string_lossy().to_string());  
+                //println!("{}", path.display());
+                std::fs::rename(path, final_path).expect("Errore");
+            }else if extension == "png" {
+                let mut final_path = String::from("./cartella_prove/immagini/");
+                final_path.push_str(&file_name.to_string_lossy().to_string());  
+                //println!("{}", path.display());
+                std::fs::rename(path, final_path).expect("Errore");
+            }
+
+
         }
     }
     
@@ -65,4 +80,7 @@ fn main() {
     }else{
         println!("ERRORE DIRECTORY INIZIALE NON VALIDA");
     }
+
+    println!("--------------DOPO L'ESECUZIONE----------------");
+    stampa_file_ricorsiva(&path, String::from(""));
 }
