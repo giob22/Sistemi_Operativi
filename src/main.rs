@@ -1,4 +1,5 @@
-use std::path::PathBuf;
+use std::{io::{self, Write}, path::PathBuf};
+
 
 
 
@@ -16,7 +17,7 @@ fn stampa_file_ricorsiva(path: &std::path::PathBuf, space: String){
         // otteniamo il path
         let path = file.path();
         let file_name = file.file_name();
-        let extension: String;
+        let mut extension: String;
         if path.is_dir() {
             println!("{space}\u{1F4C1} {}", path.file_name().expect("Errore").display());
             let mut next_space = space.clone();
@@ -36,7 +37,9 @@ fn stampa_file_ricorsiva(path: &std::path::PathBuf, space: String){
                     // quindi a seconda dell'estensione nel nome del file lo classifichiamo
                     match path.extension(){
                         Some(tipo) => {
-                            extension = tipo.to_string_lossy().to_string();
+                            extension = String::from("[");
+                            extension.push_str(&tipo.to_string_lossy().to_string());
+                            extension.push(']'); 
                         }
                         None =>{
                             extension = String::from("NONE");
@@ -53,20 +56,19 @@ fn stampa_file_ricorsiva(path: &std::path::PathBuf, space: String){
             println!("{space}\u{1F4C4}[{}] e ha formato: {extension}", file_name.display());
             // spostiamo il file nella cartella giusta
 
+            let mut final_path;
             if extension == "pdf" {
                 // costruisco la destinazione finale
-                let mut final_path = String::from("./cartella_prove/pdf/");
+                final_path = String::from("./cartella_prove/pdf/");
                 final_path.push_str(&file_name.to_string_lossy().to_string());  
                 //println!("{}", path.display());
                 std::fs::rename(path, final_path).expect("Errore");
             }else if extension == "png" {
-                let mut final_path = String::from("./cartella_prove/immagini/");
+                final_path = String::from("./cartella_prove/immagini/");
                 final_path.push_str(&file_name.to_string_lossy().to_string());  
                 //println!("{}", path.display());
                 std::fs::rename(path, final_path).expect("Errore");
             }
-
-
         }
     }
     
@@ -74,11 +76,17 @@ fn stampa_file_ricorsiva(path: &std::path::PathBuf, space: String){
 
 
 fn main() {
-    let path = PathBuf::from("./cartella_prove");
-    if path.exists(){
+    // inserimento del path riferito alla cartella
+    print!("Inserisci il path della cartella da ordinare: ");
+    io::stdout().flush().unwrap(); // necessario flushare altrimenti non viene stampata la stringa
+    let mut path_string = String::new();
+    io::stdin().read_line(&mut path_string).expect("Failed to read line");
+    let path = PathBuf::from(path_string.trim());
+    println!("{path:?}");
+    if path.exists() && path.is_dir(){
         stampa_file_ricorsiva(&path, String::from(""));
     }else{
-        println!("ERRORE DIRECTORY INIZIALE NON VALIDA");
+        println!("ERRORE DIRECTORY INIZIALE NON VALIDA oppure NON è UNA DIRECTORY");
     }
 
     println!("--------------DOPO L'ESECUZIONE----------------");
