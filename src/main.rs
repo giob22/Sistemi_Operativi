@@ -86,7 +86,7 @@ fn main() {
     if path.exists() && path.is_dir(){
         stampa_file_ricorsiva(&path, String::from(""));
     }else{
-        println!("ERRORE DIRECTORY INIZIALE NON VALIDA oppure NON è UNA DIRECTORY");
+        println!("ERRORE: {path:?} è un path non valido");
     }
 
     println!("--------------DOPO L'ESECUZIONE----------------");
