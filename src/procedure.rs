@@ -1,4 +1,11 @@
-
+use std::{
+    clone, io::{self, Write}, path::{Path, PathBuf}, thread, time::Duration, vec
+};
+#[derive(Clone, Copy)]
+pub enum FiltroPercorso {
+    Dir,
+    File,
+}
 
 pub fn stampa_file_ricorsiva(path: &std::path::PathBuf, space: String){
     // per rendere più carina la stampa utilizziamo degli spazi per identificare i file in una cartella
@@ -56,6 +63,37 @@ pub fn stampa_file_ricorsiva(path: &std::path::PathBuf, space: String){
     }
     
 }
+
+pub fn ottieni_percorsi(cartella: &PathBuf, filtro: FiltroPercorso) -> Vec<PathBuf> {
+    let mut vettore= Vec::new();
+
+    let percorsi_iterator = std::fs::read_dir(cartella).expect("Errore nella lettura della cartella");
+
+    for x in percorsi_iterator {
+        let path_file = x.expect("file non raggiungibile").path();
+        
+        match filtro {
+            FiltroPercorso::Dir => {
+                if path_file.is_dir() {
+                    vettore.push(path_file.clone());
+                    vettore.append(&mut ottieni_percorsi(&path_file, filtro));
+                }
+            }
+            FiltroPercorso::File =>{
+                if path_file.is_file() {
+                    vettore.push(path_file);
+                }else{
+                    vettore.append(&mut ottieni_percorsi(&path_file, filtro));
+                }
+            }
+        }
+    }
+    vettore
+}
+
+
+
+
 /*
 let mut final_path;
 if extension == "pdf" {

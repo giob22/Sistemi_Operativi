@@ -1,23 +1,31 @@
-use std::{io::{self, Write}, path::PathBuf, thread, time::Duration};
+use std::{
+    io::{self, Write},
+    path::PathBuf
+};
+
+use crate::procedure::ottieni_percorsi;
 
 mod procedure;
-
 
 fn main() {
     // inserimento del path riferito alla cartella
     print!("Inserisci il path della cartella da ordinare (di base): ");
     io::stdout().flush().unwrap(); // necessario flushare altrimenti non viene stampata la stringa
     let mut path_string = String::new();
-    io::stdin().read_line(&mut path_string).expect("Failed to read line");
+    io::stdin()
+        .read_line(&mut path_string)
+        .expect("Failed to read line");
     let path_base = PathBuf::from(path_string.trim());
+
+    /* //! per il finto caricamento
     println!("Controllo la cartella...");
     let mut loading:[char; 10];
     loading = [' ';10];
-    
+
     let mut loading_i: usize = 0;
-    let mut barra: String = String::new();
-    let mut percentuale: i8 = 0;
-    
+    let mut barra: String;
+    let mut percentuale: i8;
+
     for i in 0..5 {
         barra = loading.iter().collect();
         percentuale = i * 20;
@@ -31,13 +39,22 @@ fn main() {
     percentuale = 100;
     barra = loading.iter().collect();
     println!("\rCaricamento: [{}] %{percentuale}  {loading_i}", barra );
-    
+    */
     println!("{path_base:?}");
-    if path_base.exists() && path_base.is_dir(){
+
+    // ! per stampare tutti i path di file e directory di una cartella
+    /*if path_base.exists() && path_base.is_dir(){
         procedure::stampa_file_ricorsiva(&path_base, String::from(""));
     }else{
         println!("ERRORE: {path_base:?} è un path non valido");
-    }
+    }*/
+
+    // creiamo la procedura per costruire un array per i file e uno per le directory
+    let dir_paths: Vec<PathBuf> = ottieni_percorsi(&path_base, procedure::FiltroPercorso::Dir);
+    let file_paths: Vec<PathBuf> = ottieni_percorsi(&path_base, procedure::FiltroPercorso::File);
+
+    // todo implementare un modo per riordinare i file nelle cartelle, DA PENSARCI ANCORA...
+    
 
     //println!("--------------DOPO L'ESECUZIONE----------------");
     //procedure::stampa_file_ricorsiva(&path_base, String::from(""));
