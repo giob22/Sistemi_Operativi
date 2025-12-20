@@ -214,13 +214,3 @@ Ma prima di ciò non era possibile virtualizzare tale architettura.
   - migliori prestazioni e VMM più semplice.
 
 <!-- mancano 13 minuti alla registrazione dell'ultima lezione -->
-
-
-
-
-
-
-
-
-
-
