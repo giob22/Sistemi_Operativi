@@ -213,4 +213,4 @@ Ma prima di ciò non era possibile virtualizzare tale architettura.
 - **Full virtualizzation**, con **supporto hardware**
   - migliori prestazioni e VMM più semplice.
 
-<!-- mancano 13 minuti alla registrazione dell'ultima lezione!! -->
+<!-- mancano 13 minuti alla registrazione dell'ultima lezione!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
