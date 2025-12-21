@@ -208,9 +208,75 @@ Ma prima di ciò non era possibile virtualizzare tale architettura.
 ### Tecniche della virtualizzazione delle CPU
 
 - **Full virtualizzation**, senza supporto hardware
+  
+  Utilizza tecniche software complesse come la **Dynamic Binary Traslation**. Il VMM legge il binario del Guest SO e lo "riscrive" al volo per renderlo sicuro, senza che il guest SO se ne accorga.
 - **Para-virtualizzation**
-  - il guest SO è sviluppato appositamente per cooperare con il VMM
+  
+  il guest SO è sviluppato appositamente per cooperare con il VMM.
+  
+  Si abbandona l'idea di ingannare il guest SO, è consapevole di essere su una macchina virtuale. Il SO ospite viene riscritto per essere consapevole di girare su una macchina virtuale, quindi invece di provare ad esegure istruzioni hardware direttamente si interfaccia con la VMM (cooperazione).
 - **Full virtualizzation**, con **supporto hardware**
-  - migliori prestazioni e VMM più semplice.
+  
+  migliori prestazioni e VMM più semplice.
 
-<!-- mancano 13 minuti alla registrazione dell'ultima lezione!!!!!!!!!!! -->
+  La CPU stessa ha nuove modalità che permettono al VMM di intercettare le operazioni critiche senza dover riscrivere il codice software. 
+
+---
+
+ESEMPIO: confronto tra **para-virtualizzation** e **full** **virtualizzation**
+
+Il problema da risolvere è lo stesso: il guest SO vuole leggere un registro critico, quello contenente l'indirizzo della **Interrupt Descriptor table**.
+
+Queste due soluzioni ci permettono di farlo ma con approcci differenti:
+
+- **Dynamic** **Binary** **Traslation**
+  
+  Agisce sul **codice binario**.
+
+  Il sorgente del sistema operativo non viene toccato, quindi si può utilizzare un qualsiasi sistema operativo, anche Windows.
+
+  Il VMM analizza il flusso di istruzioni mentre vengono eseguite, intercettando quelle sensitive.
+
+  Infatti quando vede `mov val, idtr`, la intercetta e la sostituisce dinamicamente con una chiamata alla sua funzione che emula l'effetto di quella istruzione.
+
+- **Hypercall**
+  
+  Si agisce sul **codice sorgente**. Gli sviluppatori del sistema operativo modificano il codice: cancellando istruzioni problematiche e inserendo una chiamata esplicita alla VMM, chiamata **Hypercall**.
+
+  È una soluzione molto efficiente, ma richiede di poter modificare il codice sorgente del SO e ricompilarlo. (impossibile con Windows)
+
+Quindi consideriamo di trovarci in questa situazione:
+
+<p align='center'><img src='images/full-para-virtual.png' width='400' ></p>
+
+- Codice sorgente
+- Codice binario che viene eseguito
+- fuznione del VMM che emula il comportamento dell'istruzione in esame
+
+Per l'approccio che utilizza la para-virtualizzation il sorgente deve essere modificato per poter girare su una VM. La modifica consiste nella chiamata alla funzione dal VMM che emula quel comportamento, ovvero `emulate_store_idt()` (Hypercall).
+
+Per l'approccio che utilizza la full virtualizzation il sorgente resta invariato, ma a tempo di esecuzione il VMM intercetta le istruzioni sensitive e le sostituisce dinamicamente con una chiamata alla funzione che emula quel comportamento, sempre `emulate_store_idt()` (Dynamic Binary Traslation).
+
+
+<p align='center'><img src='images/risoluzione_DBT_e_HYPERCALL.png' width='470' ></p>
+
+#### Full virtualizzation, no supporto hw
+
+Nel caso di una CPU fisica che non supporta la virtualizzazione, in cui non tutte le istruzioni sensitive generano una trap, l'hypervisot di **VMware** introdusse tecniche efficienti di full-virtualizzation per Intel `x86`.
+
+Queste tecniche sono ad esempio la Dynamic Binary Traslation.
+
+Il codice binario del guest veniva riscitto dinamicamente dall'hypervisor prima di essere eseguito: sostituendo le istruzioni sensibili con un codice di emulazione
+
+Comprendo il gap della non virtualizzabilità di `x86`.
+
+Oggi con il supporto hardware VMware si è adattata perché è molto più performante.
+
+ 
+
+
+
+
+
+
+
