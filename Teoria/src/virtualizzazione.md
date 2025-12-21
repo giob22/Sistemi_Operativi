@@ -299,8 +299,95 @@ In poche parole, il salto finale viene modificato per garantire che la CPU non e
 
 Vediamo cosa come accade tutto ciò:
 
+
 <p align='center'><img src='images/DBT_1.png' width='300' ></p>
 
+- Codice grezzo che non è stato ancora tradotto dal VMM
+
+<p align='center'><img src='images/DBT_2.png' width='400' ></p>
+
+- Il VMM legge il basic block e lo modifica
+
+<p align='center'><img src='images/DBT_3.png' width='400' ></p>
+
+- Dopo la modifica nel basic block viene sostituita l'istruzione sensitive e viene modificato il salto finale per poter permettere al VMM di analizzare il basic block successivo
+
+<p align='center'><img src='images/DBT_4.png' width='400' ></p>
+
+- Il controllo viene ripristinato al guest SO così che possa eseguire il codice tradotto e sicuro
+- Una volta terminata l'esecuzione del blocco l'istruzione di salto riporta il controllo al VMM per continuare con il meccanismo di Dynamic Binary Translation
+
+#### Para-virtualizzazione
+
+Con questo approccio c'è la necessità di riscrivere il codice sorgente del guest SO in modo che questo cooperi con il VMM.
+
+Il guest SO è conscio del fatto di esser eseguito su di una macchina virtuale (VM).
+
+- Le istruzioni sensitive nel guest SO sono sostituite da **hypercalls** che fanno riferimento a funzioni del VMM che emulano il comportamento delle istruzioni originarie.
+
+> A differenza della full virtualizzation, si modifica il **codice** **sorgente** **del** **guest** **SO**, non il codice binario.
+>
+> La modifica è fatta dal **programmatore** e non dal VMM, quindi i sistemi che possono girare su Hypervisor, che sfruttano questa tecnica di virtualizzazione della CPU, devono essere costruiti ad hoc.
+
+<p align='center'><img src='images/para_virt.png' width='500' ></p>
+
+
+Il guest SO così modificato **non può eseguire sull'hardware fisico**: può eseguire solo in combinazione con il **VMM**.
+
+Inoltre questo approccio non è utilizzabile per sistemi **legacy** oppure **proprietari**, come Windows.
+
+#### Supporto hardware per la full-virtualizzation della CPU
+
+Le CPU Intel VT introducono:
+
+- due modalità di esecuzione: **VMX root** e **VMX non-root**;
+- **VMCS** (VM Control Structure).
+
+Queste soluzioni sono implementate nell'hardware per evitare tutto l'overhead dovuto alla traduzione dinamica del codice binario e per permettere a qualsiasi guest SO di poter eseguire su una VM.
+
+Hanno come vantaggio:
+
+- semplificano il codice del VMM, buona parte della virtualizzazione è fatta in hardware;
+- evita il **ring de-privileging** del guest SO;
+- maggiore **efficienza del cambio di contesto** tra VM e VMM;
+- garantisce il meccanismo di trap per tutte le istruzioni critiche
+
+Quindi le principali novità sono:
+
+- Modalità di esecuzione (VMX)
+  - **VMX Root Mode**: dove gira il VMM. Qui il software ha pieno controllo dell'hardware, esattamente come il kernel di un sistema operativo tradizionale.
+  - **VMX Non-Root Mode**: dove gira il Guest SO. In questa modalità, il sistema operativo ospite può girare al suo livello di privilegio "naturale" senza dover essere de-privilegiato. Quindi viene eseguito con il massimo dei privilegi ma in VMX non-root mode.
+- Passaggio tra Root mode de Non-Root mode
+  
+  Il passaggio tra queste due modalità è gestito direttamente dall'hardware tramite eventi specifici:
+
+  - **VM Entry**: il passaggio dal VMM al Guest SO. Avviene quando il VMM lancia o riprende l'esecuzione di una VM.
+  - **VM Exit**: il passaggio inverso, dal Guest SO al VMM. Avviene automaticamente quando il Guest SO tenta di eseguire un'istruzione sensitive (Perché nonostante ha tutti i privilegi, si trova in VMX Non-Root mode). 
+    
+    L'hardware intercetta l'istruzione e restituisce il controllo al VMM affichè possa gestirla.
+- **VMCS (Virtual Machiene Control structure)**
+  
+  Per gestire questi passaggi in modo efficiente, intel ha introdotto una struttura dati hardware chiamata **VMCS**. La VMCS agisce coem una "scheda cliente" per ogni VM e contiene:
+
+  - **Guest state**: lo stato della CPU quando gira la VM. Viene caricato durante la *VM Entry* e salvato durante la *VM Exit*.
+  - **Host state**: lo stato della CPU quando gira il VMM. Viene caricato durante la *VM Exit*.
+  - **Control Data**: istruzioni per la CPU fisica su quali eventi devono causare un *VM Exit*
+
+Eventi che possono causare **VM Exit**:
+
+- **Istruzioni sensitive**
+  - CPUID
+  - RDMSR. WRMSR
+  - INVLPG
+  - RDPMC, RDTSC
+  - HTL, MWAIT, PAUSE
+  - VMCALL: nuova istruzione per invocare il VMM
+- **Accessi a stato sensitive**
+  - MOV DRx: accessi ai debug register
+  - MOV CRx: accessi ai control register
+  - Task switch: accessi al CR3 (puntatore alla tabella delle pagine)
+- **Eccezioni ed eventi asincroni**
+  - Page fault, debug exceptions, interrupts, etc.
 
 
 
