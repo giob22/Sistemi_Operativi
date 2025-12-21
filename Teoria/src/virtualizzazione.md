@@ -255,7 +255,11 @@ Quindi consideriamo di trovarci in questa situazione:
 
 Per l'approccio che utilizza la para-virtualizzation il sorgente deve essere modificato per poter girare su una VM. La modifica consiste nella chiamata alla funzione dal VMM che emula quel comportamento, ovvero `emulate_store_idt()` (Hypercall).
 
-Per l'approccio che utilizza la full virtualizzation il sorgente resta invariato, ma a tempo di esecuzione il VMM intercetta le istruzioni sensitive e le sostituisce dinamicamente con una chiamata alla funzione che emula quel comportamento, sempre `emulate_store_idt()` (Dynamic Binary Traslation).
+Per l'approccio che utilizza la full virtualizzation il sorgente rimane invariato. e a tempo di esecuzione abbiamo due principali tecniche che dipendono dalla presenza o meno del supporto hardware.
+
+- Meccanismo software (Dynamic Binary Traslation): la VMM sostituisce dinamicamente le istruzioni. Il VMM legge il **codice binario** prima che venga eseguito, individue le istruzioni critiche e le riscrive sostituendole con il codice di emulazione → `emulate_store_idt()`.
+- Meccanismo hardware (Intel VT-x / Trap-and-Emulate): in questo caso il codice binario in memoria non viene necessariamente sostituito/riscritto. È la CPU fisica che, quando incontra l'istruzione critica mentre gira la VM (in *non-root mode*), ferma tutto e genera un evento hardware (**VMExit**). Il controllo passa al VMM che esegue l'emulazione e poi restituisce il controllo.
+
 
 
 <p align='center'><img src='images/risoluzione_DBT_e_HYPERCALL.png' width='470' ></p>
@@ -264,13 +268,43 @@ Per l'approccio che utilizza la full virtualizzation il sorgente resta invariato
 
 Nel caso di una CPU fisica che non supporta la virtualizzazione, in cui non tutte le istruzioni sensitive generano una trap, l'hypervisot di **VMware** introdusse tecniche efficienti di full-virtualizzation per Intel `x86`.
 
-Queste tecniche sono ad esempio la Dynamic Binary Traslation.
+Queste tecniche sono ad esempio la **Dynamic Binary Traslation**.
 
 Il codice binario del guest veniva riscitto dinamicamente dall'hypervisor prima di essere eseguito: sostituendo le istruzioni sensibili con un codice di emulazione
 
-Comprendo il gap della non virtualizzabilità di `x86`.
+Coprendo il gap della non virtualizzabilità di `x86`.
 
 Oggi con il supporto hardware VMware si è adattata perché è molto più performante.
+
+#### Dynamic Binary Traslation
+
+All'avvio della VM, il VMM analizza a blocchi il codice eseguito dal guest SO.
+
+Ogni blocco, detto **Basic Block** è una breve **sequenza di istruzioni sequenziali** che terminano con una **istruzione di salto**.
+
+<p align='center'><img src='images/basic_block.png' width='180' ></p>
+
+L'Hypervisor quindi va a scandire questi blocchi all'interno del binario del kernel e li analizza e riscrive eventuali istruzioni sensitive. 
+
+Il salto finale viene sostituito con una chiamata all'hypervisor per mantenere la catena di traduzioni attiva:
+
+- La CPU esegue il blocco tradotto (sicuro)
+- Arriva all'ultima istruzione (salto modificato)
+- Il controllo passa al VMM
+- Il VMM controlla se il blocco a cui avrebbe saltato la CPU prima della modifica del salto sia già tradotto
+  - Se **si**: fa saltare la CPU direttamente alla versione già tradotta e sicura
+  - Se **no**: traduce il nuovo blocco, lo salva in memoria cache, e poi fa saltare la CPU lì
+
+In poche parole, il salto finale viene modificato per garantire che la CPU non esegua mai codice originale, ma rimbalzi sempre attraverso il VMM per ottenere il prossimo pezzo di codice tradotto e sicuro.
+
+Vediamo cosa come accade tutto ciò:
+
+<p align='center'><img src='images/DBT_1.png' width='300' ></p>
+
+
+
+
+
 
  
 
