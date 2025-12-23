@@ -187,7 +187,7 @@ La posizione del codice e dei dati **non può più essere modificata** a tempo d
 
 <p align='center'><img src='images/rilocazione_statica.png' width='550' ></p>
 
-Il problema di questo tipo di rilocazione si presenta nel **contex switch**: il processo quando viene prelazionato e inserito nella coda dei processi pronti oppure swappato\
+Il problema di questo tipo di rilocazione si presenta nel **context switch**: il processo quando viene prelazionato e inserito nella coda dei processi pronti oppure swappato\
 →nel momento della sua successiva esecuzione deve trovarsi sempre nella stessa area di memoria, altrimenti tutti gli indirizzi fisici su cui lavora sarebbero sbagliati.\
 Questo è un grande **onere computazionale** affidato al sistema operativo.
 
@@ -395,8 +395,8 @@ ESEMPIO DI TRADUZIONE UTILIZZANDO LA SEGMENT TABLE:
 NOTA sulla segment table:
 
 - ogni processo ha una **segment table differente**
-- i registri STBR/STLR sono configurati ad ogni **contex switch** dei processi\
-  → durante il contex switch il SO carica i valori di STBR/STLR dal **PCB del processo** (sono legati al singolo processo).
+- i registri STBR/STLR sono configurati ad ogni **context switch** dei processi\
+  → durante il context switch il SO carica i valori di STBR/STLR dal **PCB del processo** (sono legati al singolo processo).
 
 <p align='center'><img src='images/contex_ST.png' width='600' ></p>
 
@@ -563,7 +563,7 @@ La MMU usa 2 registri utilizzarla:
 - **PTLR** (Page-Table Length Register):\
   dimensione della tabella delle pagine.
 
-Questi due valori sono contenuti all'interno del PCB di ogni processo e vengono caricati in tali registri ogni volta che avviene un **contex switch**.
+Questi due valori sono contenuti all'interno del PCB di ogni processo e vengono caricati in tali registri ogni volta che avviene un **context switch**.
 
 <p align='center'><img src='images/PTBR_PTLR.png' width='480' ></p>
 
@@ -668,7 +668,7 @@ La MMU genera quindi genera una **exception** (page fault).
   - Il SO termina il processo solo le il risultato del page fault handler non mappa la pagina virtuale in una pagina fisica → perché non è stata trovata nella memoria secondaria.
   - Oppure se l'operazione che il processo tenta di fare su tale area non è valida secondo i permessi descritti su questa.
 
-Cosa accede durante un **contex switch**
+Cosa accede durante un **context switch**
 
 <p align='center'><img src='images/contex_switch.png' width='500' ></p>
 

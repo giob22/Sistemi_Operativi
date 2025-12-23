@@ -35,7 +35,7 @@ Tipicamente, le due dimensioni possibili in `x86` sono `4KB` e `4MB`. Per Linux 
 
 Per riferirci alla prima tabella delle pagine che si trova al livello più basso sfruttiamo l'indirizzo virtuale mantenuto all'interno del *controll register*, che per `x86` è il register 3.
 
-Questo registro viene popolato all'atto del **contex switch**, ogni processo ha associata la propria gerarchia di tabelle di pagine. Essendo una caratteristica direttamente legata al processo, tale indirizzo è contenuto all'interno del descrittore, che in Linux è chiamato `task_struct`.
+Questo registro viene popolato all'atto del **context switch**, ogni processo ha associata la propria gerarchia di tabelle di pagine. Essendo una caratteristica direttamente legata al processo, tale indirizzo è contenuto all'interno del descrittore, che in Linux è chiamato `task_struct`.
 
 ## Spazio di indirizzamento virtuale
 
@@ -44,7 +44,7 @@ Le nuove versioni di Linux **non si avvalgono del processore per la segmentazion
 Per motivi di:
 
 - portabilità
-- efficienza del contex switch e traduzione degli indirizzi
+- efficienza del context switch e traduzione degli indirizzi
 
 <p align='center'><img src='images/segmentazione_paginata_1.png' width='500' ></p>
 <!-- @todo capisci perché non è portabile -->
