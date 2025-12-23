@@ -1,9 +1,8 @@
 use std::{
-    io::{self, Write},
-    path::PathBuf
+    arch::x86_64, fs, io::{self, Write}, path::{self, PathBuf}, string
 };
 
-use crate::procedure::ottieni_percorsi;
+use crate::procedure::*;
 
 mod procedure;
 
@@ -54,8 +53,18 @@ fn main() {
     let file_paths: Vec<PathBuf> = ottieni_percorsi(&path_base, procedure::FiltroPercorso::File);
 
     // todo implementare un modo per riordinare i file nelle cartelle, DA PENSARCI ANCORA...
+
     
 
+    // stampa_file_ricorsiva(&path_base, String::from(""));
+
+    println!("{:?} {:?}", dir_paths[0].read_dir().expect("ciao").next().expect("ciao2"), dir_paths[0]);
+    
+    move_files(&file_paths, &path_base);
+
+    
+
+    // println!("{:?} | {:?}", file_paths[0].extension(), file_paths[0]);
     //println!("--------------DOPO L'ESECUZIONE----------------");
     //procedure::stampa_file_ricorsiva(&path_base, String::from(""));
 }
