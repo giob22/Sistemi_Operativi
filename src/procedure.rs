@@ -1,10 +1,5 @@
 use std::{
-    clone, fs,
-    io::{self, Write},
-    path::{Path, PathBuf},
-    thread,
-    time::Duration,
-    vec,
+    clone, f32::consts::E, fs, io::{self, Write}, path::{Path, PathBuf}, thread, time::Duration, vec
 };
 #[derive(Clone, Copy)]
 pub enum FiltroPercorso {
@@ -159,6 +154,22 @@ pub fn move_files(file_paths: &Vec<std::path::PathBuf>, path_base: &PathBuf) {
     }
 
 }
+
+
+pub fn cancella_cartelle_svuotate_ricorsiva(dir_paths: &PathBuf){
+    let percorsi_iterator = std::fs::read_dir(&dir_paths).expect("Errore nella lettura della cartella");
+    for i in percorsi_iterator {
+        let file = i.expect("Errore path");
+        if file.path().is_dir() {
+            cancella_cartelle_svuotate_ricorsiva(&file.path());
+        }
+    }
+    let percorsi_iterator = std::fs::read_dir(&dir_paths).expect("Errore nella lettura della cartella");
+    if percorsi_iterator.count() == 0 {
+        fs::remove_dir(dir_paths.clone()).expect("Errore durante cancellazione delle cartelle vuote");
+    }
+}
+
 
 /*
 let mut final_path;

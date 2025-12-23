@@ -57,11 +57,10 @@ fn main() {
     
 
     // stampa_file_ricorsiva(&path_base, String::from(""));
-
-    println!("{:?} {:?}", dir_paths[0].read_dir().expect("ciao").next().expect("ciao2"), dir_paths[0]);
     
     move_files(&file_paths, &path_base);
-
+    
+    cancella_cartelle_svuotate_ricorsiva(&path_base);
     
 
     // println!("{:?} | {:?}", file_paths[0].extension(), file_paths[0]);
