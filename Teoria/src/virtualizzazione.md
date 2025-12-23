@@ -1,6 +1,6 @@
 # Virtualizzazione
 
-Una macchian **virtuale (VM)** è una emulazione (mediante tecniche sw/hw) di una macchina reale.
+Una macchina **virtuale (VM)** è una emulazione (mediante tecniche sw/hw) di una macchina reale.
 
 Ogni macchina virtuale esegue il proprio **sistema operativo** ed applicazioni.
 
@@ -162,11 +162,11 @@ Nel caso di CPU intel questa cosa avviene in maniera diversa, perché in queste 
 
 4 livelli di privilegio, dove Ring 3 ha il più basso livello di privilegio mentre in Ring 0 la VMM.
 
-Cosa accade quando il guest SO vuole eseguire una instruzione sensitive:
+Cosa accade quando il guest SO vuole eseguire una istruzione sensitive:
 
 <p align='center'><img src='images/sensitive_inst_inte.png' width='400' ></p>
 
-- L'applicazione che gira nella VM esegue una system call, questo causa una trap della CPU virtuale che viene gestita dalla VMM. La VMM saltà al guest host per far esegure l'interrupt handler e poi la ISR associata alla trap generata.
+- L'applicazione che gira nella VM esegue una system call, questo causa una trap della CPU virtuale che viene gestita dalla VMM. La VMM salta al guest host per far eseguire l'interrupt handler e poi la ISR associata alla trap generata.
 - L'interrupt hardware invece sono gestite dalla VMM che eseguono l'ISR e successivamente si salta all'esecuzione dell'ISR del guest SO.
 - Invece le istruzioni privilegiate nel guest SO causano il generarsi di una trap che viene intercettata dalla VMM che la gestisce ed emula l'effetto desiderato dal guest SO.
 
@@ -214,7 +214,7 @@ Ma prima di ciò non era possibile virtualizzare tale architettura.
   
   il guest SO è sviluppato appositamente per cooperare con il VMM.
   
-  Si abbandona l'idea di ingannare il guest SO, è consapevole di essere su una macchina virtuale. Il SO ospite viene riscritto per essere consapevole di girare su una macchina virtuale, quindi invece di provare ad esegure istruzioni hardware direttamente si interfaccia con la VMM (cooperazione).
+  Si abbandona l'idea di ingannare il guest SO, è consapevole di essere su una macchina virtuale. Il SO ospite viene riscritto per essere consapevole di girare su una macchina virtuale, quindi invece di provare ad eseguire istruzioni hardware direttamente si interfaccia con la VMM (cooperazione).
 - **Full virtualization**, con **supporto hardware**
   
   migliori prestazioni e VMM più semplice.
@@ -251,13 +251,13 @@ Quindi consideriamo di trovarci in questa situazione:
 
 - Codice sorgente
 - Codice binario che viene eseguito
-- fuznione del VMM che emula il comportamento dell'istruzione in esame
+- funzione del VMM che emula il comportamento dell'istruzione in esame
 
 Per l'approccio che utilizza la para-virtualization il sorgente deve essere modificato per poter girare su una VM. La modifica consiste nella chiamata alla funzione dal VMM che emula quel comportamento, ovvero `emulate_store_idt()` (Hypercall).
 
-Per l'approccio che utilizza la full virtualization il sorgente rimane invariato. e a tempo di esecuzione abbiamo due principali tecniche che dipendono dalla presenza o meno del supporto hardware.
+Per l'approccio che utilizza la full virtualization il sorgente rimane invariato, e a tempo di esecuzione abbiamo due principali tecniche che dipendono dalla presenza o meno del supporto hardware.
 
-- Meccanismo software (Dynamic Binary Traslation): la VMM sostituisce dinamicamente le istruzioni. Il VMM legge il **codice binario** prima che venga eseguito, individue le istruzioni critiche e le riscrive sostituendole con il codice di emulazione → `emulate_store_idt()`.
+- Meccanismo software (Dynamic Binary Traslation): la VMM sostituisce dinamicamente le istruzioni. Il VMM legge il **codice binario** prima che venga eseguito, individua le istruzioni critiche e le riscrive sostituendole con il codice di emulazione → `emulate_store_idt()`.
 - Meccanismo hardware (Intel VT-x / Trap-and-Emulate): in questo caso il codice binario in memoria non viene necessariamente sostituito/riscritto. È la CPU fisica che, quando incontra l'istruzione critica mentre gira la VM (in *non-root mode*), ferma tutto e genera un evento hardware (**VMExit**). Il controllo passa al VMM che esegue l'emulazione e poi restituisce il controllo.
 
 
@@ -266,11 +266,11 @@ Per l'approccio che utilizza la full virtualization il sorgente rimane invariato
 
 #### Full virtualization, no supporto hw
 
-Nel caso di una CPU fisica che non supporta la virtualizzazione, in cui non tutte le istruzioni sensitive generano una trap, l'hypervisot di **VMware** introdusse tecniche efficienti di full-virtualization per Intel `x86`.
+Nel caso di una CPU fisica che non supporta la virtualizzazione, in cui non tutte le istruzioni sensitive generano una trap, l'hypervisor di **VMware** introdusse tecniche efficienti di full-virtualization per Intel `x86`.
 
 Queste tecniche sono ad esempio la **Dynamic Binary Traslation**.
 
-Il codice binario del guest veniva riscitto dinamicamente dall'hypervisor prima di essere eseguito: sostituendo le istruzioni sensibili con un codice di emulazione
+Il codice binario del guest veniva riscritto dinamicamente dall'hypervisor prima di essere eseguito: sostituendo le istruzioni sensibili con un codice di emulazione
 
 Coprendo il gap della non virtualizzabilità di `x86`.
 
