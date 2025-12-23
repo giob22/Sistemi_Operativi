@@ -1,5 +1,5 @@
 use std::{
-    arch::x86_64, fs, io::{self, Write}, path::{self, PathBuf}, string
+    fs, io::{self, Write}, path::{self, PathBuf}, string
 };
 
 use crate::procedure::*;
@@ -49,7 +49,6 @@ fn main() {
     }*/
 
     // creiamo la procedura per costruire un array per i file e uno per le directory
-    let dir_paths: Vec<PathBuf> = ottieni_percorsi(&path_base, procedure::FiltroPercorso::Dir);
     let file_paths: Vec<PathBuf> = ottieni_percorsi(&path_base, procedure::FiltroPercorso::File);
 
     // todo implementare un modo per riordinare i file nelle cartelle, DA PENSARCI ANCORA...

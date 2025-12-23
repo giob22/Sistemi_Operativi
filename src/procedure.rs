@@ -119,28 +119,28 @@ pub fn move_files(file_paths: &Vec<std::path::PathBuf>, path_base: &PathBuf) {
     if risposta.trim() == "s" || risposta.trim() == "y" || risposta.trim() == "si" || risposta.trim() == "yes" {
            
         for i in 0..file_paths.len() {
-
-            let estensioneCartella = String::from(file_paths[i].extension().expect("Errore1").to_str().expect("Errore"));
+            
+            let nome_cartella = String::from(file_paths[i].extension().expect("Errore1").to_str().expect("Errore"));
 
             
 
-            let mut NomeCartella = String::new();
-            NomeCartella.push_str(path_base.to_str().expect("Errore"));
-            NomeCartella.push_str("/");
+            let mut final_path = String::new();
+            final_path.push_str(path_base.to_str().expect("Errore"));
+            final_path.push_str("/");
 
-            NomeCartella.push_str(&estensioneCartella);
+            final_path.push_str(&nome_cartella);
             
             
-            if !CartelleCreate.contains(&estensioneCartella){
-                fs::create_dir_all(&NomeCartella).expect("Errore Creare Cartella");
-                CartelleCreate.push(estensioneCartella);
+            if !CartelleCreate.contains(&nome_cartella){
+                fs::create_dir_all(&final_path).expect("Errore Creare Cartella");
+                CartelleCreate.push(nome_cartella);
                 
-                // println!("1: {:?}", NomeCartella);
+                // println!("1: {:?}", final_path);
 
             }
             
-            NomeCartella.push_str("/");
-            NomeCartella.push_str(
+            final_path.push_str("/");
+            final_path.push_str(
                 file_paths[i]
                 .file_name()
                 .expect("Errore")
@@ -149,7 +149,7 @@ pub fn move_files(file_paths: &Vec<std::path::PathBuf>, path_base: &PathBuf) {
                 );
 
 
-                fs::rename(file_paths[i].clone(), NomeCartella).expect("Errore Nel Muovere");
+                fs::rename(file_paths[i].clone(), final_path).expect("Errore Nel Muovere");
         }
     }
 
