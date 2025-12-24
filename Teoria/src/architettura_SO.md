@@ -79,14 +79,21 @@ Al livello gestione delle periferiche, la macchina virtuale realizzata dal SO (d
 
 ## File system
 
+Permette di trasformare un enorme contenitore di bit disordinati, memoria secondaria, in un archivio ordinato.
+
+Quindi gli strati superiori vedranno un'organizzazione ordinata della memoria.
+
 Al livello file system, la macchina virtuale realizzata dal SO (dal punto di vista del processo):
 
 - gestisce blocchi di informazioni su memoria di massa strutturati logicamente;
   
   Quindi delle sequenze di byte memorizzate in memoria di massa identifica le sequenze che rappresentano cartelle e file;
+
 - ne controlla gli accessi;
   
-  Per ogni accesso verifica se il processo richiedente ha i permessi necessari per leggere o scrivere su tale blocco di memoria;
+  Per ogni accesso verifica se il processo richiedente ha i permessi necessari per leggere o scrivere su tale blocco di memoria.
+
+  Questo perché ogni file ha associato dei metadati. Tra questi metadati ci sono le informazioni riguardanti i permessi di accesso da parte dei processi;
 - ne gestisce l'organizzazione.
   
   Gestisce la geometria della memoria di massa e implementa i metodi che devono essere utilizzare per accedere correttamente ai dati. 
