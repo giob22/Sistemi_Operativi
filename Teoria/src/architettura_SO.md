@@ -12,12 +12,14 @@
   
   Sono tutti concetti che permette di ottenere una virtualizzazione e un'estensione delle risorse hardware della macchina fisica.
 
-  Oltre a creare un'astrazione per la macchina fisica, il SO fornisce anche un API di sistema che permette alle applicazioni utente di operare sull'hardware delegando le operazioni a quest'ultimo che interagisce direttemnte con l'hardware.
+  Oltre a creare un'astrazione per la macchina fisica, il SO fornisce anche un API di sistema che permette alle applicazioni utente di operare sull'hardware delegando le operazioni a quest'ultimo che interagisce direttamente con l'hardware.
 
   Queste API garantiscono un accesso uniforme rispetto tutte le componenti hardware che possono essere anche molto eterogenee tra loro.
 
 - Gestione e coordinamento
-  - meccanismi di protezione → per evitare azioni illecite
+  
+  Il SO ha il compito di arbitrare le richieste dei programmi utente
+  - meccanismi di protezione → per evitare azioni illecite da parte di processi malfunzionanti
   - meccanismi per la comunicazione inter-processo
   - gestore delle risorse → scheduling
 
@@ -35,7 +37,7 @@ Il Kernel è quella parte del SO che risiede in memoria principale.
 
 Contiene funzionalità fondamentali del SO.
 
-A livello kernel, la macchina virtuale realizzata dal SO (dal punto di vista delle singole applicazioni utente):
+A livello **kernel**, la macchina virtuale realizzata dal SO (dal punto di vista delle singole applicazioni utente):
 
 - possiede tante unità centrali quanti sono i processi attivi nel sistema (ovvero processori virtuali).
   
@@ -58,14 +60,14 @@ A livello della **gestione della memoria**, la macchina virtuale realizzata dal 
   Questi creano un'astrazione per i processi, illudendo questi di avere a disposizione l'intera memoria centrale per se.
 - gestisce la protezione, ovvero il gestore della memoria verifica che non ci siano interferenze tra i vari processi, quindi che lo spazio di indirizzamento del singolo processo sia isolato e non accessibili da altri processi.
   
-  Quindi due processi potrebbero utilizzare due indirizzi virtuali uguali ma questi saranno mappati in indirizzi virtuali fisici distinti nel momento il cui i processi andranno ad accedere a questi.
+  Quindi due processi potrebbero utilizzare due indirizzi virtuali uguali ma questi saranno mappati in indirizzi fisici distinti nel momento il cui i processi andranno ad accedere a questi.
 - consente di rendere trasparente la posizione effettiva dei dati/istruzioni per i processi. Infatti i dati che un processo intende leggere e modificare possono risiedere temporaneamente in memoria di massa in casi particolari.
   
-  Questi casi particolari corrispondono ad esempio alla saturazione della memoria centrale. In tali casi alcune pagine vengono swappate in una porzione della memoria secondare utilizzata proprio in questi casi.
+  Questi casi particolari corrispondono ad esempio alla saturazione della memoria centrale. In tali casi alcune pagine vengono swappate in una porzione della memoria secondaria utilizzata per mantenere pagine della memoria centrale che non vengono subito utilizzate.
 
 ## Gestione delle periferiche
 
-Al livello gestione delle periferiche, la macchina virtuale realizzata dal SO (dal punto di vista dei processi):
+Al livello **gestione delle periferiche**, la macchina virtuale realizzata dal SO (dal punto di vista dei processi):
 
 - dispone di periferiche dedicate ai singoli processi.
   
@@ -85,7 +87,7 @@ Permette di trasformare un enorme contenitore di bit disordinati, memoria second
 
 Quindi gli strati superiori vedranno un'organizzazione ordinata della memoria.
 
-Al livello file system, la macchina virtuale realizzata dal SO (dal punto di vista del processo):
+Al livello **file system**, la macchina virtuale realizzata dal SO (dal punto di vista del processo):
 
 - gestisce blocchi di informazioni su memoria di massa strutturati logicamente;
   
