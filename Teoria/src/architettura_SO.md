@@ -12,7 +12,7 @@
   
   Sono tutti concetti che permette di ottenere una virtualizzazione e un'estensione delle risorse hardware della macchina fisica.
 
-  Oltre a creare un'astrazione per la macchina fisica fornisca anche un API di sistema che permette alle applicazioni utente di operare sull'hardware delegando le operazioni al SO.
+  Oltre a creare un'astrazione per la macchina fisica, il SO fornisce anche un API di sistema che permette alle applicazioni utente di operare sull'hardware delegando le operazioni a quest'ultimo che interagisce direttemnte con l'hardware.
 
   Queste API garantiscono un accesso uniforme rispetto tutte le componenti hardware che possono essere anche molto eterogenee tra loro.
 
