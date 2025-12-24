@@ -1,3 +1,5 @@
+<script src="../javascript.js"></script>
+
 # Architettura di un SO
 
 ## Funzionalità di un SO
