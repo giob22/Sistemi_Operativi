@@ -33,12 +33,16 @@ Il Kernel è quella parte del SO che risiede in memoria principale.
 
 Contiene funzionalità fondamentali del SO.
 
-A livello kernel la macchina virtuale realizzata dal SO (dal punto di vista delle singole applicazioni utente):
+A livello kernel, la macchina virtuale realizzata dal SO (dal punto di vista delle singole applicazioni utente):
 
 - possiede tante unità centrali quanti sono i processi attivi nel sistema (ovvero processori virtuali).
   
   Ogni processo ha l'illusione di avere per se un processore dedicato, indipendentemente dal numero reale di processori fisici;
 - non possiede meccanismi di interruzione. I processi vedono un flusso di esecuzione continuo e non devono gestire le interruzioni hardware perché sono intercettate dal kernel che provvede alla gestione;
+  
+  questo è possibile per il context switch che viene fatto all'atto della sospensione del processo per la gestione da parte del SO delle interrupt. Nel momento in cui è terminata la ISR per gestire l'interrupt il processo torna ad eseguire sulla CPU partendo dallo stato in cui è stato sospeso.
+
+  Quindi per il processo la gestione delle interruzioni è trasparente.
 - possiede istruzioni di sincronizzazione e scambio di messaggi tra processi che operano su processori virtuali.
   
   Tali meccanismi di sincronizzazione e scambio di messaggi avvengono tramite l'utilizzo di syscalls.
