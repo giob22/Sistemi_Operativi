@@ -106,7 +106,7 @@ Al livello **file system**, la macchina virtuale realizzata dal SO (dal punto di
 
 Il SO è un programma di notevole **complessità** e **dimensione**. Infatti tutti i **layer** che abbiamo visto prima, necessari per garantire la virtualizzazione dell'hardware e una sua gestione efficiente, fanno **parte** **del** **SO**.
 
-É quindi fondamentale applicare durante il suo progetto e la sua realizzazione le più sofisticate **tecniche proprie dell'ingegneria del software**, al fine di garantire un risultato che goda di tutte le **proprietà che garantiscano la qualità di un sistema software**: correttezza, modularità, facilità di manutenzione, efficienza di esecuzione, etc.
+É quindi fondamentale applicare, durante il suo progetto e la sua realizzazione, le più sofisticate **tecniche proprie dell'ingegneria del software**, al fine di garantire un risultato che goda di tutte le **proprietà che garantiscano la qualità di un sistema software**: correttezza, modularità, facilità di manutenzione, efficienza di esecuzione, etc.
 
 Per questo sono stati proposti, nel tempo, **vari modelli strutturali** cui fare riferimento **per organizzare i componenti** durante le fasi di progetto, realizzazione e test del sistema.
 
