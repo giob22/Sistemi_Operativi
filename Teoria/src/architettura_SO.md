@@ -114,7 +114,7 @@ Per questo sono stati proposti, nel tempo, **vari modelli strutturali** cui fare
 
 I primi sistemi operativi erano costituiti da un solo programma (**sistemi monolitici**) senza una particolare suddivisione dello stesso in moduli.
 
-Il sistema operativo era c**ostituito da un insieme di procedure di servizio** a ciascuna delle quali corrispondeva una **chiamata al sistema**.
+Il sistema operativo era **costituito da un insieme di procedure di servizio** a ciascuna delle quali corrispondeva una **chiamata al sistema**.
 
 Normalmente le procedure erano scritte in **linguaggio** **assembler** per consentire un più efficiente accesso alle risorse hardware della macchina.
 
@@ -145,7 +145,9 @@ I vari moduli furono distinti in due categorie:
 
 Ovviamente ogni chiamata di sistema provocava un cambio di contesto da modalità utente a modalità kernel.
 
-Questo tipo di struttura è anche quello adottato nel sistema Unix. In questo caso fanno parte del sistema:
+Questo tipo di struttura è anche quella adottata nel sistema Unix. 
+
+In questo caso fanno parte del sistema:
 
 - sia le tipiche **componenti di un sistema operativo**, invocate tramite le chiamate di sistema, eseguite in **stato** **privilegiato** e identificate globalmente con il termine *kernel*
 - sia **l'insieme dei programmi di utilità del sistema** costituiti dalla shell, dai compilatori, dai caricatori, dai linker e dalle librerie di sistema, eseguiti in stato non privilegiato come i normali programmi utente.
@@ -239,6 +241,14 @@ I comandi per caricare o scaricare un modulo dal kernel sono:
 Il rischio che si corre con questa struttura è che i moduli che possono essere collegati al kernel girano nello stesso spazio di indirizzamento del kernel, quindi se questi hanno un bug grave possono mandare in crash l'intero sistema (kernel panic).
 
 In generale, il progetto del kernel linux ha cercato di prendere i vantaggi dei due mondi: monolitico e flessibilità modulare.
+
+## Windows acrchitecture
+
+Struttura modulare per renderlo più flessibile. Questo sistema è basato su un'architettura a microkernel ibrida.
+
+- Non è puramente un'architettura a microkernel, anche se la maggior parte delle funzionalità sono eseguite all'esterno del microkernel.
+- Tutti i moduli esterni sono caricati dinamicamente e quindi posso essere rimossi, aggiornati, o sostituiti senza riscrivere o ricompilare tutto il sistema.
+
 
 
 
