@@ -227,9 +227,24 @@ Infatti utilizzando il comando `time` in UNIX, che misura il tempo che un proces
 
 Il kernel Linux è monolitico perché è un unico binario che viene caricato in memoria centrale.
 
-Nel tempo è stato introdotto il meccanismo dei moduli caricabili che ha permesso quindi di estendere le funzionalità del kernel senza la necessità che questo venga ricombilato ogni volta.
+Nel tempo è stato introdotto il meccanismo dei moduli caricabili che ha permesso quindi di estendere le funzionalità del kernel senza la necessità che questo venga ricompilato ogni volta.
 
-Quindi possiamo dire che il kernel linux ha un'architettura monolitica e modulare perché implementa il meccanismo dei moduli caricabili che possono essere collegati e scollegati dal kernel a runtime
+Quindi possiamo dire che il kernel linux ha un'architettura monolitica e modulare perché implementa il meccanismo dei moduli caricabili che possono essere collegati e scollegati dal kernel a runtime.
+
+I comandi per caricare o scaricare un modulo dal kernel sono:
+
+- `insmod`
+- `rmmod`
+
+Il rischio che si corre con questa struttura è che i moduli che possono essere collegati al kernel girano nello stesso spazio di indirizzamento del kernel, quindi se questi hanno un bug grave possono mandare in crash l'intero sistema (kernel panic).
+
+In generale, il progetto del kernel linux ha cercato di prendere i vantaggi dei due mondi: monolitico e flessibilità modulare.
+
+
+
+
+
+
 
 
 
