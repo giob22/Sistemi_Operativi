@@ -102,7 +102,84 @@ Al livello **file system**, la macchina virtuale realizzata dal SO (dal punto di
   
   Gestisce la geometria della memoria di massa e implementa i metodi che devono essere utilizzare per accedere correttamente ai dati. 
 
+## Architettura dei sistemi operativi
 
+Il SO è un programma di notevole **complessità** e **dimensione**. Infatti tutti i **layer** che abbiamo visto prima, necessari per garantire la virtualizzazione dell'hardware e una sua gestione efficiente, fanno **parte** **del** **SO**.
+
+É quindi fondamentale applicare durante il suo progetto e la sua realizzazione le più sofisticate **tecniche proprie dell'ingegneria del software**, al fine di garantire un risultato che goda di tutte le **proprietà che garantiscano la qualità di un sistema software**: correttezza, modularità, facilità di manutenzione, efficienza di esecuzione, etc.
+
+Per questo sono stati proposti, nel tempo, **vari modelli strutturali** cui fare riferimento **per organizzare i componenti** durante le fasi di progetto, realizzazione e test del sistema.
+
+### sistemi operativi monolitici
+
+I primi sistemi operativi erano costituiti da un solo programma (**sistemi monolitici**) senza una particolare suddivisione dello stesso in moduli.
+
+Il sistema operativo era c**ostituito da un insieme di procedure di servizio** a ciascuna delle quali corrispondeva una **chiamata al sistema**.
+
+Normalmente le procedure erano scritte in **linguaggio** **assembler** per consentire un più efficiente accesso alle risorse hardware della macchina.
+
+Questo tipo di approccio al progetto del sistema poteva essere **adeguato soltanto nel caso di sistemi molto semplici**, come nel caso dei primi sistemi operativi e, successivamente, come nel caso di semplici **sistemi non multiprogrammati**, per esempio il sistema operativo MS-DOS.
+
+Col crescere della complessità tipica dei moderni sistemi multiprogrammati questo approccio ha rapidamente mostrato tutti i propri limiti.
+
+### sistemi operativi modulari
+
+Un valido approccio utilizzato per affrontare la complessità di un sistema è quello di fare riferimento a **tecniche di modularizzazione** in modo tale da suddividere il sistema in componenti (moduli), **ciascuno destinato a fornire una delle funzionalità del sistema**.
+
+Realizzato usualmente in un **linguaggio di alto livello seguendo i criteri tipici della programmazione strutturata** (**sistemi modulari**).
+
+In base ai criteri della programmazione strutturata, ogni modulo è caratterizzato da una ben precisa interfaccia, che specifica la funzionalità offerta dal modulo, e un corpo contenente l'implementazione del modulo, non visibile all'esterno.
+
+In questo modo ogni modifica che veniva apportata ai moduli non influenzava il funzionamento degli altri, a meno che la modifica non era fatta sull'interfaccia offerta dal modulo.
+
+Il primo esempio di strutturazione di un sistema operativo fu quello di che si ottenne modificando la struttura dei primi sistemi monolitici in modo tale da identificare i vari moduli componenti e dettagliando con cura le rispettive interfacce.
+
+<p align='center'><img src='images/interfaccia_modulo.png' width='300' ></p>
+
+I vari moduli furono distinti in due categorie: 
+
+- le procedure di servizio offerte dal sistema ai programmi applicativi tramite chiamate di sistema;
+- le procedure di utilità, utilizzate dalle prime ma non direttamente visibili ai processi.
+
+<p align='center'><img src='images/suddivisione_in_moduli.png' width='400' ></p>
+
+Ovviamente ogni chiamata di sistema provocava un cambio di contesto da modalità utente a modalità kernel.
+
+Questo tipo di struttura è anche quello adottato nel sistema Unix. In questo caso fanno parte del sistema:
+
+- sia le tipiche **componenti di un sistema operativo**, invocate tramite le chiamate di sistema, eseguite in **stato** **privilegiato** e identificate globalmente con il termine *kernel*
+- sia **l'insieme dei programmi di utilità del sistema** costituiti dalla shell, dai compilatori, dai caricatori, dai linker e dalle librerie di sistema, eseguiti in stato non privilegiato come i normali programmi utente.
+
+Nonostante gli indubbi vantaggi indotti dall'uso di tecniche di modularità, la complessità dei sistemi operativi è andata progressivamente crescendo, richiedendo quindi ulteriori paradigmi di progetto in grado di affrontare in modo più idoneo la crescente complessità.
+
+### sistemi operativi a livelli gerarchici di astrazione
+
+Consistono in SO modulari, organizzati in una struttura gerarchica.
+
+Uno degli aspetti fondamentali della tecnica dell'organizzazione gerarchica consiste nel **ridurre il numero di possibili interconnessioni** fra i moduli di un sistema, semplificando quindi sia la fase di progetto sia quella di verifica.
+
+Ovvero si punta ad ottenere un'organizzazione in moduli che punti a diminuire le dipendenze tra questi e quindi aumentare il livello di coesione.
+
+Tale tecnica che permette questo tipo di organizzazione di un sistema operativo è possibile applicarla seguendo due possibili paradigmi complementari.
+
+- top-down, livelli di raffinamento successivi.
+  
+  Consiste nello scomporre il sistema software nelle sue funzionalità principali, astraendo i dettagli implementativi. Successivamente ciascuna di queste funzionalità veniva a sua volta scomposta in altre funzionalità che la comprendessero astraendo sempre i dettagli implementativi; e così via.
+
+  Fino a che non si arrivi ad un livello di funzionalità elementare da cui può iniziare l'implementazione.
+- bottom-up.
+  
+  Consiste nel partire dal basso, quindi a stretto contatto con l'hardware.
+
+  Implementare delle funzionalità aggiuntive che non sono disponibili in hardware e da queste funzionalità si parte ad implementarne che le utilizzino.
+
+  Quindi si arriva ad un livello che non è più necessario comunicare direttamente con l'hardware grazie alle funzionalità elementari che sono state implementate in principio.
+
+  Questo quindi permette di implementare funzionalità che astraggono sempre di più il livello hardware.
+
+Un utilizzo combinato di questi due paradigmi permette di realizzare **sistemi operativi strutturati in moduli organizzati gerarchicamente in diversi livelli di astrazione**, in modo tale che i **moduli realizzati a un certo livello** utilizzano esclusivamente le **funzionalità offerte dai moduli di livello più basso** e **forniscano le loro funzionalità ai moduli** di livello più alto. 
+
+Possiamo intendere questa struttura come se ogni livello definisse una nuova macchina astratta, le cui funzionalità sfruttano quelle offerte dalla macchina astratta di livello inferiore.
 
 
 
