@@ -183,6 +183,54 @@ Possiamo intendere questa struttura come se ogni livello definisse una nuova mac
 
 <p align='center'><img src='images/sys_gerarchici.png' width='200' ></p>
 
+### sistemi operativi a microkernel
+
+La necessità di proteggere dall'acceso diretto l'hardware da parte dei programmi utente che avrebbero potuto causare dei danni irreparabili si è introdotto il concetto dei livelli di esecuzione:
+
+- kernel mode
+- user mode
+
+Questo però ha portato il sistema ad essere più difficilmente modificabile ed estensibile.
+
+Modifiche o estensioni potrebbero risultare necessarie in vari casi:
+
+- si deve aggiungere un driver in seguito alla connessione di un nuovo dispositivo
+- si intende modificare alcune scelte relative alla gestione di una o più risorse al fine di rendere il sistema più adatto ai requisiti imposti dai programmi applicativi specifici che andranno in esecuzione su questo.
+
+Per dare una soluzione a questo tipo di problemi è stata proposta una soluzione nota col nome di **struttura** **a** **microkernel**. 
+
+Il microkernel implementa solo i **meccanismi essenziali** a discrezione del progettista.
+
+Tutte le **strategie per la gestione** delle risorse sono implementate all'esterno del kernel, da processi di sistema che girano in user mode.
+
+Quindi sono facilmente modificabili ed estensibili.
+
+- Driver
+- Memory management
+- CPU scheduling
+
+Ovviamente è inevitabile che tutti questi programmi non abbiano la necessità di operare direttamente sulle risorse hardware, quindi si utilizzano comunque delle componenti del SO che girano in kernel mode per espletare alcune funzioni. → context switch
+
+Questa struttura permette di aumentano l'affidabilità e la sicurezza dei sistemi perché gli eventuali guasti non si propagano nel kernel, ma rimangono in user mode.
+
+I gestori delle risorse sono particolari processi di sistema, spesso indicati come **server** (file server, terminal server, printer server, ...).
+
+Quando un processo applicativo deve usare una risorsa, deve interagire con il processo server gestori di quella risorsa attraverso i meccanismi di comunicazione forniti dal microkernel.
+
+La comunicazione interprocesso è la caratteristica svantaggiosa di questa struttura perché provoca una perdita delle performance.
+
+Il motivo principale è dovuto al maggior numero di context switch necessari per espletare un singolo servizio ad un processo client.
+
+Infatti utilizzando il comando `time` in UNIX, che misura il tempo che un processo trascorre in user-mode, in kernel-mode e l'attesa nel caso di operazioni di IO, si sono notate le perdite di performance.
+
+## Esempio di architetture modulari: linux
+
+Il kernel Linux è monolitico perché è un unico binario che viene caricato in memoria centrale.
+
+Nel tempo è stato introdotto il meccanismo dei moduli caricabili che ha permesso quindi di estendere le funzionalità del kernel senza la necessità che questo venga ricombilato ogni volta.
+
+Quindi possiamo dire che il kernel linux ha un'architettura monolitica e modulare perché implementa il meccanismo dei moduli caricabili che possono essere collegati e scollegati dal kernel a runtime
+
 
 
 
