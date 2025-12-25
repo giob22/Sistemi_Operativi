@@ -181,7 +181,7 @@ Un utilizzo combinato di questi due paradigmi permette di realizzare **sistemi o
 
 Possiamo intendere questa struttura come se ogni livello definisse una nuova macchina astratta, le cui funzionalità sfruttano quelle offerte dalla macchina astratta di livello inferiore.
 
-
+<p align='center'><img src='images/sys_gerarchici.png' width='200' ></p>
 
 
 
