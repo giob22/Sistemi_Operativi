@@ -1,0 +1,160 @@
+# Scheduler
+
+Con il termine *short term scheduler* si intende quella funzione del nucleo che ha il compito di gestire l'allocazione della CPU ai processi che si trovano nella coda dei processi pronti.
+
+In generale, lo *sheduler* è quella parte del SO preposta all'assegnazione di risorse a favore dei processi richiedenti.
+
+La selezione tra i processi richiedenti (coda dei relativi PCB) nella coda può avvenire mediante differenti criteri, a seconda **dell'algoritmo di scheduling** che implementa uno schedulatore.
+
+Questo è un compito fondamentale per tutti i sistemi multiprogrammati in cui c'è la necessità di un efficiente gestione delle risorse condivise disponibili per tutti i processi attivi e che eseguono in modo concorrente.
+
+Inoltre gli sheduler sono i componenti più caratterizzanti del sistema operativo, infatti da questa si possono identificare le caratteristiche e gli obiettivi per cui è stato progettato.
+
+Dal punto di vista dell'esecuzione dei processi abbiamo diversi scheduler ognuno che si occupa di svolgere un particolare compito:
+
+- *long term scheduling* o di job
+- *medium term scheduling* o di swap
+- *short term scheduling* o della CPU
+
+## Scheduling a lungo termine
+
+Con **sheduling a lungo termine** si intende quella funzione del sistema operativo che, in un sistema di tipo batch, sceglie tra tutti i programmi caricati in memoria di massa per essere eseguiti, quelli da trasferire in memoria centrale e da inserire nella coda dei processi pronti.
+
+Quindi controlla il **grado di multiprogrammazione** del sistema.
+
+Le sue scelte, in genere, vengono fatte in modo da equilibrare la presenza in memoria centrale di processi caratterizzati da prevalenza di operazioni di elaborazione (CPU bound) e di processi caratterizzati da prevalenza di operazioni di ingresso e uscita (I/O bound).
+
+In modo da distribuire il carico in modo ottimale su tutte le risorse disponibili.
+
+Troppi processi I/O bound → la coda dei processi pronti è sempre quasi vuota
+
+Troppi processi CPU bound → i dispositivi I/O sarebbero poco utilizzati
+
+I possibili criteri su cui si può basare la scelta dello scheduler a lungo termine sono:
+
+- FIFO
+- Priorità
+- Tempo di esecuzione stimato
+- Requisiti di I/O → processi I/O bound
+- Tempo presunto di CPU → processi CPU-bound
+
+## Scheduling a medio termine
+
+Lo **scheduling a medio termine** rappresenta invece quella funzione del sistema operativo che ha il compito di trasferire temporaneamente processi dalla memoria centrale alla memoria di massa (*swap-out*) e viceversa (*swap-in*).
+
+Questa funzione è necessaria, in caso di RAM prossima alla saturazione, di liberare parte della memoria centrale necessaria ad altri processi già presenti o per rendere possibile il caricamento di nuovi processi.
+
+Il suo obiettivo è quello di **migliorare** **l'efficienza** nell'utilizzo della risorsa **memoria**.
+
+Se questa gestione dei trasferimenti di processi verso e da la memoria di massa non è fatta in modo efficiente si verificherebbero molte operazioni di I/O per spostare i processi tra le memorie.
+
+- ad esempio nel caso in cui due processi si trovino a collaborare e quindi l'esecuzione dell'uno dipende dall'esecuzione dell'altro;
+- supponiamo di avere implementato due processi che operano su una memoria condivisa secondo il paradigma produttori consumatori
+- se il produttore venisse sempre swappato in memoria di massa, allora questo poi dovrà esser reintrodotto in memoria centrale per permette al consumatore di consumare la risorsa.
+
+---
+
+Entrambe le funzioni di long term scheduling e medium term scheduling vengono eseguite dal sistema operativo con una frequenza nettamente inferiore a quella della short term scheduling.
+
+Quindi possono risultare meno costose in termini di tempo di esecuzione e quindi non inficiare molto sulle performance del sistema.
+
+Invece la funzione di short term sheduling è eseguita molto frequentemente, ad ogni context switch, in modo da rendere l'esecuzione di più processi fluida, dando l'impressione che siano eseguiti in parallelo all'utente.
+
+Quindi deve essere una funzione su cui porre l'attenzione per la ottimizzazione, poiché inficia molto sulle performance generali del sistema.
+
+Possiamo dire che tra gli scheduler è quello più caratterizzante del SO.
+
+<p align='center'><img src='images/scheduler_lms.png' width='200' ></p>
+
+## Processi CPU bound e I/O bound
+
+- Processi **CPU-bound**
+  - poche chiamate di sistema
+  - tendono ad occupare la CPU per lunghi periodi (se il SO non li interrompe)
+  - tipico delle applicazioni batch, calcolo numerico
+
+<p align='center'><img src='images/cpu-bound.png' width='400' ></p>
+
+- Processi **I/O-bound**
+  - fanno frequenti chiamate di sistema
+  - usano brevemente la CPU, per poi mettersi subito in attesa di I/O
+  - tipico dei programmi **interattivi** (es. browser, editor di testo, ...)
+
+<p align='center'><img src='images/IO-bound.png' width='400' ></p>
+
+
+## Scheduler a breve termine
+
+Lo scheduler a breve termine, conosciuto anche con il nome di **dispatcher**, è lo scheduler che viene attvato più frequentemente nel sistema.
+
+Ha il compito di **scegliere a quale tra i processi pronti** assegnare la CPU.
+
+Lo scheduler a breve termine viene invocato all'occorrenza di un evento che comporta la sospensione del processo in esecuzione.
+
+Tali eventi sono per esempio:
+
+- interruzioni del Clock (timer)
+- interruzioni di I/O
+- system call
+- segnali (ad esempio semafori su cui erano sospesi per la cooperazione)
+
+L'obiettivo dell'algoritmo del **Dispatcher** è quello di allocare il processore in maniera tale da ottimizzare uno o più aspetti del comportamento del sistema.
+
+I criteri più utilizzati sono:
+
+- User-oriented
+  
+  Si riferiscono ai comportamenti del sistema così come **percepiti dall'utente o da un processo**.
+
+  → Ad esempio il tempo di risposta.
+- System-oriented
+  
+  L'obiettivo è quello di **utilizzare in modo efficiente il processore**.
+
+  Quindi massimizzare l'utilizzo della risorsa processore.
+
+  → Ad esempio migliorare il throughput di esecuzione.
+
+Ovviamente il comportamento del sistema comprende diverse caratteristiche possibili che possono essere ottimizzate.
+
+Ma molte di queste fanno in conflitto.
+
+Infatti enfatizzando le caratteristiche del sistema operativo che portano a massimizzare il thoughput del processore si attenuano le caratteristiche che si riferiscono alla percezione dell'utente o dei processi utente, come ad esempio il tempo di risposta.
+
+Quindi non esiste un algoritmo universale a cui aspirare per ottenere il meglio in tutti i campo possibili. Ma esistono i migliori algoritmi rispetto agli obiettivi di progetto scelti per la realizzazione del SO.
+
+### Parametri User-oriented
+
+- **Tempo di turnaround**: **intervallo** di **tempo** che trascorre dall'istante in cui un processo è ammesso nel sistema all'istante della sua terminazione.
+
+  Tiene conto del **tempo effettivo di esecuzione** e **del tempo speso in attesa delle risorse** (CPU inclusa).
+- **Tempo di risposta**: indica il tempo che trascorre dall'istante della ammissione nel sistema (quindi quando entra nella coda dei processi pronti per la prima volta) all'istante in cui fornisce la prima risposta.
+- **Deadlines**: nel caso in cui si possa specificare per ogni processo il termine di completamento (deadline), l'algoritmo dello scheduler a breve termine deve seguire una metrica che porta a **massimizzare la percentuale scadenze raggiunte**.
+- **Tempo di servizio**: è il tempo di esecuzione "puro" del processo, cioè quanto tempo serve al processo per terminare se avesse la CPU tutta per sé, senza interruzioni o attese. 
+- **Slowdown** è il rapporto tra il *tempo di turnaround* e il *tempo di servizio*.
+  
+  Misura quanto un processo è stato rallentato dal sistema rispetto al tempo che avrebbe impiegato se fosse stato eseguito da solo, senza attese.
+
+  Un valore pari ad `1` indica che il processo ha avuto esecuzione immediata (nessuna attesa).
+
+### Parametri System-oriented
+
+- **Throughput**: misura la **produttività** di un sistema in termini di **numero di processi terminati per unità di tempo**.
+  
+  Questo parametro **dipende** fortemente dalla **lunghezza media di un processo** ma è anche **influenzato** dalla particolare **politica adottata per la schedulazione**.
+- **Utilizzo della CPU**: rappresenta la percentuale di tempo per cui il processore risulta occupato.
+  
+  L'obiettivo è di massimizzare la percentuale d'uso della CPU nell'unità di tempo.
+- **Fairness**: misura quanto i processi attivi nel sistema, che quindi sono pronti ad eseguire o sono bloccati in attesa di un evento asincroni, sono **trattati equamente in termini di schedulazione**.
+  
+  Questo parametro esclude qualsiasi concetto di priorità dei processi all'interno del sistema.
+
+  → evita che ci siano situazioni di starvation per un processo.
+
+
+
+
+
+
+
+
