@@ -188,7 +188,7 @@ Come ad esempio, utilizzare un aumento graduale della priorità dei processi che
 
 ---
 
-EPISODIO esemplificativo dei problemi di starvation:
+EPISODIO esemplificativo dei problemi che può causare la starvation:
 
 L'IBM 7094, un computer progettato per applicazioni scientifiche e tecnologia su larga scala, ha avuto il più eclatante problema di starvation.
 
