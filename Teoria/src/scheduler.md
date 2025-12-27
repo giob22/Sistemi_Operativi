@@ -151,6 +151,58 @@ Quindi non esiste un algoritmo universale a cui aspirare per ottenere il meglio 
 
   → evita che ci siano situazioni di starvation per un processo.
 
+## Esiste un algoritmo perfetto?
+
+- Naturalmente NO!
+
+Ovviamente i parametri descritti che riguardano l'User-oriented e il System-oriented sono interdipendenti tra loro ma alcuni sono nettamente in contrasto.
+
+Ad esempio ottenere una politica *fair* non mi garantisce una massimizzazione dell'*utilizzo della CPU* o il *deadlines*.
+
+Mentre ottenere una politica che va verso la minimizzazione del *turnaround time* porta anche un miglioramento del *tempo di risposta*.
+
+> Il progetto e l'implementazione di una politica di scheduling implica sempre un compromesso tra vari requisiti constrastanti.
+>
+> La scelta dovrà essere fatta tenendo conto "per cosa dovrà essere utilizzato il sistema".
+
+## Utilizzo delle priorità
+
+Lo scheduler può scegliere i processi in base alla loro priorità.
+
+Le priorità assegnate ai processi possono essere:
+
+- **Statiche**, se non si modificano durante il periodo di vita del processo nel sistema.
+- **Dinamiche**, se durante il loro ciclo di vita i processi possono modificare la loro priorità in base ad alcuni parametri come: tempo di CPU o tempo di I/O.
+
+I processi sono tipicamente raggruppati in **classi di priorità**
+
+- L'algoritmo di scheduling dovrà scegliere un processo pronto che appartiene alla classe di priorità più alta.
+
+## Starvation
+
+L'utilizzo di un algoritmo di scheduling a priorità può indurre situazioni di **attesa indefinita** di processi a priorità più bassa (**starvation**).
+
+Per far fronte a queste situazioni si utilizzano schemi di priorità dinamiche.
+
+Come ad esempio, utilizzare un aumento graduale della priorità dei processi che si trovano in attesa nel sistema da lungo tempo → **Aging**.
+
+## Classificazione relativa al momento in cui interviene lo scheduling
+
+Una prima classificazione fra gli algoritmi di scheduling è relativva alla scelta di quali siano gli eventi in seguito ai quali lo scheduler deve intervenire:
+
+- Si indicano come algoritmi di scheduling senza diritto di *revoca* (*non preemptive*) tutti quelli che prevedono l'intervento dello scheduler esclusivamente quando il processi in esecuzione libera spontaneamente la CPU, o perché termina la propria esecuzione o perché si sospende in attesa del verificarsi di un dato evento asincrono.
+- Invece, vengono indicati come algoritmi con il diritto di *revoca* (*preemptive*) quelli che prevedono l'intervento dello scheduler anche per decidere di revocare la CPU al processo in esecuzione al fine di allocarla ad un altro processo in attesa sulla coda dei processi pronti.
+  
+  Per esempio a causa dell'arrivo di un segnale di interruzione che indica lo scadere del quanto di tempo assegnato al processo, oppure perché entra in coda dei processi pronti un processo ritenuto "urgente".
+
+  In entrambi i casi il processo in esecuzione viene forzato a rilasciare la risorsa CPU preventivamente e inserito nella coda dei processi pronti.
+
+Gli algoritmi *non preeptive* sono sicuramente quelli più semplici e riducono il numero delle volte che lo scheduler deve intervenire e quindi il **numero di cambi di contesto** fra processi. → Richiedono un minor *overhead* di sistema.
+
+Allo stesso tempo sono anche quelli che non offrono una flessibilità in termini di strategie di scheduling.
+  
+
+
 
 
 
