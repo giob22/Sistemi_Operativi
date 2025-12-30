@@ -32,7 +32,7 @@ La rimozione però non nel senso stretto, in realtà la risorsa vine **solamente
 
 
 ---
-Le risorse IPC sono **permanenti**: se un processo termina o si stacca dalla risorsa questa non si elimina automaticamente. Sarà necessario una chiamata esplicita alla primitiva `clt`.
+Le risorse IPC sono **permanenti**: se un processo termina o si stacca dalla risorsa questa non si elimina automaticamente. Sarà necessario una chiamata esplicita alla primitiva `ctl`.
 
 ![Diagramma chiave IPC](images/persistenza_ipc.svg)
 

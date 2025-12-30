@@ -73,17 +73,16 @@ Restituisce `-1` in caso di fallimento. Invece se ha successo restituisce il **d
 ESEMPIO: con chiave cablata e senza flags
 
 ```c
-	...
-	key_t chiave = 40;
-	int ds_shm;
-	ds_shm = shmget(chiave, 1024, 0);
-
-	if(ds_shm < 0) {
-   		// la risorsa non esiste! esci dal programma
-    	perror(“errore shmget!”);
-    	exit(1);
-  	}
-  	... Utilizza la shared memory già esistente...
+...
+key_t chiave = 40;
+int ds_shm;
+ds_shm = shmget(chiave, 1024, 0);
+if(ds_shm < 0) {
+  		// la risorsa non esiste! esci dal programma
+   	perror(“errore shmget!”);
+   	exit(1);
+ 	}
+ 	... Utilizza la shared memory già esistente...
 ```
 
 Se la shared memory non è stata giá creata da un altro processo, la funzione `shmget()` restituisce `-1`.
@@ -106,7 +105,7 @@ if(ds_shm < 0) {
 
 In questo caso il flag `IPC_CREAT` impone di creare una nuova shared memory se non ne esiste una con la stessa `key`; la crea con le caratteristiche specificate di dimensione e permessi di accesso.
 
-Nel caso in cui esiste giá una shared memory vente tale valore di `key`,  la chiamata restituisce semplicemente il descrittore della risorsa senza tener conto di `size` e dei permessi di accesso specificati.
+Nel caso in cui esiste giá una shared memory avente tale valore di `key`,  la chiamata restituisce semplicemente il descrittore della risorsa senza tener conto di `size` e dei permessi di accesso specificati.
 
 ---
 ESEMPIO: chiave cablata e flag `IPC_CREAT` e `IPC_EXCL`

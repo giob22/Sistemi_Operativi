@@ -98,4 +98,24 @@ Nel caso in cui tale file non ha i permessi corretti il processo si interrompe i
 Situazioni del genere potrebbero essere molto fastidiose se non si verifica sempre quello che accade nel momento di un crash, in questo caso è bastato verificare il contenuto della variabile globale `errno`.
 
 Tale variabile bisogna importarla poiché risiede nella libreria standard `errno`.
+
+## Problematiche riguardanti la programmazione concorrente
+
+- Comunicazione tra processi
+  
+  Ovvero come far comunicare i processi in modo che si coordino:
+  - in ambiente locale
+  - in ambiente globale
+- Risorse condivise
+  
+  Gestire la concorrenza sull'accesso e modifica delle risorse condivise.
+  
+  Sarebbe necessario implementare un meccanismo di mutua esclusione.
+- Sincronizzazione tra processi
+  
+  Sincronizzare l'esecuzione di un processo rispetto l'esecuzione di un altro che viene eseguito in maniera concorrente a questo.
+- Assegnazione del tempo del processore
+
+  Come il tempo del processore deve essere distribuito in modo efficiente tra i vari processi la cui esecuzione è alternata.
+ 
 <!-- @todo inserisci qui tutte le note importanti sulla logica -->
