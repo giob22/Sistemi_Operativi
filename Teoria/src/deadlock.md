@@ -268,7 +268,7 @@ Attesa circolare è la condizione che si verifica nel momento in cui
   - Pn-1 è in attesa per una risorsa che è posseduta da Pn
   - Pn è in attesa per una risorsa che è posseduta da P0
   
-  Ovvero quando nel grafo di assegnazione si crea un ciclo di attesa perché non ci sono abbastanza istanze di risorse disponibili affinché almeno uno di questi processi non ha bisogno di attendere.
+  Ovvero quando nel grafo di assegnazione si crea un ciclo di attesa perché non ci sono abbastanza istanze di risorse disponibili per cui, almeno uno, di questi processi non ha bisogno di attendere.
 
 <p align='center'><img src='images/attesa_circolare.png' width='600' ></p>
 
