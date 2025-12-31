@@ -1,3 +1,5 @@
+<script src="../javascript.js"></script>
+
 # Virtualizzazione
 
 Una macchina **virtuale (VM)** è una emulazione (mediante tecniche sw/hw) di una macchina reale.

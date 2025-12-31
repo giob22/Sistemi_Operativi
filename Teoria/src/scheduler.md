@@ -1,3 +1,5 @@
+<script src="../javascript.js"></script>
+
 # Scheduler
 
 Con il termine *short term scheduler* si intende quella funzione del nucleo che ha il compito di gestire l'allocazione della CPU ai processi che si trovano nella coda dei processi pronti.

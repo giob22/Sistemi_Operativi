@@ -1,3 +1,5 @@
+<script src="../javascript.js"></script>
+
 # Gestione della memoria in Linux
 
 Con l'uso di `top` possiamo avere info sull'utilizzo di memoria fisica utilizzata e la dimensione degli spazi di indirizzamento di ogni processo.
