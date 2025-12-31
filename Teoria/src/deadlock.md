@@ -314,7 +314,7 @@ Tale dichiarazione deve contenere tutte le risorse necessarie che verranno blocc
 
 Rilassando il vincolo di impossibilità di prelazione se un processo già possiede alcune risorse, e ne richiede un'altra che non gli può esser allocata immediatamente, allora **rilascia tutte le risorse possedute**.
 
-Quindi non si mette in attesa per la singola risorsa che richiede mantenendo il possesso di quelle già allocate, ma libera tutte le risorse e si mette in attesa.
+Quindi non si mette in attesa per la singola risorsa che richiede, mantenendo il possesso di quelle già allocate, ma libera tutte le risorse e si mette in attesa.
 
 Tale processo quindi non si metterà in attesa per la sola risorsa in più richiesta ma anche per tutte le altre che possedeva e che ha rilasciato.
 
@@ -394,11 +394,11 @@ Nella gestione AVOIDANCE il sistema decide **a tempo di esecuzione** se una rich
 - **nessun vincolo a priori** delle risorse
 - se lo stato attuale delle risorse è **rischioso**, un algoritmo **rifiuta la richiesta** di allocazione
 
-Quindi si accetta la possibilità di incorrere in un deadlock, non eliminando le condizione necessarie, ma si cerca di evitarlo valutando lo stato in cui si trova in sistema ogni volta che viene effettuata una richiesta (a *run-time*).
+Quindi si accetta la possibilità di incorrere in un deadlock, non eliminando le condizione necessarie, ma si cerca di evitarlo valutando lo stato in cui si trova il sistema ogni volta che viene effettuata una richiesta (a *run-time*).
 
 Quindi istante per istante, possedendo **la storia precedente del grafo delle assegnazioni delle risorse**, un algoritmo valuta se **successivamente** a una certa richiesta da parte di un processo porta l'applicazione a un deadlock.
 
-Quindi l'algoritmo deve essere in grado di fare una **sorta di predizione sull'andamento dell'esecuzione** dei processi sugli istanti successivi a una qualsiasi richiesta per una risorsa.
+Quindi l'algoritmo deve essere in grado di fare una **sorta di predizione sull'andamento dell'esecuzione** dei processi negli istanti successivi a una qualsiasi richiesta per una risorsa.
 
 Quindi possiamo considerarla come una prevenzione, che **non è più statica** come per la gestione PREVENTION, ma **dinamica**.
 
@@ -485,8 +485,8 @@ e *m* = numero di tipi di risorse
 
 Un processo Pn+1 viene eseguito solo se: 
 
-<a id="legge_numero_richieste_massimo"></a>
-<p align='center'><img src='images/numero_richieste_massimo.png' width='300' ></p>
+
+<p align='center' id="legge_numero_richieste_massimo"><img src='images/numero_richieste_massimo.png' width='300' ></p>
 
 Cioè un processo viene eseguito se il **numero massimo di richieste di tutti i processi** (sommatoria) **più quelle del nuovo processo** (Cij) per la risorse j-esima è minore del numero di istanze della richiesta Rj.
 
