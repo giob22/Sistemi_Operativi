@@ -274,7 +274,7 @@ Attesa circolare è la condizione che si verifica nel momento in cui
 
 ## Deadlock PREVENTION
 
-Nella deadlock **prevention**, di evita il deadlock **invalidando** una delle quattro condizioni necessarie e sufficienti.
+Nella deadlock **prevention**, si evita il deadlock **invalidando** una delle quattro condizioni necessarie e sufficienti.
 
 Svantaggi nell'utilizzo di questo tipo di gestione del deadlock:
 
