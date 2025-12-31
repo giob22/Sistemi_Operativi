@@ -665,7 +665,7 @@ La sequenza sicura (P1, P2, ..., Pn) è un ordine di esecuzione dei processi, ta
 
 Per un corretto funzionamento è necessario che l'algoritmo sia sempre **eseguito** **ad** **ogni** **tentativo** **di** **allocazione** di risorse.
 
-In ogni momento in cui lo stato cambia si verifica se esiste almeno una sequenza sicura.
+In ogni momento in cui lo stato cambia, si verifica se esiste almeno una sequenza sicura.
 
 Intuitivamente, l'algoritmo garantisce sempre che **esista almeno una exit strategy** che evita il deadlock.
 
@@ -691,7 +691,7 @@ Questa sequenza sicuro non è detto che sia l'ordine effettivo con cui eseguiran
   - quando il grado di uso della CPU è basso.
 - In caso affermativo, il sistema applica un algoritmo di **ripristino** (recovery).
 
-La strategia di detection sfrutta il **grado di attesa**, che è un grafo costruito da quello di assegnazione delle risorse.
+La strategia di detection sfrutta il **grafo di attesa**, che è un grafo costruito da quello di assegnazione delle risorse.
 
 Tale grafo rappresenta l'attesa che un processo ha rispetto un altro processo.
 
@@ -700,7 +700,7 @@ Tale grafo rappresenta l'attesa che un processo ha rispetto un altro processo.
 - Periodicamente viene aggiornato e chiamato l'algoritmo per la **ricerca di eventuali cicli di attesa**.
   
 
-  - Tale algoritmo richiede un numero di operazioni dell'ordine di *n*^2, dove *n* è il numero di vertici (processi).
+  - Tale algoritmo richiede un numero di operazioni dell'ordine di \\(n^2\\) , dove *n* è il numero di vertici (processi).
 
 <p align='center'><img src='images/grafo_attesa.png' width='400' ></p>
 
