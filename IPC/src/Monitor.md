@@ -139,7 +139,7 @@ Possiamo schematizzare un monitor in questo modo:
   <img src="images/panoramica_monitor.png" width="300" >
 </p>
 
-- Sono presenti diverse **code** in cui sono contenuti i processi che si sono sospesi e attendono si essere riattivati.
+- Sono presenti diverse **code** in cui sono contenuti i processi che si sono sospesi e attendono di essere riattivati.
 - Procedure che un processo può eseguire sulla `shm` in modo esclusivo.
 - **local data** in cui sono contenute le strutture condivise.
 - **condition variables** sono la sezione in cui sono dichiarate le condition variables.
@@ -153,9 +153,9 @@ Il processo entra nel monitor chiedendo di eseguire una procedura in mutua esclu
 
 All'interno della procedura potrebbe esserci una condizione che potrebbe portare il processo a sospendersi nel caso in cui non sia verificata; condizioni associate a condition variables.
 
-→ Per ogni condition variable oltre a una condizione logica è associata una **coda** in cui saranno memorizzati tutti i processi che si sono sospesi per il mancato soddisfacimento della condizione logica.
+→ Per ogni condition variable, oltre a una condizione logica, è associata una **coda** in cui saranno memorizzati tutti i processi che si sono sospesi per il mancato soddisfacimento della condizione logica.
 
-Quindi nel momento in cui è da gestire una cooperazione le procedure controllano, tramite le variabili locali, se la **condizione di sincronizzazione** è valida (es. buffer vuoto, buffer occupato).
+Quindi nel momento in cui è da gestire una cooperazione, le procedure controllano, tramite le variabili locali, se la **condizione di sincronizzazione** è valida (es. buffer vuoto, buffer occupato).
 
 Se la **condizione di sincronizzazione** è valida, il processo completa l'esecuzione e libera il monitor con una chiamata `leave_monitor()`.
 
@@ -166,7 +166,7 @@ Condizione **non** valida:
   <img src="images/p2.png" width="300" >
 </p>
 
-Se al momento del controllo la **condizione di sincronizzazione non è valida** il processo si sospende volontariamente usando la **condition** **variables** associata alla condizione che non è stata soddisfatta.
+Se al momento del controllo la **condizione di sincronizzazione non è valida**, il processo si sospende volontariamente usando la **condition** **variables** associata alla condizione che non è stata soddisfatta.
 
 Mentre è in attesa, il monitor diventa libero, poiché il processo che si è sospeso deve aver **rilasciato** il monitor prima della sospensione, quindi quest'ultimo è accessibile ad altri processi che attendono di entrare.
 
@@ -186,7 +186,7 @@ La `wait_cond()` **sospende sempre il processo chiamante**.
 
 → Nei semafori, con `wait_sem()`, la sospensione era **condizionata** allo stato interno del semaforo
 
-La `signal_cond()` **non ha alcun effetto** se **non vi è alcun processo in attesa** sulla condition variables.
+La `signal_cond()` **non ha alcun effetto** se **non vi è alcun processo in attesa** sulla condition variable.
 
 → Nei semafori invece `signal_sem()` aveva sempre un effetto, ovvero quello di incrementare lo stato del semaforo.
 
@@ -200,9 +200,9 @@ A fronte di questa problematica abbiamo diverse implementazioni della procedura 
 
 Supponiamo che `P` acceda al monitor e debba eseguire una procedura in mutua esclusione, ma **non soddisfa** una condizione definita per la cooperazione.
 
-→ Il processo spontaneamente si sospende utilizzando `wait_cond()` sulla condition variables associata a tale condizione.
+→ Il processo spontaneamente si sospende utilizzando `wait_cond()` sulla condition variable associata a tale condizione.
 
-Nel momento in cui `P` si sospende questo rilascia la risorsa monitor agli altri processi in attesa. Quindi il prossimo processo schedulato in attesa, `Q`, entra nel monitor ed esegue una procedura che potrebbe comportare **l'aggiornamento dello stato della risorsa**.
+Nel momento in cui `P` si sospende, questo rilascia la risorsa monitor agli altri processi in attesa. Quindi il prossimo processo schedulato in attesa, `Q`, entra nel monitor ed esegue una procedura che potrebbe comportare **l'aggiornamento dello stato della risorsa**.
 
 → La condizione di sincronizzazione che ha portato `P` a sospendersi viene soddisfatta, quindi tale processo può continuare la propria esecuzione
 
@@ -242,7 +242,7 @@ if (!B) { // B = condizione di sincronizzazione
 
 In questo modo quando `P` entra per primo nel monitor, **prematuramente** (la condizione di sincronizzazione non è ancora valida), per cui si **sospende**.
 
-Il processo `Q` **opera sulla risorsa condivisa** (es. buffer di stato) facendo in modo che venga soddisfatta la condizione di sincronizzazione, quindi effettua la `signal_cond()` sulla condition variable che comporta la sua sospensione.
+Il processo `Q` **opera sulla risorsa condivisa** (es. buffer di stato) facendo in modo che venga soddisfatta la condizione di sincronizzazione, quindi effettua la `signal_cond()` sulla condition variable su cui è in attesa `P`, che comporta la sua sospensione.
 
 Quindi `Q` dovrà **rilasciare** la risorsa monitor.
 
@@ -289,7 +289,7 @@ Per semplicità di implementazione il monitor signal-and-continue non usa la cod
   <img src="images/wait-continue.png" width="400" >
 </p>
 
-Essendo che `P` compete con gli altri processi per accedere al monitor potrebbe verificarsi la situazione in cui ad esser schedulato prima di `P` è `K`, che entra nel monitor una volra che `Q` lo ha rilasciato.
+Essendo che `P` compete con gli altri processi per accedere al monitor potrebbe verificarsi la situazione in cui ad esser schedulato prima di `P` è `K`, che entra nel monitor una volta che `Q` lo ha rilasciato.
 
 In questa situazione potrebbe accadere che `K` **modifichi nuovamente la risorsa** (le strutture contenute in *local data*) e quindi potrebbe far in modo che la condizione di sincronizzazione per `P` sia **non più verificata**.
 
@@ -308,7 +308,7 @@ while (!B) { // B = condizione di sincronizzazione
 // volte prima che P possa accedere alla risorsa
 ```
 
-`P` non ha la certezza che la condizione sia verificata, quindi deve controllare ogni volta che riottiene l'accesso al monitor.
+`P` non ha la certezza che la condizione sia verificata, quindi deve controllarla ogni volta che riottiene l'accesso al monitor.
 
 #### signal_all
 
@@ -328,7 +328,7 @@ Tutti i processi risvegliati vengono messi nella *entry_queue*, dalla quale uno 
 
 ### Confronto: signal-and-wait vs signal-and-continue
 
-La semantica di *signal-and-wait* richiede che venga chiamata **precisamente quando il processo segnalato deve essere svegliato**. (!)
+La semantica di *signal-and-wait* richiede che venga chiamata la `signal_cond()` **precisamente quando il processo segnalato deve essere svegliato**. (!)
 
 → ovvero nel momento in cui è soddisfatta la condizione di sincronizzazione.
 

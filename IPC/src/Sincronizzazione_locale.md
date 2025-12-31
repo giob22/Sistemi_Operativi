@@ -5,7 +5,7 @@
 
 Il modello ad ambiente **locale** si riferisce a una struttura in cui ogni processo opera nel proprio ambiente privato, **senza alcuna memoria condivisa** tra vari processi.
 
-In questo modello tutte le risorse sono privare a ciascun processo e non possono essere modificate direttamente da altri processi.
+In questo modello tutte le risorse sono private a ciascun processo e non possono essere modificate direttamente da altri processi.
 
 Questo è un approccio tipico dei **sistemi distribuiti**.
 

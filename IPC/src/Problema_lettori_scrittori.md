@@ -18,7 +18,7 @@ Ciò che differenzia effettivamente il problema lettori/scrittori da consumatori
 
 Non è presente un vincolo di ordinamento (un lettore non deve leggere solo dopo una scrittura) tra i processi lettori e scrittori, ma un vincolo di **mutua esclusione** (tra scrittori) e **cooperazione** (tra lettore e scrittore) sull'utilizzo della `shm`.
 
-In realtà si vede che è necessario gestire anche la mutua esclusione tra processi scrittori che però non riguarda la `shm` ma una variabile necessaria all'implementazione di questo paradigma: variabile che tiene conto del numero corrente di lettori sulla `shm`.
+In realtà si vede che è necessario gestire anche la mutua esclusione tra processi lettori che però non riguarda la `shm` ma una variabile necessaria all'implementazione di questo paradigma: variabile che tiene conto del numero corrente di lettori sulla `shm`.
 
 I processi lettori inoltre non consumano la risorsa nel momento in cui la leggono/usufruiscono, come accadeva per i consumatori → non notificano allo scrittore l'avvenuta lettura perché non c'è il concetto di spazio libero (come avveniva per consumatore/produttore).
 
