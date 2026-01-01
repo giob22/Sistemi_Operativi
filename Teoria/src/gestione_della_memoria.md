@@ -513,7 +513,7 @@ Nel codice, quindi, si utilizzano indirizzi virtuali che devono essere **tradott
 Questo hardware è necessario perché nell'approccio di allocazione **non contigua non si conosce a priori dove sarà rilocato il codice**.\
 → dobbiamo sempre tener conto che se parliamo di paginazione allora stiamo parlando di allocazione non contigua, altrimenti la paginazione non avrebbe senso.
 
-Quindi quando l'architettura utilizza l'approccio di paginazione si tutti i programmi utilizzano indirizzi virtuali.
+Quindi quando l'architettura utilizza l'approccio di paginazione, tutti i programmi utilizzano indirizzi virtuali.
 
 La paginazione, inoltre, non è solo una tecnica di allocazione non contigua, ma anche una tecnica per la **gestione della memoria virtuale**. In altre parole, la paginazione permette di creare uno spazio virtuale più grande della memoria fisica, se la gestione del caricamento delle pagine è della tipologia: **a domanda**.
 
@@ -583,7 +583,7 @@ La ricerca di un valore in tale cache associativa ha complessità O(1) → costa
 <!-- @todo da chiedere perché è lineare -->
 <p align='center'><img src='images/TLB.png' width='600' ></p>
 
-- Si possono verificare due situaizioni:
+- Si possono verificare due situazioni:
   - L'accesso alla TLB produce un cache hit, quindi subito ho l'entry point della pagina in memoria fisica, tale operazione richiede nanosecondi.
   - L'accesso alla TLB produce un cache miss, quindi la ricerca passa sulla tabella delle pagine, tale operazione richiede decine di nanosecondi.
 
