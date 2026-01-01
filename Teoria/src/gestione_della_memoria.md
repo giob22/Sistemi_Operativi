@@ -146,7 +146,7 @@ Modalità di allocazione dei dati e del codice di un processo in memoria fisica.
 
 L'associazione di **istruzioni e dati** ad indirizzi di memoria (fisica) si può compiere in ognuna delle sequenti fasi:
 
-- **compilazione**: se nella fase di compilazione conosce dove il processo risiederà nella memoria, allora può **inserire direttamente gli indirizzi fisici nel codice oggetto**.
+- **compilazione**: se nella fase di compilazione si conosce dove il processo risiederà nella memoria, allora può **inserire direttamente gli indirizzi fisici nel codice oggetto**.
 
   → si genera così **codice assoluto**: gli indirizzi nel codice oggetto sono indirizzi fisici reali della RAM. Quindi codice e dati saranno allocati sempre in tali posizioni ad ogni esecuzione.
 
