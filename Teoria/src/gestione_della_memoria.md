@@ -53,7 +53,7 @@ Tali indirizzi virtuali che abbiamo stampato vengono tradotti da un componente h
 
 ---
 
-Il kernel a differenza di un Hypervisor astrae l'hardware per consentire l'esecuzione di un processo in modo indipendente.
+Il kernel, a differenza di un Hypervisor, astrae l'hardware per consentire l'esecuzione di un processo in modo indipendente.
 
 La posizione (**indirizzi**) di codice e dati nella memoria di un processo è un'**astrazione**. → indirizzi virtuali.
 
@@ -511,7 +511,7 @@ Essendo l'allocazione non contigua è necessario memorizzare ogni pagina virtual
 Nel codice, quindi, si utilizzano indirizzi virtuali che devono essere **tradotti dall'MMU** in indirizzi fisici a run-time.
 
 Questo hardware è necessario perché nell'approccio di allocazione **non contigua non si conosce a priori dove sarà rilocato il codice**.\
-→ dobbiamo sempre tener conto che se parliamo di paginazione allora stiamo parlando di rilocazione non contigua, altrimenti la paginazione non avrebbe senso.
+→ dobbiamo sempre tener conto che se parliamo di paginazione allora stiamo parlando di allocazione non contigua, altrimenti la paginazione non avrebbe senso.
 
 Quindi quando l'architettura utilizza l'approccio di paginazione si tutti i programmi utilizzano indirizzi virtuali.
 
