@@ -508,7 +508,7 @@ Questo fenomeno è tanto **più trascurabile** quanto **più piccola è assegnat
 
 Essendo l'allocazione non contigua è necessario memorizzare ogni pagina virtuale in che posizione della memoria fisica si trova.
 
-Nel codice, quindi, si utilizzano indirizzi virtuali che devono essere **tradotti dall'MMU** in indirizzi fisici a run-time.
+Nel codice, quindi, si utilizzano indirizzi virtuali che devono essere **tradotti dall'MMU** in indirizzi fisici a *run-time*.
 
 Questo hardware è necessario perché nell'approccio di allocazione **non contigua non si conosce a priori dove sarà rilocato il codice**.\
 → dobbiamo sempre tener conto che se parliamo di paginazione allora stiamo parlando di allocazione non contigua, altrimenti la paginazione non avrebbe senso.
