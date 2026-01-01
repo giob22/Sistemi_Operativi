@@ -623,7 +623,7 @@ Usando pagine di \\(1\\)KB (\\(2^{10}\\)):
 Usando pagine di \\(64\\)KB (\\(2^{16}\\)): 
 
 - **dimensione** della tabella: \\(2^{16} = 64\\)KB → 👍🏿
-- **frammentazione interna** media: \\(\frac{2^{10}}{2} = 0.5\\)KB → ⚠️​
+- **frammentazione interna** media: \\(\frac{2^{10}}{2} = 32\\)KB → ⚠️​
 
 Come si può notare la scelta di una dimensione o del numero di pagine influenza l'altra grandezza.
 
