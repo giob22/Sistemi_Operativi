@@ -635,7 +635,7 @@ Come si può notare la scelta di una dimensione o del numero di pagine influenza
 Raramente un processo usa tutto il suo spazio di indirizzamento virtuale.\
 → quantità di memoria usata tipicamente da una applicazione desktop si aggira intorno: ~\\(100\\)MB. (single process)
 
-Lo spazio virtuale che un processo potenzialmente può utilizzare è pari all'intero spazio di indirizzamento: se ho `16bit` per indirizzo → \\(4\\)GB
+Lo spazio virtuale che un processo potenzialmente può utilizzare è pari all'intero spazio di indirizzamento: se ho `32bit` per indirizzo → \\(4\\)GB
 
 <p align='center'><img src='images/spazio_processi.png' width='300' ></p>
 
@@ -645,7 +645,7 @@ In realtà alcune delle pagine all'interno dello spazio virtuale allocato, non s
 
 Quindi il SO può marcare le pagine **virtuali in uso** usando tale bit nella tabella delle pagine.
 
-> il bit di validità so riferisce alle pagine virtuali → infatti ogni entry point della tabella delle pagine identifica una pagina virtuale.
+> il bit di validità si riferisce alle pagine virtuali → infatti ogni entry point della tabella delle pagine identifica una pagina virtuale.
 
 Il bit di validità viene attivato nel momento in cui la pagina è **allocata** dal processo (es. tramite `malloc()`).
 
@@ -672,7 +672,7 @@ Cosa accede durante un **context switch**
 
 <p align='center'><img src='images/contex_switch.png' width='500' ></p>
 
-- La TLB viene popolata a **run-time** → inizialmente saranno presenti solo page fault che porsano al SO a ricaricare le pagine in memoria principale.
+- La TLB viene popolata a **run-time** → inizialmente saranno presenti solo page fault che portano al SO a ricaricare le pagine in memoria principale.
 
 Oltre al bit di validità è presente un ulteriore bit di controllo: il *dirty bit*.
 
@@ -681,7 +681,7 @@ Questo dirty bit è legato al fatto che la pagina **è stata scritta** durante l
 Quando un processo **scrive** in una pagina fisica, la MMU setta automaticamente il dirty bit a \\(1\\).\
 Questo bit indica che il contenuto della pagina **non coincide più** con la copia originale presente su disco. → tale informazione ha un implicazione durante lo **swap-out**.
 
-- Se il dirty bit = 1, significa che la oagina contiene modifiche **che devono essere salvate nello swap**, altrimenti andrebbero perse.
+- Se il dirty bit = 1, significa che la pagina contiene modifiche **che devono essere salvate nello swap**, altrimenti andrebbero perse.
 - Se il dirty bit = 0, significa che la pagina **non è stata modificata** e che **esiste già una copia valida** della pagina su disco (es. nell'eseguibile del processo, è stata già salvata precedentemente).
 
 Per il meccanismo di coerenza caching, si deve garantire la coerenza tra memoria grande e memoria piccola.
@@ -751,7 +751,7 @@ Nella paginazione gerarchica, il "numero di pagina" nell'indirizzo virtuale vien
 
 <p align='center'><img src='images/esempio_gerarchia.png' width='400' ></p>
 
-### Tabelle delle pagine basate su hash
+#### Tabelle delle pagine basate su hash
 
 Le righe della tabella delle pagine sono organizzate utilizzando una **lista concatenata (linked list)**.
 
@@ -771,7 +771,7 @@ Per ottimizzare i tempi di ricerca, si dividono le righe su **tante liste concat
 
 Ovviamente in questo approccio la lunghezza delle liste concatenate è contenuto rispetto al caso in cui abbiamo solo una lista concatenata di tutte le pagine associate ad un processo.
 
-### Tabella delle pagine invertita
+#### Tabella delle pagine invertita
 
 Negli schemi precedenti esiste **una tabella distinta per ogni processo**.
 

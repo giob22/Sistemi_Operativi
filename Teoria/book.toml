@@ -5,7 +5,16 @@ language = "en"
 
 [output.html]
 mathjax-support = true
-additional-css = ["latex-style.css"]
 
-[output.pdf]
-printing-mode = true
+# Configurazione corretta per mdbook-pandoc
+
+#[output.pandoc]
+## Lascia vuoto qui, non mettere profile = "pdf"
+#
+#[output.pandoc.profile.pdf]
+#output-file = "output.pdf"
+#pdf-engine = "xelatex"  # <--- CAMBIA QUESTO (era pdflatex)
+#to = "latex"
+#standalone = true
+## Opzionale: definisci un font che ha sicuramente quel carattere
+#variables = { mainfont = "DejaVu Serif" }
