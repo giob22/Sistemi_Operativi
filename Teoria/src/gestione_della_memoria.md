@@ -722,14 +722,14 @@ Il flusso sarebbe:
 
 1) La MMU accede alla tabella di primo livello e usando \\(p_1\\) (**accesso a memoria**) ottiene l'indirizzo base della tabella di secondo livello.
 2) La MMU accede alla tabella di secondo livello e usando \\(p_2\\) (**accesso a memoria**) ottiene il numero di frame corrispondente.
-3) Infine, la MMU accede alla memoria principale nel frame trovaro e utilizza \\(offset\\) (**accesso a memoria**) per recuperare la casella desiderata.
+3) Infine, la MMU accede alla memoria principale nel frame trovato e utilizza \\(offset\\) (**accesso a memoria**) per recuperare la casella desiderata.
 
 Il motivo dell'aumento del tempo per attraversare la tabella è che la MMU ha bisogno di fare molti **più accessi a memoria fisica** per tradurre un **singolo** **indirizzo** **virtuale**.
 
 Nel caso di paginazione semplice (ad un livello) il numero di accessi totali per operare la traduzione di un indirizzo virtuale è pari a 2.
 
 1) Accesso alla page table
-2) accesso alla memoria fisica
+2) Accesso alla memoria fisica
 
 ---
 
@@ -793,7 +793,7 @@ Il numero di righe è pari al numero di pagine fisiche (invece che virtuali).
 
   Infatti l'ultima operazione è quella di inserire l'offset nella parte dell'indirizzo virtuale in cui è presente il numero di pagina e il PID.
 
-In questo approccio risparmiamo la numerosità delle pagine, oltre al fatto che queste non sono più sparse nella memoria fisica. → si può sfruttare il principio di località.
+In questo approccio risparmiamo la numerosità delle *page tables*, oltre al fatto che queste non sono più sparse nella memoria fisica. → si può sfruttare il principio di località.
 
 ### Segmentazione paginata
 
@@ -823,7 +823,7 @@ Una volta ottenuto l'indirizzo base della tabella delle pagine per il segmento i
 
 A questo punto, ottenuta l'indirizzo base della pagina fisica, si somma a questo l'offset `of` per ottenere l'indirizzo fisico a cui il processo fa riferimento.
 
-Ovviamente durante tutto questo processo si devono verificare le condizione che non causino inconsistenze tra i processi, come le condizione di limite con `STBL` e `PTLR`.
+Ovviamente durante tutto questo processo si devono verificare le condizione che non causino inconsistenze tra i processi, come le condizione di limite con `STLR` e `PTLR`.
 
 >Quindi nella tabella dei segmenti individuo l'*entry point* che fa riferimento alla tabella delle pagine per quel segmento.
 
