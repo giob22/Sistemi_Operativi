@@ -1,0 +1,65 @@
+/* latex-style.css */
+@media print {
+    /* Impostazioni generali pagina */
+    @page {
+        margin: 2.5cm 2cm; /* Margini classici */
+        size: A4;
+    }
+
+    body {
+        font-family: "Latin Modern Roman", "Computer Modern", "Times New Roman", serif;
+        font-size: 11pt;
+        line-height: 1.5;
+        color: #000;
+        background-color: #fff;
+        text-align: justify; /* Fondamentale per il look LaTeX */
+    }
+
+    /* Nascondi elementi del sito inutili su carta */
+    .sidebar, .left-buttons, .right-buttons, .s-top-bar, nav, footer {
+        display: none !important;
+    }
+
+    .page-wrapper {
+        margin-left: 0 !important;
+        max-width: 100% !important;
+    }
+
+    .content {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* Gestione Titoli */
+    h1, h2, h3 {
+        font-family: "Latin Modern Roman", "Computer Modern", "Times New Roman", serif;
+        font-weight: bold;
+        page-break-after: avoid;
+        break-after: avoid;
+    }
+
+    h1 { font-size: 20pt; margin-top: 1cm; border-bottom: none; }
+    h2 { font-size: 16pt; margin-top: 0.8cm; border-bottom: none; }
+
+    /* Codice */
+    pre, code {
+        font-family: "Courier New", monospace;
+        background-color: #f5f5f5 !important; /* Grigio chiarissimo invece che nero */
+        border: 1px solid #ddd;
+        color: #000 !important; /* Testo nero per leggibilità */
+    }
+
+    /* Link: togliamo il blu e la sottolineatura */
+    a {
+        text-decoration: none;
+        color: #000;
+        font-weight: normal;
+    }
+    
+    /* Immagini: centrate */
+    img {
+        display: block;
+        margin: 1em auto;
+        max-width: 100%;
+    }
+}
