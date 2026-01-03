@@ -21,7 +21,7 @@ Linux utilizza una gestione della memoria del tipo **paginata** e **segmentata**
 - Paginazione: la memoria è suddivisa in piccole unità chiamate *pagine* che possono essere mappate in memoria fisica.
 - Segmentazione: è una tecnica più vecchia, ma non più utilizzata in modo prevalente nelle versioni moderne, ma offre diversi vantaggi rispetto la paginazione che si intendono sfruttare.
 
-Una delle caratteristiche di Linux è la sua **portabilità**, ossia capacità di girare su più architetture diverse. Tale gestione della memoria infatti è fatta per essere compatibile con diverse piattaforme hardware, rendendo il sistema operativo glessibile e adattabile a veri tipi di dispositivi
+Una delle caratteristiche di Linux è la sua **portabilità**, ossia capacità di girare su più architetture diverse. Tale gestione della memoria infatti è fatta per essere compatibile con diverse piattaforme hardware, rendendo il sistema operativo flessibile e adattabile a veri tipi di dispositivi
 
 Infatti tale gestione della memoria è supportata anche per sistemi con grandi quantità di memoria (NUMA) e multi-processore (SMP).
 
@@ -35,7 +35,7 @@ Ogni pagina ha una dimensione fissata che può esser modificata all'atto della c
 
 Tipicamente, le due dimensioni possibili in `x86` sono `4KB` e `4MB`. Per Linux di default ogni pagina ha una dimensione di `4KB`.
 
-Per riferirci alla prima tabella delle pagine che si trova al livello più basso sfruttiamo l'indirizzo virtuale mantenuto all'interno del *controll register*, che per `x86` è il register 3.
+Per riferirci alla prima tabella delle pagine che si trova al livello più basso sfruttiamo l'indirizzo virtuale mantenuto all'interno del *control register*, che per `x86` è il register 3.
 
 Questo registro viene popolato all'atto del **context switch**, ogni processo ha associata la propria gerarchia di tabelle di pagine. Essendo una caratteristica direttamente legata al processo, tale indirizzo è contenuto all'interno del descrittore, che in Linux è chiamato `task_struct`.
 
@@ -51,7 +51,7 @@ Per motivi di:
 <p align='center'><img src='images/segmentazione_paginata_1.png' width='500' ></p>
 <!-- @todo capisci perché non è portabile -->
 
-Viene quindi utilizzata una paginzazione segmentata in cui la segmentazione è implementata via software. In modo da sfruttare i vantaggi di questa.
+Viene quindi utilizzata una paginazione segmentata in cui la segmentazione è implementata via software: in modo da sfruttare i vantaggi di questa.
 
 La memoria è organizzata in **Virtual Memory Areas** (***VMA***) che consiste nell'unità di virtualizzazione della memoria.
 
@@ -83,7 +83,7 @@ Invece le pagine abbinate ad un file sul disco sono dette `memory-mapped`
 <p align='center'><img src='images/mm_struct_1.png' width='500' ></p>
 
 - `vm_file` si riferisce al file presente in memoria di massa, quindi non è contenuto nelle VMA anonime.
-- All'interno della `mm_struct`, che rappresenta l'intera memoria virtuale, è presente anche il puntatore alla **page table** che il processo in questione: `gpd`.
+- All'interno della `mm_struct`, che rappresenta l'intera memoria virtuale, è presente anche il puntatore alla **page table** del processo in questione: `pgd`.
 
 ESEMPIO DI SPAZIO VIRTUALE DI UN PROCESSO IN LINUX
 
