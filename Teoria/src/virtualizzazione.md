@@ -17,11 +17,11 @@ Su una stessa macchina reale possono coesistere diverse macchine virtuale attive
 - Affidabilità
 - Sicurezza
 
-Per ottenere queste qualità sarebbe necessario isolare ogni applicazione in modo che una di queste vada in crash le altre non sarebbero influenzate.
+Per ottenere queste qualità sarebbe necessario isolare ogni applicazione in modo che se una di queste vada in crash le altre non sarebbero influenzate.
 
 Senza VM, il problema sarebbe che per ottenere questo isolamento usando solo hardware fisico, bisognerebbe comprare una macchina fisica per ogni singolo servizio.
 
-Utilizzare tante macchine fisiche quanti sono i servizi oltre ad essere molto costoso è anche uno spreco di energia e spazio.
+Utilizzare tante macchine fisiche quanti sono i servizi è, oltre ad essere molto costoso, anche uno spreco di energia e spazio.
 
 Utilizzando invece diverse VM, una per ogni servizio da eseguire, possiamo ottenere la caratteristica di isolamento e inoltre si riducono enormemente gli spazi e il costo necessario.
 
@@ -47,7 +47,7 @@ Quindi questo eviterebbe il problema di continuare ad utilizzare macchine legacy
 
 ### Virtualizzazione e cloud computing
 
-Il **cloud computing** permette lo outsourcing (spostare) di VM in centri di calcolo privati o di terze parti (**pat-per-use**).
+Il **cloud computing** permette lo outsourcing (spostare) di VM in centri di calcolo privati o di terze parti (**pay-per-use**).
 
 Quindi invece di eseguire le macchine virtuali sui propri server in azienda, il Cloud Computing permette di spostare la loro esecuzione in centri di calcolo. → Non si paga più per l'hardware ma per l'utilizzo di risorse.
 
@@ -77,7 +77,7 @@ Il SO è già di per se un virtualizzatore dell'hardware (di risorse):
 
 "Container (Fine slide)"
 
-L'astrazione offerta dal SO non è in senso stretto, perché quello che fa effettivamente un virtual machine monitor è quello di emulare completamente l'intera architettura virtuale su un'architettura fisica del tutto diversa.
+L'astrazione offerta dal SO non è in senso stretto, perché quello che fa effettivamente un virtual machine monitor è di emulare completamente l'intera architettura virtuale su un'architettura fisica del tutto diversa.
 
 Posso emulare un'architettura `arm` su una intel `x86` senza problemi, per il tipo di astrazione offerta da un VMM.
 
@@ -85,8 +85,8 @@ Posso emulare un'architettura `arm` su una intel `x86` senza problemi, per il ti
 
 ## Architetture principali di una hypervisor
 
-- TIPO 1
-- TIPO 2
+- TIPO 1 → **bare-metal virtualization** o **server virtualization**
+- TIPO 2 → **hosted hypervisor**
 
 1) Il VMM esegue su un "hardware nudo" (**bare-metal virtualization** o **server virtualization**).
    
@@ -102,7 +102,7 @@ Posso emulare un'architettura `arm` su una intel `x86` senza problemi, per il ti
    
    Per comunicare con l'hardware il sistema operativo **guest** deve passare per l'hypervisor che a sua volta deve passare per il sistema operativo **host**.
 
-   L'hypervisor è considerato per il SO host come un qualsiasi altro processo in esecuzione.
+   L'hypervisor è considerato, per il SO host, come un qualsiasi altro processo in esecuzione.
 
    Questo utilizzo facilita l'integrazione tra sistemi operativi, ad esempio, posso copiare file facilmente dal desktop dell'host dentro la macchina virtuale guest.
 
@@ -282,7 +282,7 @@ Oggi con il supporto hardware VMware si è adattata perché è molto più perfor
 
 All'avvio della VM, il VMM analizza a blocchi il codice eseguito dal guest SO.
 
-Ogni blocco, detto **Basic Block** è una breve **sequenza di istruzioni sequenziali** che terminano con una **istruzione di salto**.
+Ogni blocco, detto **Basic Block**, è una breve **sequenza di istruzioni sequenziali** che terminano con una **istruzione di salto**.
 
 <p align='center'><img src='images/basic_block.png' width='180' ></p>
 
@@ -312,7 +312,7 @@ Vediamo cosa come accade tutto ciò:
 
 <p align='center'><img src='images/DBT_3.png' width='400' ></p>
 
-- Dopo la modifica nel basic block viene sostituita l'istruzione sensitive e viene modificato il salto finale per poter permettere al VMM di analizzare il basic block successivo
+- Dopo la modifica, nel basic block, viene sostituita l'istruzione sensitive e viene modificato il salto finale per poter permettere al VMM di analizzare il basic block successivo
 
 <p align='center'><img src='images/DBT_4.png' width='400' ></p>
 
