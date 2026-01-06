@@ -1,4 +1,4 @@
-<script src="../javascript.js"></script>
+
 
 # Architettura di un SO
 
