@@ -488,7 +488,7 @@ Un processo Pn+1 viene eseguito solo se:
 
 <p align='center' id="legge_numero_richieste_massimo"><img src='images/numero_richieste_massimo.png' width='300' ></p>
 
-Cioè un processo viene eseguito se il **numero massimo di richieste di tutti i processi** (sommatoria) **più quelle del nuovo processo** (Cij) per la risorse j-esima è minore del numero di istanze della richiesta Rj.
+Cioè un processo viene eseguito se il **numero massimo di richieste di tutti i processi** (sommatoria) **più quelle del nuovo processo** (Cn+1j) per la risorse j-esima è minore del numero di istanze della richiesta Rj.
 
 Questo deve esser calcolato per ogni tipo di risorsa → per ogni colonna di *C*.
 
