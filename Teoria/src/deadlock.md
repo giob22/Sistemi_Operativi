@@ -557,7 +557,7 @@ Affinché uno stato sia sicuro è sufficiente che esista almeno una sequenza sic
 L'algoritmo del banchiere prevede proprio di trovare la sequenza sicura che verifichi lo stato corrente, se al processo che ha richiesto una risorsa la ottiene.
 
 Se esiste almeno una sequenza sicura,\
-tale che il processo richiedente possa terminare dopo una serie di terminazioneùi di altri processi.
+tale che il processo richiedente possa terminare dopo una serie di terminazione di altri processi.
 
 (tale che tutti i processi del sistema possano terminare dopo una serie finita di terminazioni di altri processi)
 
