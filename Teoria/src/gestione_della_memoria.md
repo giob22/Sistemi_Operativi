@@ -16,7 +16,7 @@ Quindi fisicamente i processi non devono accedere ad aree di memoria fisiche in 
 <p align='center'><img src='images/immagine_allocata_in_RAM.png' width='500' ></p>
 
 L'immagine del processo è descritta all'interno del PCB dello specifico processo.\
-In questa struttura sono contenute anche informazioni **su dove si trovano** le diverse parti dell'immagine **in memoria centrale**.
+In questa struttura sono contenute anche informazioni **su dove si trovano** le diverse parti dell'immagine **in memoria centrale**, tramite il puntatore alla struttura che permette di tradurre un indirizzo logico in un indirizzo fisico.
 
 I processi non accedono mai direttamente alla memoria principale tramite degli indirizzi.\
 Lavorano invece su una propria **memoria virtuale** (riservata), esso non utilizza indirizzi di memoria fisici ma bensì **virtuali**.
