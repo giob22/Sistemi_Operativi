@@ -28,9 +28,14 @@ Il parallelismo implicito avviene principalmente a due livelli:
 
 - costi dovuti alla maggior possibilità di cache miss
   
-  La maggior possibilità di cache miss consiste nel fatto che deve sempre essere garantita la cooerenza tra la copia in cache e quella in RAM di un pagina, ma se più processi in parallelo possano accedere alla stessa pagina in memoria fisica, allora la sincronizzazione tra la copia all'interno della singola cache rispetto a quella in RAM deve esser eseguita più spesso.
+  La maggior possibilità di cache miss consiste nel fatto che deve sempre essere garantita la coerenza tra la copia in cache e quella in RAM di un pagina, ma se più processi in parallelo possano accedere alla stessa pagina in memoria fisica, allora la sincronizzazione tra la copia all'interno della singola cache rispetto a quella in RAM deve esser eseguita più spesso.
 
   Ovvero è molto più probabile che la copia in cache sia una copia obsoleta, perché altri processi che operano su altri processori non hanno a disposizione la stessa memoria cache, quindi una loro modifica su quel frame comporta una invalidità delle copie per tutte le altre cache degli altri processori. Ovviamente se queste cache contenevano una copia del frame.
+
+Quindi se aggiungiamo anche questi overhead generati dall'esecuzione parallela di processi interagenti, possiamo vedere che lo speed-up non cresce affatto in modo lineare anzi in alcuni casi l'andamento potrebbe anche essere decrescente...
+
+Il motivo delle cache lo possiamo riassumere nel fatto che essendo che ogni processo ha la propria cache allora, nel momento in cui piú processi eseguono in modo parallelo su processori diversi e operano su una memoria condivisa allora ogni volta che questa viene modificata da un processo rende invalida le copie della stessa memoria contenute nella cache degli altri processori su cui operano gli altri processi operanti sulla stessa memoria condivisa.
+
 
 ## Archietetture parallele
 
@@ -67,6 +72,48 @@ Nel caso di architetture multi processor il SO deve gestire:
    
    Ogni CPU può eseguire in maniera concorrente i processi ad essa assegnati
 
+
+## SIMD
+
+Single istruction multiple data:
+
+Nel contesto delle architetture dei processori, é una tecnica di parallelismo che permette di applicare la stessa operazione a piú dati contemporaneamente.
+
+é un'architettura parallele particolare perché sono presenti piú unitá di calcolo che sono controllate da una unica unitá di controllo
+
+SIMD é inutile per compiti generici, ma é davvero impattante in situazioni dove devi fare lo stesso calcolo su una marea di dati:
+
+- grafica e videogiochi
+- elaborazioni audio e video
+- machine learning
+
+## Assegnazione dei processi ai diversi processori
+
+L'approccio corretto da seguire consiste nel considerare il grado di sincronizzazione e dal numero di processi attivi nel sistema
+
+Il meccanismo che assegna i processi ai diversi processori sono eseguiti a livello kernel
+
+Per eseguire questo meccanismo esistono diversi approcci:
+
+- Master and Slave: il kernel esegue sempre su un unico processore detto master, responsabile della assegnazione, scheduling, multiprogrammazione degli altri processori. Inoltre si occupa di gestire tutte le interruzioni.
+  
+  Gli slaves possono eseguire solo applicazioni utente e ogni syscall che viene chiamata da un processo viene rediretta la processore su cui é in esecuzione il sistema operativo
+
+  Il vantaggio é che é semplice. Lo svantaggio é che il master rappresenta un single point of failure
+- pee: il kernel puó eseguire su tuttu i processori, anche contemporaneamente.
+  
+  Ogni processore gestite autonomamente il proprio scheduiling
+
+  I processori sono indipendenti e si coordinano unicamente quando devono utilizzare risorse condivise.
+
+  é l'approccio piú complesso da realizzare perché richiede la gestione della sincronizzazione fra processori che operano sulle stesse risorse condivise
+
+In entrambe questi modelli, possiamo avere due approcci per l'assegnazione dei processi sui processori.
+
+- statico
+- dinamico
+  - laod sharing
+  - dynamic load balancing
 
 
 
