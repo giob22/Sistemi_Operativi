@@ -98,7 +98,7 @@ La posizione effettiva in memoria fisica è **gestita dal sistema operativo**.
 
 ---
 
-Rilocazione significa allocare l'immagine del processo nella memoria principale, può avvenire in diversi modi.
+Rilocazione significa allocare l'immagine del processo nella memoria principale; può avvenire in diversi modi.
 
 Questa rilocazione può essere statica o dinamica.
 
@@ -123,7 +123,7 @@ Ulteriori evoluzioni hw hanno permesso di **caricare** l'immagine del processo (
 
 Quindi è stata introdotta l'allocazione di tipo **non contigua** grazie allo sviluppo dell'hardware MMU.
 
-Che vantaggio mi da l'accolazione di tipo non contigua?\
+Che vantaggio mi da l'allocazione di tipo non contigua?\
 → uso efficiente dell'area di memoria in termini di **flessibilità e dinamicità**; i processi non devono essere necessariamente allocati in un blocco contiguo di memoria.\
 → attenua il **problema della frammentazione**, perché non ho bisogno di trovare una area di memoria di dimensione tale da contenere interamente l'immagine del processo. Ci sono due tipi principali di frammentazione:
 
@@ -146,7 +146,7 @@ Modalità di allocazione dei dati e del codice di un processo in memoria fisica.
 
 L'associazione di **istruzioni e dati** ad indirizzi di memoria (fisica) si può compiere in ognuna delle sequenti fasi:
 
-- **compilazione**: se nella fase di compilazione si conosce dove il processo risiederà nella memoria, allora può **inserire direttamente gli indirizzi fisici nel codice oggetto**.
+- **compilazione**: se nella fase di compilazione si conosce dove il processo risiederà nella memoria, allora il compilatore può **inserire direttamente gli indirizzi fisici nel codice oggetto**.
 
   → si genera così **codice assoluto**: gli indirizzi nel codice oggetto sono indirizzi fisici reali della RAM. Quindi codice e dati saranno allocati sempre in tali posizioni ad ogni esecuzione.
 
@@ -202,11 +202,11 @@ Questi indirizzi non potranno esser cambiato al meno che il codice non venga ric
 
 Con questo approccio, dinamico, l'indirizzo di codice/dati nella immagine (*virtuale*) **non corrisponde** alla loro posizione effettiva in RAM (*indirizzo fisico*).
 
-L'effettiva posizione dello spazio di indirizzamento del processo è **scelta da SO**, al caricamento iniziale del processo, o anche durante la sua esecuzione.
+L'effettiva posizione dello spazio di indirizzamento del processo è **scelta dal SO**, al caricamento iniziale del processo, o anche durante la sua esecuzione.
 
 → richiede un supporto hardware che permetta a tempo di esecuzione di tradurre gli indirizzi virtuali in indirizzi fisici.
 
-Infatti la rilocazione di tipo dinamico si introduce un distinzione fondamentale:
+Infatti con la rilocazione di tipo dinamico si introduce una distinzione fondamentale:
 
 - **Indirizzo virtuale**:
   
@@ -216,8 +216,8 @@ Infatti la rilocazione di tipo dinamico si introduce un distinzione fondamentale
   
   indirizzo visto dall'unità di memoria, **posizione effettiva** del dato/istruzione.
 
-Quando otteniamo **segmentation fault** significa che l'indirizzo virtuale che stiamo utilizzando, erroneamente, non è associato ad un indirizzo fisico facente parte dell'immagine del processo nella memoria fisica → l'indirizzo fisico che stiamo deferenziando non è mappato nella memoria virtuale.\
-→ la traduzione da indirizzo virtuale a indirizzo fisico ha dato questo problema.
+Quando otteniamo **segmentation fault** significa che l'indirizzo virtuale che stiamo utilizzando, erroneamente, non è associato ad un indirizzo fisico facente parte dell'immagine del processo nella memoria fisica → l'indirizzo virtuale che il processo sta deferenziando non è mappato nella memoria fisica.\
+→ la traduzione, a run-time, dal indirizzo virtuale a indirizzo fisico ha risolto questo problema.
 
 Vedremo che il fault può essere **ripristinabile**, perché il segmento/pagina non sono in memoria fisica ma sono swappati in memoria di massa. → ci troviamo nella situazione di un caricamento a domanda.
 
@@ -225,7 +225,7 @@ Il processore vede solo indirizzi logici (virtuali)\
 → **tradotti dall'hardware** che ha la visibilità della memoria fisica, ovvero MMU.\
 MMU rende trasparente l'accesso del processore agli indirizzi fisici.
 
-Se non fosse così il processore **sarebbe più performante** (vedrebbe direttamente gli indirizzi fisici), ma perderei tutta la parte di virtualizzazione.
+Se non sarebbe necessaria una traduzione, il processore **sarebbe più performante** (vedrebbe direttamente gli indirizzi fisici), ma perderei tutta la parte di virtualizzazione → ovvero si perde la proprietà di isolamento che il SO deve garantire per ogni processo.
 
 Infatti come abbiamo visto, aprendo il file eseguibile od oggetto, non sono presenti indirizzi fisici ma unicamente indirizzi virtuali che solitamente partono tutti da `0x0`.
 
@@ -306,7 +306,7 @@ Nell'approccio segmentato l'immagine del processo è suddivisa in **porzioni log
 Ogni segmento può avere una dimensione variabile, in base alla struttura logica del programma (codice, heap, stack, dati).
 
 **Vantaggio principale**:\
-La segmentazione facilita la condivisione di aree di memoria fisica tra più processi, mappandole in segmenti distinti del loro spazio di indirizzamento.\
+La segmentazione facilita la condivisione di aree di memoria fisica tra più processi, mappando in questa area da condividere distinti segmenti della memoria virtuale propri di un processo.\
 * → Esempio:\
   il segmento di codice (text) di un programma è di sola lettura.\
   Più processi che eseguono lo stesso programma possono **condividere la stessa copia fisica** del codice, mappandola nel proprio spazio di indirizzamento virtuale all'interno del segmento dedicato all'area testo.
@@ -420,7 +420,7 @@ Quindi stanno effettivamente condividendo la copia del segmento di memoria. Ques
 
 <p align='center'><img src='images/condivisione_segmento.png' width='500' ></p>
 
-#### allocazione
+## allocazione
 
 Uno spazio/segmento di memoria virtuale può essere **collocato in memoria fisica** in due possibili modi:
 
