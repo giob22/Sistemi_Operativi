@@ -150,13 +150,13 @@ Ovvero:
 
 <p align='center'><img src='images/virtual_mode.png' width='500' ></p>
 
-Per permettere al guest SO di operare in kernel mode, un primo meccanismo che si può sfruttare è quello delle trap: nel momento in cui il guest esegue delle istruzioni privilegiate/critiche, allora la CPU virtuale genera una **trap**.
+Per permettere al guest SO di operare in kernel mode, un primo meccanismo che si può sfruttare è quello delle trap: nel momento in cui il guest esegue delle istruzioni privilegiate/critiche, allora la CPU fisica genera una **trap**.
 
 Questo meccanismo è detto: **TRAP-AND-EMULATE**.
 
 Questa trap viene intercettata dall'hypervisor, elabora il tipo di istruzione che ha generato quella trap ed emula l'istruzione privilegiata associata.
 
-Tutte le istruzioni sensitive non possono eseguire direttamente, ma devono passare per l'hypervisor, e vengono a scatenare una trap → passa il controllo (de-privilegin) all'hypervisor che emula/simula l'effetto dell'istruzione.
+Tutte le istruzioni sensitive non possono eseguire direttamente, ma devono passare per l'hypervisor, devono scatenare una trap → passa il controllo (de-privileging) all'hypervisor che emula/simula l'effetto dell'istruzione.
 
 <p align='center'><img src='images/intercettazione_trap.png' width='500' ></p>
 
@@ -299,7 +299,7 @@ Il salto finale viene sostituito con una chiamata all'hypervisor per mantenere l
 
 In poche parole, il salto finale viene modificato per garantire che la CPU non esegua mai codice originale, ma rimbalzi sempre attraverso il VMM per ottenere il prossimo pezzo di codice tradotto e sicuro.
 
-Vediamo cosa come accade tutto ciò:
+Vediamo come accade tutto ciò:
 
 
 <p align='center'><img src='images/DBT_1.png' width='300' ></p>
@@ -367,9 +367,9 @@ Quindi le principali novità sono:
   - **VM Exit**: il passaggio inverso, dal Guest SO al VMM. Avviene automaticamente quando il Guest SO tenta di eseguire un'istruzione sensitive (Perché nonostante ha tutti i privilegi, si trova in VMX Non-Root mode). 
     
     L'hardware intercetta l'istruzione e restituisce il controllo al VMM affichè possa gestirla.
-- **VMCS (Virtual Machiene Control structure)**
+- **VMCS (Virtual Machine Control Structure)**
   
-  Per gestire questi passaggi in modo efficiente, intel ha introdotto una struttura dati hardware chiamata **VMCS**. La VMCS agisce coem una "scheda cliente" per ogni VM e contiene:
+  Per gestire questi passaggi in modo efficiente, intel ha introdotto una struttura dati hardware chiamata **VMCS**. La VMCS agisce come una "scheda cliente" per ogni VM e contiene:
 
   - **Guest state**: lo stato della CPU quando gira la VM. Viene caricato durante la *VM Entry* e salvato durante la *VM Exit*.
   - **Host state**: lo stato della CPU quando gira il VMM. Viene caricato durante la *VM Exit*.
