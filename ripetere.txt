@@ -1,0 +1,6 @@
+deadlock
+SPN SRT
+page foult
+
+thread
+architetture multiprocessing
