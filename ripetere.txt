@@ -1,6 +1,9 @@
-deadlock
-SPN SRT
-page foult
+deadlock ✅
+SPN SRT ✅
+page foult ✅
 
 thread
 architetture multiprocessing
+
+
+gestione della memoria virtuale
