@@ -77,9 +77,11 @@ Il SO è già di per se un virtualizzatore dell'hardware (di risorse):
 
 "Container (Fine slide)"
 
-L'astrazione offerta dal SO non è in senso stretto, perché quello che fa effettivamente un virtual machine monitor è di emulare completamente l'intera architettura virtuale su un'architettura fisica del tutto diversa.
+L'astrazione offerta dal SO non è in senso stretto, perché quello che fa effettivamente un virtual machine monitor è di emulare completamente l'intera architettura su un'architettura fisica del tutto diversa.
 
 Posso emulare un'architettura `arm` su una intel `x86` senza problemi, per il tipo di astrazione offerta da un VMM.
+
+Invece con l'astrazione di hardware offerta dal sistema operativo non posso eseguire codice `arm` su un processore `x86`.
 
 <p align='center'><img src='images/confronto_SO_VMM.png' width='500' ></p>
 
