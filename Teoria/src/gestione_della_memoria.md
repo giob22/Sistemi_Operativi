@@ -19,7 +19,7 @@ L'immagine del processo è descritta all'interno del PCB dello specifico process
 In questa struttura sono contenute anche informazioni **su dove si trovano** le diverse parti dell'immagine **in memoria centrale**, tramite il puntatore alla struttura che permette di tradurre un indirizzo logico in un indirizzo fisico.
 
 I processi non accedono mai direttamente alla memoria principale tramite degli indirizzi.\
-Lavorano invece su una propria **memoria virtuale** (riservata), esso non utilizza indirizzi di memoria fisici ma bensì **virtuali**.
+Lavorano invece su una propria **memoria virtuale** (riservata); esso non utilizza indirizzi di memoria fisici ma bensì **virtuali**.
 
 Tali **indirizzi virtuali** hanno senso solo nella visione della memoria del processo → non corrispondono a veri e propri indirizzi della memoria principale.
 
