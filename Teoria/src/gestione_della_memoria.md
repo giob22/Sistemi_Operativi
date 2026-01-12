@@ -557,9 +557,9 @@ Ovviamente quando si tenta di operare su una pagina l'MMU verifica che il progra
 <p align='center'><img src='images/permessi_page_table.png' width='500' ></p>
 
 La tabella delle pagine è in **memoria principale**.\
-La MMU usa 2 registri utilizzarla:
+La MMU usa 2 registri per accedervi:
 
-- **PTBR** (Page-Table Base Register):
+- **PTBR** (Page-Table Base Register):\
   indirizzo fisico della tabella delle pagine in memoria fisica.
 - **PTLR** (Page-Table Length Register):\
   dimensione della tabella delle pagine.
