@@ -79,6 +79,8 @@ La posizione effettiva in memoria fisica è **gestita dal sistema operativo**.
   - dinamica: gli indirizzi possono essere modificati durante l'esecuzione del programma, ad esempio quando il programma viene riattivato e ritorna nella memoria principale dallo swap.
 - **Organizzazione dello spazio virtuale**
   
+  Specifica il modo con cui vengono trattate le diverse parti dell'immagine di un processo.
+  
   - spazio virtuale unico: tutta la memoria di un processo è trattata come un'unica area.
   - spazio virtuale segmentato: la memoria del processo è suddivisa in **segmenti** (ad esempio, codice, dati, stack) che vengono gestiti separatamente.
 - **Allocazione**
@@ -89,10 +91,10 @@ La posizione effettiva in memoria fisica è **gestita dal sistema operativo**.
   - non contigua: i dati di un processo possono essere sparsi in diverse aree della memoria, come avviene nella **paginazione**.
 - **Caricamento**
   
-  Il caricamento riguarda come i processi vengono caricati in memoria:
+  Il caricamento riguarda come le immagini dei processi vengono caricate in memoria:
 
-  - tutto insieme: il processo viene caricato tutto in una volta nella memoria.
-  - a domanda: solo le parti del processo necessarie vengono caricate in memoria, quando l'esecuzione ne richiede l'accesso.
+  - tutto insieme: l'immagine viene caricato tutto in una volta nella memoria.
+  - a domanda: solo le parti dell'immagine del processo necessarie vengono caricate in memoria, quando l'esecuzione ne richiede l'accesso.
 
 ## Tecniche di gestione della memoria
 
@@ -119,7 +121,7 @@ Ad esempio il SO protegge il segmento dedicato al codice dando il permesso di so
 
 <p align='center'><img src='images/evoluzione_hw.png' width='600' ></p>
 
-Ulteriori evoluzioni hw hanno permesso di **caricare** l'immagine del processo (o un suo segmento) **non più per intero**, ma in **piccole porzioni (pagine)** ( caricamento a domanda) **sparpagliate** in memoria fisica (allocazione non contigua).
+Ulteriori evoluzioni hw hanno permesso di **caricare** l'immagine del processo (o un suo segmento) **non più per intero**, ma in **piccole porzioni , pagine,** (caricamento a domanda) **sparpagliate** in memoria fisica (allocazione non contigua).
 
 Quindi è stata introdotta l'allocazione di tipo **non contigua** grazie allo sviluppo dell'hardware MMU.
 
@@ -142,7 +144,7 @@ Che vantaggio mi da l'allocazione di tipo non contigua?\
 
 ## Rilocazione 
 
-Modalità di allocazione dei dati e del codice di un processo in memoria fisica.
+Modalità con cui si associa a codice e dati indirizzi di memoria fisica.
 
 L'associazione di **istruzioni e dati** ad indirizzi di memoria (fisica) si può compiere in ognuna delle sequenti fasi:
 
@@ -191,11 +193,11 @@ Il problema di questo tipo di rilocazione si presenta nel **context switch**: il
 →nel momento della sua successiva esecuzione deve trovarsi sempre nella stessa area di memoria, altrimenti tutti gli indirizzi fisici su cui lavora sarebbero sbagliati.\
 Questo è un grande **onere computazionale** affidato al sistema operativo.
 
-Quindi con una rilocazione statica è il compilatore o il caricatore ad inserire degli indirizzi fisici all'interno rispettivamente del codice oggetto o del codice eseguibile.
+Quindi con una rilocazione statica è il compilatore o il caricatore ad associare codice e dati a indirizzi fisici.
 
 <p align='center'><img src='images/rilocazione_statica_1.png' width='600' ></p>
 
-Questi indirizzi non potranno esser cambiato al meno che il codice non venga ricompilato oppure ricaricato.
+Questi indirizzi non potranno esser cambiati a meno che il codice non venga ricompilato oppure ricaricato.
 
 
 ### dinamica
@@ -216,8 +218,7 @@ Infatti con la rilocazione di tipo dinamico si introduce una distinzione fondame
   
   indirizzo visto dall'unità di memoria, **posizione effettiva** del dato/istruzione.
 
-Quando otteniamo **segmentation fault** significa che l'indirizzo virtuale che stiamo utilizzando, erroneamente, non è associato ad un indirizzo fisico facente parte dell'immagine del processo nella memoria fisica → l'indirizzo virtuale che il processo sta deferenziando non è mappato nella memoria fisica.\
-→ la traduzione, a run-time, dal indirizzo virtuale a indirizzo fisico ha risolto questo problema.
+Quando otteniamo **segmentation fault** significa che l'indirizzo virtuale che stiamo utilizzando, erroneamente, non è associato ad un indirizzo fisico facente parte dell'immagine del processo nella memoria fisica → l'indirizzo virtuale che il processo sta deferenziando non è mappato nella memoria fisica.
 
 Vedremo che il fault può essere **ripristinabile**, perché il segmento/pagina non sono in memoria fisica ma sono swappati in memoria di massa. → ci troviamo nella situazione di un caricamento a domanda.
 
@@ -239,7 +240,7 @@ La rilocazione dinamica consente lo **swapping**
 
 #### MMU (Memory Management Unit)
 
-MMU è un componente hardware della CPU che ha il compito di rendere **trasparente l'accesso al processore** alla memoria fisica tramite una traduzione di **indirizzi virtuali** (utilizzati dal processore) **in indirizzi fisici**.
+MMU è un componente hardware della CPU che ha il compito di rendere **trasparente l'accesso del processore** alla memoria fisica tramite una traduzione di **indirizzi virtuali** (utilizzati dal processore) **in indirizzi fisici**.
 
 ESEMPIO DI RILOCAZIONE DINAMICA:
 
@@ -275,7 +276,7 @@ Nella fase di copia il loader si può comportare in due modi a seconda della tip
 
 - Nel **caricamento unico** (tutto insieme)
   
-  - Il loader carica tutta l'immagine del programma in memoria RAM.
+  - Il loader carica tutta l'immagine del processo in memoria RAM.
   
   Questo è un approccio tipico dei vecchi sistemi o microcontrollori.
 - Nel **caricamento a domanda** (demand loading)
@@ -302,11 +303,11 @@ Vi sono due possibili approcci per gestire lo **spazio virtuale** degli indirizz
 
 <p align='center'><img src='images/approcci_spazio_virtuale.png' width='500' ></p>
 
-Nell'approccio segmentato l'immagine del processo è suddivisa in **porzioni logiche** (segmenti) gestite in modo separato ed indipendente dal sistema operativo.\
+Nell'approccio segmentato l'immagine del processo è suddivisa in **porzioni logiche** (segmenti) gestite in **modo separato ed indipendente dal sistema operativo**.\
 Ogni segmento può avere una dimensione variabile, in base alla struttura logica del programma (codice, heap, stack, dati).
 
 **Vantaggio principale**:\
-La segmentazione facilita la condivisione di aree di memoria fisica tra più processi, mappando in questa area da condividere distinti segmenti della memoria virtuale propri di un processo.\
+La segmentazione facilita la condivisione di aree di memoria fisica tra più processi, mappando in questa area da condividere distinti segmenti della memoria virtuale propri di un processo.
 * → Esempio:\
   il segmento di codice (text) di un programma è di sola lettura.\
   Più processi che eseguono lo stesso programma possono **condividere la stessa copia fisica** del codice, mappandola nel proprio spazio di indirizzamento virtuale all'interno del segmento dedicato all'area testo.
@@ -324,8 +325,8 @@ Viene creato un diverso **segmento** per ciascun **modulo** del programma.
 #### vantaggi della segmentazione
 
 - **Protezione** dei segmenti;\
-  permette una **granularità fine** nella gestione dei permessi sullo spazio di indirizzamento.\
-  Ad ogni segmento può avere **permessi diversi** (lettura, scrittura, esecuzione).
+  permette una **granularità a livello dei segmenti** nella gestione dei permessi sullo spazio di indirizzamento.\
+  Ogni segmento può avere **permessi diversi** (lettura, scrittura, esecuzione).
 
 </div>
 <p align='center'><img src='images/segmenti_per_moduli.png' width='300' ></p>
@@ -346,7 +347,7 @@ Un indirizzo virtuale è una coppia (contiene due informazioni), fatta da:
 
 <p align='center'><img src='images/info_indirizzi_virtuali.png' width='600' ></p>
 
-L'**MMU** è il componente su cui si basa anche la segmentazione.
+L'**MMU** è il componente su cui si basa anche la segmentazione, per la gestione dei permessi, per la condivisione di aree di memoria (testo) e per la traduzione degli indirizzi virtuali in indirizzi fisici.
 
 - Traduce gli indirizzi virtuali dalla forma (*segmento*, *offset*) in indirizzi fisici.
 - Nel caso di **pochi segmenti**, è sufficiente avere nella MMU più coppie di registri base/limite: uno per ogni segmento.
@@ -402,7 +403,7 @@ NOTA sulla segment table:
 
 #### protezione
 
-Ogni segmento può avere diversi **permessi di accesso** specificati da bit di controllo contenuti nella segment table.
+Ogni segmento può avere diversi **permessi di accesso** specificati da bit di controllo contenuti nelle entry della segment table.
 
 - Ogni riga della segment table di un processo contiene per ogni entry anche una sequenza di **bit di controllo** per gestire i permessi sull'area di memoria in cui è mappato il segmento.
 - MMU produce una **exception** se il programma non rispetta i permessi.
@@ -416,7 +417,7 @@ La segmentazione consente la **condivisione dei segmenti** tra più processi, al
 Abbiamo due processi con le rispettive tabelle dei segmenti.
 
 → Se hanno una entry in comune significa che i due processi possono accedere alla stessa area di memoria fisica.\
-Quindi stanno effettivamente condividendo la copia del segmento di memoria. Questo permette di allocare una sola copia del segmento in memoria.
+Quindi stanno effettivamente condividendo la  stessa copia del segmento di memoria. Questo permette di allocare una sola copia del segmento in memoria.
 
 <p align='center'><img src='images/condivisione_segmento.png' width='500' ></p>
 
@@ -431,7 +432,7 @@ Uno spazio/segmento di memoria virtuale può essere **collocato in memoria fisic
 - allocazione **non contigua** (**paginazione**)
 
 
-##### allocazione contigua
+### allocazione contigua
 
 - Il SO colloca il proprio blocco di memoria virtuale, e quelli dei processi, in intervalli **non-sovrapposti** della memoria fisica
 - Quando un processo termina, la memoria fisica occupata si libera, creando un **hole**
@@ -458,11 +459,11 @@ In generale, gli **schemi a partizione di dimensione variabile** soffrono del pr
 
 Dualmente gli schemi a partizione di dimensione fissa soffrono del problema della frammentazione interna.
 
-**Frammentazione interna**: è un concetto relativo al singolo segmento, in particolare è legato alla dimensione di questo.
+**Frammentazione interna**: è un concetto relativo alla paginazione, in particolare è legato alla dimensione di ogni pagina.
 
-Se i segmenti hanno una dimensione fissa, non è detto che l'immagine di un processo sia un multiplo di questa dimensione. Quindi tale immagine potrebbe occupare un numero di segmenti, ma non tutte le word di questi segmenti avranno un significato.
+Le pagine hanno una dimensione fissa, non è detto che l'immagine di un processo sia un multiplo di questa dimensione. Quindi tale immagine potrebbe occupare un numero di pagine, ma non tutte le word di queste avranno un significato.
 
-Ovvero siamo sprecando una porzione dell'ultimo segmento in cui è contenuta l'immagine del processo.
+Ovvero siamo sprecando una porzione dell'ultima pagina in cui è contenuta l'immagine del processo.
 
 <p align='center'><img src='images/frammentazione_interna.png' width='550' ></p>
 
@@ -481,7 +482,7 @@ Ovviamente non è perfetto come approccio infatti anche questo introduce un prob
 - evita la frammentazione esterna;
 - introduce la frammentazione interna.
   
-  A causa del fatto che lo spazio virtuale è suddiviso e quindi caricato in memoria fisica all'interno di blocchi di dimensione **fissa**.
+  A causa del fatto che lo spazio virtuale è caricato in memoria fisica all'interno di blocchi di dimensione **fissa**.
 
 <p align='center'><img src='images/associazione_pag_vir_fis.png' width='500' ></p>
 
@@ -498,7 +499,7 @@ Come detto questo approccio è soggetto alla frammentazione interna.
 Cosa accade nel momento in cui si verifica una frammentazione interna:
 
 - spazio di memoria perso per un blocco assegnato ma non utilizzato a pieno
-- si verifica se la dimensione del processo non è un multiplo esatto della dimensione dei blocchi
+- si verifica se la dimensione dell'immagine del processo non è un multiplo esatto della dimensione dei blocchi
 
 Questo fenomeno è tanto **più trascurabile** quanto **più piccola è assegnata la dimensione** di ogni pagina.
 
