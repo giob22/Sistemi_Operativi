@@ -69,9 +69,9 @@ La posizione effettiva in memoria fisica è **gestita dal sistema operativo**.
 - **Dimensione della memoria virtuale** che può essere più **grande della memoria fisica disponibile**. 
   
   Quindi il sistema operativo deve fare in modo di emulare la memoria fisica utilizzando la memoria secondaria, per permettere l'esecuzione dei processi che utilizzano più memoria di quanta ne sia disponibile.
-- **Rilocazione**:
-  
-  La rilocazione è un meccanismo che permette di caricare l'immagine di un processo in memoria principale.
+- **Rilocazione**: 
+
+  La rilocazione è il meccanismo attraverso il quale vengono assegnati indirizzi di memoria fisica a dati e codice.
 
   Esistono due principali tipi di rilocazione:
 
