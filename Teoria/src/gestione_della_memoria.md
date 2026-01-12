@@ -521,7 +521,7 @@ La paginazione, inoltre, non è solo una tecnica di allocazione non contigua, ma
 Un indirizzo virtuale contiene la **coppia**:
 
 - **numero di pagina (p)**:\
-  identifica una pagina nella memoria fisica → nel contesto di un processo.
+  identifica una pagina nella memoria virtuale → nel contesto di un processo.
 - **scostamento di pagina(d)**:\
   indica la posizione dell'indirizzo all'interno della pagina.
 
