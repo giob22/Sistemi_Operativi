@@ -666,7 +666,7 @@ Le cause di questa situazione sono dovute al fatto che:
 La MMU genera quindi genera una **exception** (page fault).
 
 - Il SO non termina subito il processo se la pagina appartiene al suo spazio di indirizzamento, infatti viene eseguita l'ISR per gestire il page fault che cerca di allocarla dalla memoria secondaria.
-  - Il SO termina il processo solo le il risultato del page fault handler non mappa la pagina virtuale in una pagina fisica → perché non è stata trovata nella memoria secondaria.
+  - Il SO termina il processo solo se il risultato del page fault handler non mappa la pagina virtuale in una pagina fisica → perché non è stata trovata nella memoria secondaria.
   - Oppure se l'operazione che il processo tenta di fare su tale area non è valida secondo i permessi descritti su questa.
 
 Cosa accede durante un **context switch**
