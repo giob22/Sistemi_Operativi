@@ -39,7 +39,7 @@ Nonostante di abbia la possibilitá di utilizzare un tipo di allocazione non con
 
 meno cache miss, tabella delle pagine ridotta, compatibilitá con DMA e dispositivi di I/O
 
-Una allocazio avviene per **multipli** **di \\(2^k\\) pagine contigue**. 
+Una allocazione avviene per **multipli** **di \\(2^k\\) pagine contigue**. 
 
 Il kernel traccia il blocco libero tramite una linked list
 

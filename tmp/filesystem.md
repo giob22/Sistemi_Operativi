@@ -29,6 +29,8 @@ il file é la prima astrazione realizzata da un FS:
 
 Insieme ad ogni gruppo di informazioni memorizzate e sul disco é associata una struttura dati mantenuta dal kernel per gestire i permessi e il recupero dei dati contenuti.
 
+Questa astrazione permette ai dati memorizzati in un file, che magari sono sparsi in memoria secondare, di esser visti dalle applicazioni utenti come un vettore di byte.
+
 La directory é la seconda principale astrazione dei FS, viene utilizzata per raggruppare piú file.
 
 Vengono trattate dal sistema operativo come file speciali

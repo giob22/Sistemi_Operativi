@@ -1,6 +1,6 @@
 # Parallelismo implicito
 
-In questo tipo di parallelismo il codice che viene eseguito è scritto in modo sequenziale, ma sotto il cofano il sistema capisce quali parti sono idipendenti tra loro e le esegue insieme per risparmiare tempo.
+In questo tipo di parallelismo il codice che viene eseguito è scritto in modo sequenziale, ma sotto il cofano il sistema capisce quali parti sono indipendenti tra loro e le esegue insieme per risparmiare tempo.
 
 Il parallelismo implicito avviene principalmente a due livelli:
 
@@ -8,7 +8,7 @@ Il parallelismo implicito avviene principalmente a due livelli:
   
   Le moderne CPU non eseguono un'operazione per volta, utilizzano una tecnica che gli permette di valutare le prossime istruzioni che dovranno eseguire; questa tecnica è chiamata *Out-of-Order Execution*.
 
-  La CPU quindi analizza le prossime istruzioni che dovrà, se queste sono indipendenti tra loro allora le lancia contemporaneamente su due unità di calcolo diverse.
+  La CPU quindi analizza le prossime istruzioni che dovrà eseguire, se queste sono indipendenti tra loro allora le lancia contemporaneamente su unità di calcolo diverse.
 
   Oppure un'altra tecnica hardware è il *Pipelining*: mentre un'istruzione viene eseguita, la successiva viene già decodificata e quella dopo ancora viene prelevata dalla memoria. Quindi si sfrutta il ciclo del processore nell'eseguire singole istruzioni.
 
@@ -24,6 +24,8 @@ Il parallelismo implicito avviene principalmente a due livelli:
   Queste operazioni di sincronizzazioni prevedono di accedere ad un'area della memoria che permetta di gestire la sincronizzazione che è a sua volta condivisa. Quindi, nel momento in cui, un processo accede al gestore della risorsa, che è a sua volta una risorsa condivisa,( per gestire la sincronizzazione) l'operazione che esegue sul gestore dal punto di vista dei processi che eseguono in parallelo su altri processori deve essere un'operazione atomica.
 
   Per permettere ciò il processore non deve permettere a processi su altri processori di poter accedere all'area di memoria su cui sta lavorando, quindi una tecnica implementabile sarebbe quella di inibire l'accesso al bus PCI alle altre CPU temporaneamente, fin tanto che l'operazione che deve esser vista come atomica non termini.
+
+  Questo perché non è più sufficiente utilizzare il clear interrupt per evitere che il processo corrente venga prelazionato mentre sta eseguendo in sezione critica. Perché il clear interrupt non agisce anche sugli altri processori, quindi un processo su un altro processore potrebbe comunque accedere alla senzione critica se lo fa prima che il processo che è già dentro non termina l'operazione atomica.
 
 
 - costi dovuti alla maggior possibilità di cache miss
@@ -86,6 +88,8 @@ SIMD é inutile per compiti generici, ma é davvero impattante in situazioni dov
 - grafica e videogiochi
 - elaborazioni audio e video
 - machine learning
+  
+Motivo per cui è l'architettura utilizzata per realizzare le GPU.
 
 ## Assegnazione dei processi ai diversi processori
 
